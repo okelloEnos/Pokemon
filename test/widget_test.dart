@@ -5,15 +5,21 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pokemon/app.dart';
 
 import 'package:pokemon/main.dart';
+import 'package:pokemon/pokemons/data/data_service/data_service_provider.dart';
+import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    final PokemonRepository pokemonRepository = PokemonRepository(dataService: DataService(dio: Dio()));
+
+    await tester.pumpWidget(PokemonsApp(pokemonRepository: pokemonRepository,));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
