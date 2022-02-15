@@ -150,12 +150,14 @@ class Species extends Equatable{
 class Sprites extends Equatable{
   final String? backDefault;
   final String? frontDefault;
-  final Other? other;
+  final String? dreamWorld;
+  final String? home;
+  final String? artWork;
 
-  const Sprites({this.backDefault, this.frontDefault, this.other});
+  const Sprites({this.backDefault, this.frontDefault, this.dreamWorld, this.home, this.artWork});
 
   @override
-  List<Object?> get props => [backDefault, frontDefault, other];
+  List<Object?> get props => [backDefault, frontDefault, dreamWorld, home, artWork];
 }
 
 class Other extends Equatable{

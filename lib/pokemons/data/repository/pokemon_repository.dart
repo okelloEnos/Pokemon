@@ -1,4 +1,5 @@
 import 'package:pokemon/pokemons/data/data_service/data_service_provider.dart';
+import 'package:pokemon/pokemons/data/models/pokemon_info.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model.dart';
 import 'package:pokemon/pokemons/data/repository/interface_repository.dart';
 
@@ -11,6 +12,12 @@ PokemonRepository({required this.dataService});
   Future<List<PokemonModel>> retrieveAllPokemons() async{
 
     return  await dataService.retrievePokemons();
+  }
+
+  @override
+  Future<List<PokemonInfo>> retrievePokemonsWithTheirData(List<PokemonModel> pokemons) async{
+
+    return await dataService.retrievePokemonsData(pokemons);
   }
 
 }

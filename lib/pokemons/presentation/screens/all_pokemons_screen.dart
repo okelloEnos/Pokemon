@@ -18,7 +18,7 @@ class AllPokemonsScreen extends StatelessWidget {
         ),
         body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
       if(state is PokemonsLoaded){
-        return  AllPokemonsGrid();
+        return  allPokemonsGrid(state.pokemons);
       }
 
       return itemsLoadingWidget(color: theme.primaryColorDark);

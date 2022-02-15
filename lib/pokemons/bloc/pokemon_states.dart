@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model.dart';
+import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 
 abstract class PokemonStates extends Equatable{
 
@@ -19,13 +20,13 @@ class PokemonsFailure extends PokemonStates{
   List<Object> get props => [errorText];
 }
 class PokemonsLoaded extends PokemonStates{
-  final List<PokemonModel> pokemons;
+  final List<PokemonInfo> pokemons;
   final bool hasReachedMax;
   final String error;
 
-  PokemonsLoaded({this.pokemons = const <PokemonModel> [], this.hasReachedMax = false, this.error = ''});
+  PokemonsLoaded({this.pokemons = const <PokemonInfo> [], this.hasReachedMax = false, this.error = ''});
 
-  PokemonsLoaded copyWith({List<PokemonModel>? pokemons, bool? hasReachedMax, String? error}){
+  PokemonsLoaded copyWith({List<PokemonInfo>? pokemons, bool? hasReachedMax, String? error}){
     return PokemonsLoaded(
       pokemons: pokemons ?? this.pokemons,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,

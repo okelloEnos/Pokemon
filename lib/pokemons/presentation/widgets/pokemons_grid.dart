@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/global_widgets.dart';
 
-Widget AllPokemonsGrid(){
+Widget allPokemonsGrid(List<PokemonInfo> pokemons){
 
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: GridView.builder(
-      itemCount: 6,
+      itemCount: pokemons.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
         crossAxisSpacing: 10,
@@ -15,12 +16,12 @@ Widget AllPokemonsGrid(){
           childAspectRatio: 2/2.5
         ),
         itemBuilder: (BuildContext context, int index){
-        return PokemonCard(context);
+        return pokemonCard(context, pokemons[index]);
         }),
   );
 }
 
-Widget PokemonCard(BuildContext context){
+Widget pokemonCard(BuildContext context, PokemonInfo pokemon){
 final theme = Theme.of(context);
   return Card(
     child: Column(
@@ -36,7 +37,7 @@ final theme = Theme.of(context);
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-          child: Text('Okello', style: theme.textTheme.subtitle1,),
+          child: Text('${pokemon.pokemonName}', style: theme.textTheme.subtitle1,),
         ),
       ],
     ),
