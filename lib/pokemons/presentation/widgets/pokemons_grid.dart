@@ -27,7 +27,7 @@ final theme = Theme.of(context);
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CachedNetworkImage(imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+        CachedNetworkImage(imageUrl: pokemon.sprites!.home!,
         errorWidget: (_, __, ___){
           return imageErrorWidget;
         },

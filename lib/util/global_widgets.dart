@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 Widget imagePlaceHolder({required Color color}){
   return Center(child: SpinKitSpinningLines(
     color: color,
@@ -14,4 +15,6 @@ Widget itemsLoadingWidget({required Color color}){
   ),);
 }
 
-final imageErrorWidget = Image.asset("images/defaultpic.jpg");
+final imageErrorWidget = Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: Image.asset("assets/images/defaultpic.jpg"),);
