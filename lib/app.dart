@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
-import 'package:pokemon/pokemons/data/data_service/data_service_provider.dart';
 import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 import 'package:pokemon/pokemons/presentation/screens/all_pokemons_screen.dart';
 import 'package:pokemon/util/app_colors.dart';

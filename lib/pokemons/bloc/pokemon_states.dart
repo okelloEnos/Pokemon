@@ -19,6 +19,7 @@ class PokemonsFailure extends PokemonStates{
   @override
   List<Object> get props => [errorText];
 }
+
 class PokemonsLoaded extends PokemonStates{
   final List<PokemonInfo> pokemons;
   final bool hasReachedMax;
@@ -38,4 +39,10 @@ class PokemonsLoaded extends PokemonStates{
 
   @override
   List<Object> get props => [pokemons, hasReachedMax, error];
+}
+
+extension PokemonsStateX on PokemonStates{
+  bool get isInitial => this == PokemonsInitial();
+  bool get isLoaded => this == PokemonsLoaded();
+  bool get isFailure => this == PokemonsFailure(errorText: "errorText") ;
 }
