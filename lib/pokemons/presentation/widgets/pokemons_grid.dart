@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
@@ -23,23 +24,26 @@ Widget allPokemonsGrid(List<PokemonInfo> pokemons){
 
 Widget pokemonCard(BuildContext context, PokemonInfo pokemon){
 final theme = Theme.of(context);
-  return Card(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CachedNetworkImage(imageUrl: pokemon.sprites!.home!,
-        errorWidget: (_, __, ___){
-          return imageErrorWidget;
-        },
-          placeholder: (_, __){
-          return imagePlaceHolder(color: theme.primaryColorDark);
+  return GestureDetector(
+    onTap: () => Beamer.of(context).beamToNamed('/pokemons', data: {"pokemon" : pokemon}),
+    child: Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CachedNetworkImage(imageUrl: pokemon.sprites!.home!,
+          errorWidget: (_, __, ___){
+            return imageErrorWidget;
           },
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-          child: Text('${pokemon.pokemonName}', style: theme.textTheme.subtitle1,),
-        ),
-      ],
+            placeholder: (_, __){
+            return imagePlaceHolder(color: theme.primaryColorDark);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+            child: Text('${pokemon.pokemonName}', style: theme.textTheme.subtitle1,),
+          ),
+        ],
+      ),
     ),
   );
 }

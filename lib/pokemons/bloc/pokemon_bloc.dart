@@ -20,7 +20,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
         emit(PokemonsLoaded(pokemons: pokemonsWithData));
       }
       catch (e){
-        emit(PokemonsFailure(errorText: 'Failed to get Pokemons'));
+        emit(PokemonsFailure(errorText: e.toString()));
       }
 
     }

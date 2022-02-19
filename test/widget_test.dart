@@ -19,7 +19,7 @@ void main() {
     // Build our app and trigger a frame.
     final PokemonRepository pokemonRepository = PokemonRepository(dataService: DataService(dio: Dio()));
 
-    await tester.pumpWidget(PokemonsApp(pokemonRepository: pokemonRepository,));
+    await tester.pumpWidget(PokemonsApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -20,6 +20,9 @@ class AllPokemonsScreen extends StatelessWidget {
       if(state is PokemonsLoaded){
         return  allPokemonsGrid(state.pokemons);
       }
+      else if(state is PokemonsFailure){
+        return Center(child: Text(state.errorText));
+      }
 
       return itemsLoadingWidget(color: theme.primaryColorDark);
     },

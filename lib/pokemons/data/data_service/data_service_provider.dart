@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
+import 'package:pokemon/util/dio_exceptions.dart';
 
 
 class DataService {
@@ -14,6 +16,28 @@ class DataService {
     List<PokemonModel> pokemons = [];
 
     try {
+      dio.interceptors.add(InterceptorsWrapper(
+          onRequest:(options, handler){
+            // Do something before request is sent
+            return handler.next(options); //continue
+            // If you want to resolve the request with some custom data，
+            // you can resolve a `Response` object eg: `handler.resolve(response)`.
+            // If you want to reject the request with a error message,
+            // you can reject a `DioError` object eg: `handler.reject(dioError)`
+          },
+          onResponse:(response,handler) {
+            // Do something with response data
+            return handler.next(response); // continue
+            // If you want to reject the request with a error message,
+            // you can reject a `DioError` object eg: `handler.reject(dioError)`
+          },
+          onError: (DioError e, handler) {
+            // Do something with response error
+            return  handler.next(e);//continue
+            // If you want to resolve the request with some custom data，
+            // you can resolve a `Response` object eg: `handler.resolve(response)`.
+          }
+      ));
       final response = await dio.get(baseUrl);
 
       if (response.statusCode == 200) {
@@ -31,7 +55,13 @@ class DataService {
       }
     }
     on DioError catch (e) {
-      throw Exception(e);
+      throw DioExceptions.fromDioError(e);
+    }
+    on SocketException catch (e){
+      throw Exception("Hey, Server is Down");
+    }
+    on FormatException catch (e){
+      throw Exception("Hey, We cannot Handle the Format");
     }
 
     return pokemons;
