@@ -81,7 +81,7 @@ final height = MediaQuery.of(context).padding.top;
           children: [
             Column(
               children: [
-                const Text("Weight"),
+                const Text("Weight", style: TextStyle(fontFamily: 'Messiri'),),
                 Text("${pokemon.pokemonWeight} KG")
               ],
             ),
@@ -184,7 +184,7 @@ Widget pokemonImageCard({required String image,required String type, required Bu
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(type, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.primaryColorDark),),
+          child: Text(type, style: TextStyle(fontFamily: 'Lemonada', fontSize: 20, fontWeight: FontWeight.bold, color: theme.primaryColorDark),),
         )
       ],
     ),

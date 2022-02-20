@@ -26,9 +26,9 @@ final lightThemeData = ThemeData(
     backgroundColor: swatchColors.lightPrimarySwatch[600]
   ),
   textTheme: TextTheme(
-    headline5: TextStyle(fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
+    headline5: TextStyle(fontFamily: 'Ewert', fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
     headline6: TextStyle(color: Color(pokemonColorValues.secondaryColor)),
-    subtitle1: TextStyle(fontSize: 18, color: Color(pokemonColorValues.secondaryColor))
+    subtitle1: TextStyle(fontFamily: 'Lemonada', fontSize: 18, color: Color(pokemonColorValues.secondaryColor))
   ),
   buttonTheme: ButtonThemeData(buttonColor: Color(pokemonColorValues.secondaryColor)),
   indicatorColor: Color(pokemonColorValues.primaryColor)
