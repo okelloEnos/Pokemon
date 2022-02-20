@@ -29,7 +29,6 @@ class PokemonsApp extends StatelessWidget {
         '/pokemons': (context) {
           // extract beamState which holds route information
           final beamState = context.currentBeamLocation.state;
-
           final pokemon = beamState.data["pokemon"] as PokemonInfo;
           return SinglePokemonScreen(pokemon: pokemon);
         }

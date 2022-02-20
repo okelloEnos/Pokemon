@@ -52,6 +52,7 @@ dependencies:
   hydrated_bloc:
   beamer: ^0.13.3
   carousel_slider: ^4.0.0
+  flutter_staggered_animations: ^1.0.0
 
 dev_dependencies:
   flutter_test:

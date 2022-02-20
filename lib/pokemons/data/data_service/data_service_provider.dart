@@ -92,6 +92,20 @@ class DataService {
               baseStat: statsMap["base_stat"], effort: statsMap["effort"], stat: stat);
         }).toList();
 
+        List<Abilities> abilities = List.from(data["abilities"]).map((abilitiesMap) {
+          var abilityMap = abilitiesMap["ability"];
+          var ability = Ability(name: abilityMap["name"], url: abilityMap["url"]);
+          return Abilities(
+              isHidden: abilitiesMap["is_hidden"], slot: abilitiesMap["slot"], ability: ability);
+        }).toList();
+
+        List<Moves> moves = List.from(data["moves"]).map((movesMap) {
+          var moveMap = movesMap["move"];
+          var move = Move(name: moveMap["name"], url: moveMap["url"]);
+          return Moves(
+              move: move);
+        }).toList();
+
         List<PokemonTypes> types = List.from(data["types"]).map((pokemonTypes) {
           var type = pokemonTypes["type"];
           var pokemonType = PokemonType(name: type["name"], url: type["url"]);
@@ -103,10 +117,10 @@ class DataService {
             baseExperience: data["base_experience"],
             pokemonHeight: data["height"],
             pokemonWeight: data["weight"],
-            // abilities: data[],
+            abilities: abilities,
             // forms: data[],
             // gameIndices: data[],
-            // moves: data[],
+            moves: moves,
             species: species,
             sprites: sprites,
             stats: stats,

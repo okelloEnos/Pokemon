@@ -11,10 +11,10 @@ class AllPokemonsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    // timeDilation = 3.0;
    return Scaffold(
         appBar: AppBar(
-          title: Text('Pokemons', style: theme.textTheme.headline5,),
+          title: Center(child: Text('Pokemons', style: theme.textTheme.headline5,)),
         ),
         body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
       if(state is PokemonsLoaded){

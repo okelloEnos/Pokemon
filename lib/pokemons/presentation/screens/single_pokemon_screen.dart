@@ -9,7 +9,7 @@ class SinglePokemonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: singlePokemonWidget(pokemon: pokemon, context: context)),
+      body: singlePokemonWidget(pokemon: pokemon, context: context),
     );
   }
 }
