@@ -8,7 +8,10 @@ class SinglePokemonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
+      backgroundColor: theme.cardColor,
       body: singlePokemonWidget(pokemon: pokemon, context: context),
     );
   }

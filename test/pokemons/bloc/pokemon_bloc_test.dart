@@ -12,10 +12,15 @@ class MockPokemonRepository extends Mock implements PokemonRepository{}
 
 class MockPokemonInfo extends Mock implements PokemonInfo {}
 
-const pokemonName = "Panda";
+const pokemonName = "janda";
 const pokemonUrl = "https://panda";
 const pokemonWeight = 56;
 const pokemonHeight = 7;
+const sprites = Sprites(home: pokemonUrl);
+const List<Abilities>abilities = [];
+const List<Stats>stats = [];
+const List<Moves>moves = [];
+
 
 void main(){
   group("pokemons bloc", (){

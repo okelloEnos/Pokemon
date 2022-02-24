@@ -10,6 +10,7 @@ Widget imagePlaceHolder({required Color color}){
 
 Widget itemsLoadingWidget({required Color color}){
   return Center(child: SpinKitRipple(
+    key: const Key("pokemon_loading"),
     color: color,
     size: 50.0,
   ),);

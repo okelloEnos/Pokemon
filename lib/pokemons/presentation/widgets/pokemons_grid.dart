@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/global_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '../../../util/extensions.dart';
 
 Widget allPokemonsGrid(List<PokemonInfo> pokemons){
 
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: GridView.builder(
+      key: const Key("pokemon_grid"),
       itemCount: pokemons.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -40,6 +42,7 @@ Widget allPokemonsGrid(List<PokemonInfo> pokemons){
 Widget pokemonCard(BuildContext context, PokemonInfo pokemon){
 final theme = Theme.of(context);
   return Hero(
+    key: const Key("grid_hero"),
     tag: "pok${pokemon.pokemonName}",
     child: GestureDetector(
 
@@ -49,10 +52,14 @@ final theme = Theme.of(context);
         return Beamer.of(context).beamToNamed('/pokemons', data: pokemonInfo);
       },
       child: Card(
+        key: const Key("grid_card"),
         child: Column(
+          key: const Key("grid_column"),
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CachedNetworkImage(imageUrl: pokemon.sprites!.home!,
+            CachedNetworkImage(
+              key: const Key("grid_image"),
+              imageUrl: pokemon.sprites!.home!,
             errorWidget: (_, __, ___){
               return imageErrorWidget;
             },
@@ -61,8 +68,12 @@ final theme = Theme.of(context);
               },
             ),
             Padding(
+              key: const Key("grid_pad"),
               padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-              child: Text('${pokemon.pokemonName}', style: theme.textTheme.subtitle1,),
+              child: Text(
+                pokemon.pokemonName!.capitalize(), style: theme.textTheme.subtitle1,
+                key: const Key("grid_text_name"),
+              ),
             ),
           ],
         ),

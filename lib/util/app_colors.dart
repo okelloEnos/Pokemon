@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon/util/swatch_colors.dart';
 
@@ -25,10 +26,19 @@ final lightThemeData = ThemeData(
     foregroundColor: Color(pokemonColorValues.secondaryColor),
     backgroundColor: swatchColors.lightPrimarySwatch[600]
   ),
+
+  tabBarTheme: TabBarTheme(
+    labelColor: Color(pokemonColorValues.secondaryColor),
+    labelStyle: TextStyle(fontFamily: 'Lemonada', fontWeight: FontWeight.bold, fontSize: 12, color: Color(pokemonColorValues.secondaryColor)),
+    unselectedLabelColor: Colors.black54,
+    unselectedLabelStyle: TextStyle(fontFamily: 'Lemonada', fontSize: 13, color: Color(pokemonColorValues.secondaryColor)),
+  ),
   textTheme: TextTheme(
     headline5: TextStyle(fontFamily: 'Ewert', fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
     headline6: TextStyle(color: Color(pokemonColorValues.secondaryColor)),
-    subtitle1: TextStyle(fontFamily: 'Lemonada', fontSize: 18, color: Color(pokemonColorValues.secondaryColor))
+    subtitle1: TextStyle(fontFamily: 'Lemonada', fontSize: 18, color: Color(pokemonColorValues.secondaryColor)),
+      subtitle2: TextStyle(fontFamily: 'Lemonada', fontSize: 16,fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
+      bodyText1: TextStyle(fontFamily: 'Lemonada', fontSize: 14, color: Color(pokemonColorValues.secondaryColor))
   ),
   buttonTheme: ButtonThemeData(buttonColor: Color(pokemonColorValues.secondaryColor)),
   indicatorColor: Color(pokemonColorValues.primaryColor)
