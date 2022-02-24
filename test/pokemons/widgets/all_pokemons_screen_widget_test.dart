@@ -7,7 +7,7 @@ import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/presentation/screens/all_pokemons_screen.dart';
 import 'package:pokemon/pokemons/presentation/widgets/pokemons_grid.dart';
 
-import 'bloc/pokemon_bloc_test.dart';
+import '../bloc/pokemon_bloc_test.dart';
 
 class MockPokemonBloc extends MockBloc<PokemonEvents, PokemonStates> implements PokemonsBloc{}
 
