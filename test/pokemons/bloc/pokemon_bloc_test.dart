@@ -6,11 +6,13 @@ import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_info.dart';
 import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+import '../model/mock_pokemon_info.dart';
 // import '../../helpers/hydrated_bloc.dart';
 
 class MockPokemonRepository extends Mock implements PokemonRepository{}
 
-class MockPokemonInfo extends Mock implements PokemonInfo {}
+
 
 const pokemonName = "janda";
 const pokemonUrl = "https://panda";
@@ -18,8 +20,9 @@ const pokemonWeight = 56;
 const pokemonHeight = 7;
 const sprites = Sprites(home: pokemonUrl, artWork: pokemonUrl);
 const List<Abilities>abilities = [];
-const List<Stats>stats = [];
-const List<Moves>moves = [];
+const List<Stats>stats = [Stats(baseStat: 4, effort: 2, stat: Stat(name: 'name', url: pokemonUrl)),
+  Stats(baseStat: 4, effort: 2, stat: Stat(name: 'name', url: pokemonUrl))];
+const List<Moves>moves = [Moves(move: Move(name: "name", url: pokemonUrl))];
 const species = Species(name: "seed", url: pokemonUrl);
 
 

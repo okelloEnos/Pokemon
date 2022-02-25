@@ -36,11 +36,20 @@ class PokemonInfo extends Equatable{
   this.abilities, this.moves, this.species, this.sprites,
   this.stats, this.types});
 
-  // PokemonInfo.copyWith({String? pokemonName, int? baseExperience, int? pokemonWeight,
-  // int? pokemonHeight,
-  // }){
-  //   return PokemonInfo();
-// }
+  PokemonInfo copyWith({String? pokemonName, int? baseExperience, int? pokemonWeight,
+  int? pokemonHeight, List<Abilities>? abilities, List<Moves>? moves, Species? species,
+    Sprites? sprites, List<Stats>? stats, List<PokemonTypes>? types
+  }){
+    return PokemonInfo(
+      pokemonName: pokemonName ?? this.pokemonName,
+      baseExperience: baseExperience ?? this.baseExperience,
+      pokemonWeight: pokemonWeight ?? this.pokemonWeight,
+      pokemonHeight: pokemonHeight ?? this.pokemonHeight,
+      abilities: abilities ?? this.abilities,
+      moves: moves ?? this.moves, species: species ?? this.species, sprites: sprites ?? this.sprites,
+      stats: stats ?? this.stats, types: types ?? this.types
+    );
+}
 
 }
 

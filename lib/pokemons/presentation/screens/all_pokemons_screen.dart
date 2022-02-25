@@ -16,7 +16,7 @@ class AllPokemonsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Center(child: Text('Pokemons', style: theme.textTheme.headline5,)),
         ),
-        body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
+        body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (buildContext, state){
       if(state is PokemonsLoaded){
         return  allPokemonsGrid(state.pokemons);
       }
