@@ -17,7 +17,7 @@ import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    final PokemonRepository pokemonRepository = PokemonRepository(dataService: DataService(dio: Dio()));
+    // final PokemonRepository pokemonRepository = PokemonRepository(dataService: DataService(dio: Dio()));
 
     await tester.pumpWidget(PokemonsApp());
 
