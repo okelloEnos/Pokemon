@@ -39,10 +39,6 @@ jobs:
       - run: flutter build ios --release --no-codesign
       - name: Push to Releases
         uses: ncipollo/release-action@v1
-        with:
-          artifacts: "/Users/runner/work/Pokemon/Pokemon/build/ios/*"
-          tag: IOS/v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
 
   build_appbundle:
     name: Build Flutter (Android)
@@ -64,5 +60,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*"
-          tag: Android/v1.0.${{ github.run_number }}
+          tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
