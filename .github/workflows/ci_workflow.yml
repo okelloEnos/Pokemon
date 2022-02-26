@@ -37,8 +37,6 @@ jobs:
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build ios --release --no-codesign
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
 
   build_appbundle:
     name: Build Flutter (Android)
