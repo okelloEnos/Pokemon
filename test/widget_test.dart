@@ -22,7 +22,7 @@ void main() {
     await tester.pumpWidget(PokemonsApp());
 
     // Verify that our counter starts at 0.
-    expect(find.text('7'), findsOneWidget);
+    expect(find.text('12'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.
