@@ -12,7 +12,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          distribution: 'zulu'
+          java-version: '11'
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
@@ -28,7 +29,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          distribution: 'zulu'
+          java-version: '11'
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
@@ -44,7 +46,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
         with:
-          java-version: "12.x"
+          distribution: 'zulu'
+          java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
