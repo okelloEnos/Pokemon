@@ -40,7 +40,7 @@ jobs:
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "/Users/runner/work/Pokemon/Pokemon/build/ios/iphoneos/*"
+          artifacts: "/Users/runner/work/Pokemon/Pokemon/build/ios/*"
           tag: IOS/v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
 
