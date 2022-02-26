@@ -19,18 +19,19 @@ void main() {
     // Build our app and trigger a frame.
     // final PokemonRepository pokemonRepository = PokemonRepository(dataService: DataService(dio: Dio()));
 
-    await tester.pumpWidget(PokemonsApp());
+    // await tester.pumpWidget(PokemonsApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('5'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
+
     // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // await tester.tap(find.byIcon(Icons.add));
+    // await tester.pump();
 
     // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // expect(find.text('0'), findsNothing);
+    // expect(find.text('1'), findsOneWidget);
   });
 }
