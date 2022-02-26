@@ -6,7 +6,7 @@ on:
 
 jobs:
   flutter_test:
-    name: Run Flutter Test And Analyze
+    name: Demo Flutter Test And Analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -18,4 +18,5 @@ jobs:
           flutter-version: '2.5.0'
           channel: 'stable'
       - run: flutter pub get
+      - run: flutter analyze
       - run: flutter test
