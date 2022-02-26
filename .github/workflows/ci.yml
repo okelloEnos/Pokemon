@@ -17,11 +17,5 @@ jobs:
         with:
           flutter-version: '2.5.0'
           channel: 'stable'
-#      - run: flutter --version
-#      - uses: subosito/flutter-actions@v1
-#        with:
-#          channel: "stable"
-      - run:
       - run: flutter pub get
-#      - run: flutter analyze
       - run: flutter test
