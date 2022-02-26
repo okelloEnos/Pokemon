@@ -41,7 +41,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "/Users/runner/work/Pokemon/Pokemon/build/ios/iphoneos/*"
-          tag: v1.0.${{ github.run_number }} IOS
+          tag: IOS/v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
 
   build_appbundle:
@@ -64,5 +64,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*"
-          tag: v1.0.${{ github.run_number }} Android
+          tag: Android/v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
