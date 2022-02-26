@@ -2,7 +2,7 @@ name: CIntegration
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   flutter_test:
