@@ -9,8 +9,8 @@ import 'package:pokemon/pokemons/data/data_service/data_service_provider.dart';
 import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 
 void main() {
-  final PokemonRepository repository =
-      PokemonRepository(dataService: DataService(dio: Dio()));
+  // final PokemonRepository repository =
+  //     PokemonRepository(dataService: DataService(dio: Dio()));
 
   // final storage = await HydratedStorage.build(storageDirectory: );
   runApp(PokemonsApp());

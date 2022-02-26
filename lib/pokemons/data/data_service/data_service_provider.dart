@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/dio_exceptions.dart';
 
-
+// ignore_for_file: unused_catch_clause
 class DataService {
 
   final String baseUrl = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10";
@@ -41,8 +41,8 @@ class DataService {
       final response = await dio.get(baseUrl);
 
       if (response.statusCode == 200) {
-        print(response.data);
-        print('Next Url : ${response.data["next"]}');
+        // print(response.data);
+        // print('Next Url : ${response.data["next"]}');
 
         pokemons = List.from(response.data["results"]).map((pokemonJson) =>
             PokemonModel(

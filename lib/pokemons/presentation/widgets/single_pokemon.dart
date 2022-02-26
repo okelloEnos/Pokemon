@@ -8,7 +8,6 @@ import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/app_colors.dart';
 import 'package:pokemon/util/extensions.dart';
 import 'package:pokemon/util/global_widgets.dart';
-import 'package:pokemon/util/extensions.dart';
 
 Widget singlePokemonWidget({required PokemonInfo pokemon, required BuildContext context}){
 
@@ -258,7 +257,7 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
 }
 
 Widget pokemonStatsWidget({required PokemonInfo pokemon, required BuildContext context}){
-  final theme = Theme.of(context);
+  // final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.only(top: 10),
     child: ListView.builder(
@@ -275,7 +274,7 @@ Widget pokemonStatsWidget({required PokemonInfo pokemon, required BuildContext c
 }
 
 Widget pokemonEvolutionWidget({required PokemonInfo pokemon, required BuildContext context}){
-  final theme = Theme.of(context);
+  // final theme = Theme.of(context);
   return Column(
     children: [
       Row(
@@ -289,7 +288,7 @@ Widget pokemonEvolutionWidget({required PokemonInfo pokemon, required BuildConte
 }
 
 Widget pokemonMovesWidget({required PokemonInfo pokemon, required BuildContext context}){
-  final theme = Theme.of(context);
+  // final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.only(top: 20),
     child: ListView.builder(
