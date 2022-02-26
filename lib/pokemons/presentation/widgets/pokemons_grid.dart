@@ -89,7 +89,7 @@ final theme = Theme.of(context);
             padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
             child: Text(
               pokemon.pokemonName!.capitalize(), style: theme.textTheme.subtitle1,
-              key: Key("grid_text_name$index"),
+              key: const Key("grid_text_name"),
             ),
           ),
         ],

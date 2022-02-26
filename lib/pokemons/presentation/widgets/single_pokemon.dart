@@ -23,59 +23,63 @@ final height = MediaQuery.of(context).padding.top;
           color: Color(pokemonColorValues.cardColor)
         ),
       ),
-      Card(
-        key: const Key('single_pokemon_card_image'),
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(0), bottomRight: Radius.circular(0)
-          )
-        ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    key: const Key('single_pokemon_back_button'),
-                    color: theme.primaryColorDark,
-                    onPressed: () => Beamer.of(context).beamBack(), icon: const Icon(CupertinoIcons.back)),
-                const SizedBox(width: 50,),
-                Center(
-                  child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.headline5,
-                    key: const Key('single_pokemon_text_name'),
-                  // TextStyle(color: theme.primaryColorDark,
-                  //     fontWeight: FontWeight.bold, fontSize: 22),
-                  ),
-                )
-              ],),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: CarouselSlider(
-                  key: const Key('single_pokemon_carousel'),
-                  items: [
-                    pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context, key: const Key('single_pokemon_carousel_image')),
-                    pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context,  key: const Key('single_pokemon_carousel_image')),
-                  ],
-                  options: CarouselOptions(
-                    // height: 200,
-                    aspectRatio: 3.1/2,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: false,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    // onPageChanged: callbackFunction,
-                    scrollDirection: Axis.horizontal,
+      Hero(
+        key: const Key('single_pokemon_hero'),
+        tag: "pok${pokemon.pokemonName}",
+        child: Card(
+          key: const Key('single_pokemon_card_image'),
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(0), bottomRight: Radius.circular(0)
+            )
+          ),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                      key: const Key('single_pokemon_back_button'),
+                      color: theme.primaryColorDark,
+                      onPressed: () => Beamer.of(context).beamBack(), icon: const Icon(CupertinoIcons.back)),
+                  const SizedBox(width: 50,),
+                  Center(
+                    child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.headline5,
+                      key: const Key('single_pokemon_text_name'),
+                    // TextStyle(color: theme.primaryColorDark,
+                    //     fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
                   )
+                ],),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: CarouselSlider(
+                    key: const Key('single_pokemon_carousel'),
+                    items: [
+                      pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context, key: const Key('single_pokemon_carousel_image')),
+                      pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context,  key: const Key('single_pokemon_carousel_image')),
+                    ],
+                    options: CarouselOptions(
+                      // height: 200,
+                      aspectRatio: 3.1/2,
+                      viewportFraction: 0.8,
+                      initialPage: 0,
+                      enableInfiniteScroll: false,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      // onPageChanged: callbackFunction,
+                      scrollDirection: Axis.horizontal,
+                    )
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       Expanded(

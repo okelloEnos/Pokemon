@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/pokemons/presentation/presentation_util.dart';
+import 'package:pokemon/util/extensions.dart';
 
 import '../bloc/pokemon_bloc_test.dart';
 import '../model/mock_pokemon_info.dart';
@@ -263,83 +264,11 @@ void main() {
       });
     });
 
-    group('Interactivity And Behaviour', () {
-      testWidgets(
-          "On Success Pokemons retrieval List the pokemons tap and go to detail Screen",
-          (widgetTester) async{
-
-            when(() => pokemonMockBloc.state).thenReturn(PokemonsLoaded(
-              pokemons: List.generate(3, (index) => PokemonInfo(
-                pokemonName: "$pokemonName$index",
-                baseExperience: 3,
-                pokemonHeight: pokemonHeight,
-                pokemonWeight: pokemonWeight,
-                types: const [],
-                abilities: abilities,
-                stats: stats,
-                moves: moves,
-                sprites: sprites,
-                species: species
-              )),
-            ));
-            await widgetTester.pumpWidget(allPokemonScreenWithBloc);
-
-            Finder textGridWithKey = find.byKey(const Key("grid_text_name1"));
-            Finder gestureFinder = find.ancestor(of: textGridWithKey, matching: find.byType(GestureDetector));
-            /// existence of a grid with respective cards
-            expect(gridViewFinder, findsOneWidget);
-            expect(cardGrid, findsWidgets);
-            expect(textGridWithKey, findsOneWidget);
-            expect(gestureFinder, findsOneWidget);
-
-
-            await widgetTester.ensureVisible(gestureFinder);
-            await widgetTester.tap(gestureFinder);
-            await widgetTester.pump();
-            // final Finder buttonToTap = find.byKey(const Key('keyOfTheButton'));
-            //
-            // await widgetTester.dragUntilVisible(
-            //   gestureFinder, // what you want to find
-            //   find.byType(GridView), // widget you want to scroll
-            //   const Offset(0, 50), // delta to move
-            // );
-            // await widgetTester.tap(gestureFinder);
-            // await widgetTester.pump();
-            // expect(find.text("$pokemonName${1.toString()}"), findsOneWidget);
-            // await widgetTester.ensureVisible(textGridWithKey);
-            // await widgetTester.ensureVisible(gestureFinder);
-            // await widgetTester.pump();
-            // await widgetTester.tap(find.byType(ElevatedButton));
-            /// tap a particular card
-            // await widgetTester.tap(gestureFinder);
-            // await widgetTester.tap(find.text("$pokemonName${1.toString()}"));
-
-            /// rebuild the frame
-            // await widgetTester.pump();
-
-            /// verify if you have moved to pokemons detail screen
-            // expect(cardGrid, findsNothing);
-            // expect(columnFinder, findsOneWidget);
-            // expect(find.text("$pokemonName${1.toString()}"), findsOneWidget);
-          });
-    });
-
     group('Interactivity And Behaviour Version', () {
       testWidgets(
           "On Success Pokemons retrieval List the pokemons tap and go to detail Screen",
               (widgetTester) async {
             final pokemonMockBloc = MockPokemonBloc();
-            // const actualPokemon =  PokemonInfo(
-            //     pokemonName: pokemonName,
-            //     baseExperience: 3,
-            //     pokemonHeight: pokemonHeight,
-            //     pokemonWeight: pokemonWeight,
-            //     types: [],
-            //     abilities: abilities,
-            //     stats: stats,
-            //     moves: moves,
-            //     sprites: sprites,
-            //     species: species);
 
             /// adding pokemon info on mock
             when(() => pokemon.pokemonName).thenReturn(pokemonName);
@@ -351,19 +280,20 @@ void main() {
             when(() => pokemon.stats).thenReturn(stats);
             when(() => pokemon.moves).thenReturn(moves);
             when(() => pokemonMockBloc.state).thenReturn(PokemonsLoaded(
-              pokemons: List.generate(3, (index) => pokemon
-                //     PokemonInfo(
-                //     pokemonName: "$pokemonName$index",
-                //     baseExperience: 3,
-                //     pokemonHeight: pokemonHeight,
-                //     pokemonWeight: pokemonWeight,
-                //     types: const [],
-                //     abilities: abilities,
-                //     stats: stats,
-                //     moves: moves,
-                //     sprites: sprites,
-                //     species: species
-                // )
+              pokemons: List.generate(3, (index) =>
+              // pokemon
+                    PokemonInfo(
+                    pokemonName: "$pokemonName$index",
+                    baseExperience: 3,
+                    pokemonHeight: pokemonHeight,
+                    pokemonWeight: pokemonWeight,
+                    types: const [],
+                    abilities: abilities,
+                    stats: stats,
+                    moves: moves,
+                    sprites: sprites,
+                    species: species
+                )
               ),
             ));
 
@@ -371,7 +301,7 @@ void main() {
             AllPokemonsScreen allPokemonsScreen = const AllPokemonsScreen();
 
             /// wrap the all screen with a bloc provider
-            final allPokemonScreenWithBloc = BlocProvider<PokemonsBloc>(
+            final allPokemonScreenWithBlocWithDelegate = BlocProvider<PokemonsBloc>(
               create: (context) => pokemonMockBloc,
               child: makeTestableWidget(child: allPokemonsScreen),
             );
@@ -383,73 +313,44 @@ void main() {
                 initialPath: "/",
                 locationBuilder: SimpleLocationBuilder(routes: {
                   // return screens
-                  '/': (context) => allPokemonScreenWithBloc,
+                  '/': (context) => allPokemonScreenWithBlocWithDelegate,
                   '/pokemons': (context) {
                     // extract beamState which holds route information
-                    // final beamState = context.currentBeamLocation.state;
-                    // final pokemon = beamState.data["pokemon"] as PokemonInfo;
-                    // return SinglePokemonScreen(pokemon: pokemon);
-                    return singlePokemonScreen;
+                    final beamState = context.currentBeamLocation.state;
+                    final pokemon = beamState.data["pokemon"] as PokemonInfo;
+                    return SinglePokemonScreen(pokemon: pokemon);
+                    // return singlePokemonScreen;
                   }
                 }));
 
-            // await widgetTester.pumpWidget(allPokemonScreenWithBloc);
             await widgetTester.pumpWidget(makeTestableWidgetWithBeamer(routerDelegate: routerDelegate));
 
-            Finder textGridWithKey = find.byKey(const Key("grid_text_name1"));
+            final stateTest = pokemonMockBloc.state as PokemonsLoaded;
+            String cardText = "${stateTest.pokemons.first.pokemonName}";
+            Finder cardTextFinder = find.text(cardText.capitalize());
+            Finder gestureFinder = find.ancestor(of: cardTextFinder, matching: find.byType(GestureDetector));
+
             Finder cardGrid = find.byKey(const Key("grid_card"));
-            Finder gestureFinder = find.ancestor(
-                of: textGridWithKey, matching: find.byType(GestureDetector));
+            // Finder gestureFinder = find.ancestor(
+            //     of: textGridWithKey, matching: find.byType(GestureDetector));
 
             /// existence of a grid with respective cards
             expect(find.byType(GridView), findsOneWidget);
-            // expect(find.byType(GridView), findsNWidgets(2));
-            expect(textGridWithKey, findsOneWidget);
+            expect(textGrid, findsWidgets);
             expect(gestureFinder, findsOneWidget);
-            // expect(find.byKey(Key('enos1')), findsOneWidget);
 
+            /// tap a particular card
             await widgetTester.tap(gestureFinder);
             for (int i = 0; i < 5; i++) {
+              /// rebuild the frame
               await widgetTester.pump(const Duration(seconds: 1));
             }
-            // await widgetTester.pumpAndSettle();
-            // expect(find.byType(NewNotePage), findsOneWidget);
-            // await widgetTester.dragUntilVisible(
-            //   gestureFinder, // what you want to find
-            //   find.byKey(const Key("pokemon_grid")), // widget you want to scroll
-            //   const Offset(600, 400), // delta to move
-            // );
-            // await widgetTester.drag(find.byKey(const Key("pokemon_grid")), const Offset(0.0, -300));
-            // await widgetTester.pump();
-            // await widgetTester.ensureVisible(gestureFinder);
-            // await widgetTester.tap(find.byKey(Key('enos1')));
-            // await widgetTester.pumpAndSettle();
-            // await widgetTester.pump(const Duration(milliseconds: 100));
-            // final Finder buttonToTap = find.byKey(const Key('keyOfTheButton'));
-            //
-            // await widgetTester.dragUntilVisible(
-            //   gestureFinder, // what you want to find
-            //   find.byType(GridView), // widget you want to scroll
-            //   const Offset(0, 50), // delta to move
-            // );
-            // await widgetTester.tap(gestureFinder);
-            // await widgetTester.pump();
-            // expect(find.text("$pokemonName${1.toString()}"), findsOneWidget);
-            // await widgetTester.ensureVisible(textGridWithKey);
-            // await widgetTester.ensureVisible(gestureFinder);
-            // await widgetTester.pump();
-            // await widgetTester.tap(find.byType(ElevatedButton));
-            /// tap a particular card
-            // await widgetTester.tap(gestureFinder);
-            // await widgetTester.tap(find.text("$pokemonName${1.toString()}"));
-
-            /// rebuild the frame
-            // await widgetTester.pump();
 
             /// verify if you have moved to pokemons detail screen
             expect(cardGrid, findsNothing);
             expect(find.byKey(const Key('single_pokemon_column')), findsOneWidget);
-            // expect(find.text("$pokemonName${1.toString()}"), findsOneWidget);
+            expect(find.byKey(const Key('single_pokemon_text_name')), findsOneWidget);
+            expect(find.text("Janda0"), findsOneWidget);
           });
     });
   });
