@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.okelloSoftwarez.pokemon">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Pokemon"
         android:icon="@mipmap/ic_launcher">
