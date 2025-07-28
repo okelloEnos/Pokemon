@@ -38,7 +38,8 @@ if (keystorePropertiesFile.exists()) {
 //apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 34
+    namespace "com.okelloSoftwarez.pokemon"
+    compileSdkVersion 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
