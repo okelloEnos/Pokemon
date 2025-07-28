@@ -4,13 +4,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/app_colors.dart';
 import 'package:pokemon/util/extensions.dart';
 import 'package:pokemon/util/global_widgets.dart';
 
 Widget singlePokemonWidget({required PokemonInfo pokemon, required BuildContext context}){
-
+  final PageStorageBucket _bucket = PageStorageBucket();
   final theme = Theme.of(context);
 final height = MediaQuery.of(context).padding.top;
   return Column(
@@ -22,7 +23,6 @@ final height = MediaQuery.of(context).padding.top;
         ),
       ),
       Hero(
-
         tag: "pok${pokemon.pokemonName}",
         child: Card(
           elevation: 0,
@@ -32,47 +32,54 @@ final height = MediaQuery.of(context).padding.top;
               bottomLeft: Radius.circular(0), bottomRight: Radius.circular(0)
             )
           ),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+          child: PageStorage(
+            bucket: _bucket,
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  IconButton(
-                      color: theme.primaryColorDark,
-                      onPressed: () => Beamer.of(context).beamBack(), icon: const Icon(CupertinoIcons.back)),
-                  const SizedBox(width: 50,),
-                  Center(
-                    child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.headline5
-                    // TextStyle(color: theme.primaryColorDark,
-                    //     fontWeight: FontWeight.bold, fontSize: 22),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          color: theme.primaryColorDark,
+                          onPressed: () => Beamer.of(context).beamBack(), icon: const Icon(CupertinoIcons.back)),
+                      // const SizedBox(width: 50,),
+                      Expanded(
+                        child: Center(
+                          child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.headline5
+                          // TextStyle(color: theme.primaryColorDark,
+                          //     fontWeight: FontWeight.bold, fontSize: 22),
+                          ),
+                        ),
+                      )
+                    ],),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: CarouselSlider(
+                        items: [
+                          pokemon.sprites?.home != null ? pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context) : const SizedBox.shrink(),
+                          pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
+                        ],
+                        options: CarouselOptions(
+                          // height: 200,
+                          aspectRatio: 3.1/2,
+                          viewportFraction: 0.8,
+                          initialPage: 0,
+                          enableInfiniteScroll: false,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: true,
+                          // onPageChanged: callbackFunction,
+                          scrollDirection: Axis.horizontal,
+                        )
                     ),
-                  )
-                ],),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: CarouselSlider(
-                    items: [
-                      pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context),
-                      pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context),
-                    ],
-                    options: CarouselOptions(
-                      // height: 200,
-                      aspectRatio: 3.1/2,
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      enableInfiniteScroll: false,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      // onPageChanged: callbackFunction,
-                      scrollDirection: Axis.horizontal,
-                    )
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -53,29 +53,31 @@ final theme = Theme.of(context);
       },
       child: Card(
         key: const Key("grid_card"),
-        child: Column(
-          key: const Key("grid_column"),
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CachedNetworkImage(
-              key: const Key("grid_image"),
-              imageUrl: pokemon.sprites!.home!,
-            errorWidget: (_, __, ___){
-              return imageErrorWidget;
-            },
-              placeholder: (_, __){
-              return imagePlaceHolder(color: theme.primaryColorDark);
+        child: SingleChildScrollView(
+          child: Column(
+            key: const Key("grid_column"),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CachedNetworkImage(
+                key: const Key("grid_image"),
+                imageUrl: pokemon.sprites!.home!,
+              errorWidget: (_, __, ___){
+                return imageErrorWidget;
               },
-            ),
-            Padding(
-              key: const Key("grid_pad"),
-              padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-              child: Text(
-                pokemon.pokemonName!.capitalize(), style: theme.textTheme.subtitle1,
-                key: const Key("grid_text_name"),
+                placeholder: (_, __){
+                return imagePlaceHolder(color: theme.primaryColorDark);
+                },
               ),
-            ),
-          ],
+              Padding(
+                key: const Key("grid_pad"),
+                padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                child: Text(
+                  pokemon.pokemonName!.capitalize(), style: theme.textTheme.subtitle1,
+                  key: const Key("grid_text_name"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ),

@@ -1,16 +1,16 @@
-buildscript {
-    ext.kotlin_version = '1.6.0'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-//        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath 'com.android.tools.build:gradle:7.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+//buildscript {
+//    ext.kotlin_version = '1.6.0'
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//
+//    dependencies {
+////        classpath 'com.android.tools.build:gradle:4.1.0'
+//        classpath 'com.android.tools.build:gradle:7.4.1'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
 
 allprojects {
     repositories {
@@ -20,11 +20,16 @@ allprojects {
 }
 
 rootProject.buildDir = '../build'
+//subprojects {
+//    project.buildDir = "${rootProject.buildDir}/${project.name}"
+//    project.evaluationDependsOn(':app')
+//}
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
     project.evaluationDependsOn(':app')
 }
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
