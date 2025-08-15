@@ -1,10 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/app_colors.dart';
 import 'package:pokemon/util/extensions.dart';
@@ -42,7 +40,7 @@ final height = MediaQuery.of(context).padding.top;
                     children: [
                       IconButton(
                           color: theme.primaryColorDark,
-                          onPressed: () => Beamer.of(context).beamBack(), icon: const Icon(CupertinoIcons.back)),
+                          onPressed: () => context.pop(), icon: const Icon(CupertinoIcons.back)),
                       // const SizedBox(width: 50,),
                       Expanded(
                         child: Center(
@@ -55,28 +53,32 @@ final height = MediaQuery.of(context).padding.top;
                     ],),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: CarouselSlider(
-                        items: [
-                          pokemon.sprites?.home != null ? pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context) : const SizedBox.shrink(),
-                          pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
-                        ],
-                        options: CarouselOptions(
-                          // height: 200,
-                          aspectRatio: 3.1/2,
-                          viewportFraction: 0.8,
-                          initialPage: 0,
-                          enableInfiniteScroll: false,
-                          reverse: false,
-                          autoPlay: true,
-                          autoPlayInterval: const Duration(seconds: 3),
-                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enlargeCenterPage: true,
-                          // onPageChanged: callbackFunction,
-                          scrollDirection: Axis.horizontal,
-                        )
-                    ),
+                    child: pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
                   ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: CarouselSlider(
+                  //       items: [
+                  //         pokemon.sprites?.home != null ? pokemonImageCard(image: pokemon.sprites!.home!,type: "Home Art", context: context) : const SizedBox.shrink(),
+                  //         pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
+                  //       ],
+                  //       options: CarouselOptions(
+                  //         // height: 200,
+                  //         aspectRatio: 3.1/2,
+                  //         viewportFraction: 0.8,
+                  //         initialPage: 0,
+                  //         enableInfiniteScroll: false,
+                  //         reverse: false,
+                  //         autoPlay: true,
+                  //         autoPlayInterval: const Duration(seconds: 3),
+                  //         autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  //         autoPlayCurve: Curves.fastOutSlowIn,
+                  //         enlargeCenterPage: true,
+                  //         // onPageChanged: callbackFunction,
+                  //         scrollDirection: Axis.horizontal,
+                  //       )
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -252,8 +254,7 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
             children: [
               Text('Abilities', style: theme.textTheme.bodyText1,),
               const SizedBox(width: 90, ),
-                Flexible(child: Text('$abilities, ', style: theme.textTheme.subtitle2,))
-
+              Flexible(child: Text('$abilities, ', style: theme.textTheme.subtitle2,))
             ],
           ),
         ),

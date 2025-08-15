@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
 import 'package:pokemon/util/global_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -45,11 +45,10 @@ final theme = Theme.of(context);
     key: const Key("grid_hero"),
     tag: "pok${pokemon.pokemonName}",
     child: GestureDetector(
-
       onTap: () {
-
-        Map<String, PokemonInfo> pokemonInfo = {"pokemon" : pokemon};
-        return Beamer.of(context).beamToNamed('/pokemons', data: pokemonInfo);
+        // Map<String, PokemonInfo> pokemonInfo = {"pokemon" : pokemon};
+        // return Beamer.of(context).beamToNamed('/pokemons', data: pokemonInfo);
+        context.push("/gallery/creature", extra: pokemon);
       },
       child: Card(
         key: const Key("grid_card"),
@@ -60,7 +59,7 @@ final theme = Theme.of(context);
             children: [
               CachedNetworkImage(
                 key: const Key("grid_image"),
-                imageUrl: pokemon.sprites!.home!,
+                imageUrl: pokemon.sprites?.artWork ?? "",
               errorWidget: (_, __, ___){
                 return imageErrorWidget;
               },
