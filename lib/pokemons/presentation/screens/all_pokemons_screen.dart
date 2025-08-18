@@ -14,7 +14,7 @@ class AllPokemonsScreen extends StatelessWidget {
     // timeDilation = 3.0;
    return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('Creature Gallery', style: theme.textTheme.headline5,)),
+          title: Center(child: Text('Creature Gallery', style: theme.textTheme.titleLarge,)),
         ),
         body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
       if(state is PokemonsLoaded){

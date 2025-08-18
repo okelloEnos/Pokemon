@@ -44,7 +44,7 @@ final height = MediaQuery.of(context).padding.top;
                       // const SizedBox(width: 50,),
                       Expanded(
                         child: Center(
-                          child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.headline5
+                          child: Text(pokemon.pokemonName!.capitalize(), style: theme.textTheme.titleLarge
                           // TextStyle(color: theme.primaryColorDark,
                           //     fontWeight: FontWeight.bold, fontSize: 22),
                           ),
@@ -212,9 +212,9 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
           padding: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0, bottom: 0.0),
           child: Row(
             children: [
-              Text('Species', style: theme.textTheme.bodyText1,),
+              Text('Species', style: theme.textTheme.bodyMedium,),
               const SizedBox(width: 90, ),
-              Text('${pokemon.species!.name}', style: theme.textTheme.subtitle2,)
+              Text('${pokemon.species!.name}', style: theme.textTheme.bodySmall,)
             ],
           ),
         ),
@@ -222,9 +222,9 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
           padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
           child: Row(
             children: [
-              Text('Height', style: theme.textTheme.bodyText1,),
+              Text('Height', style: theme.textTheme.bodyMedium,),
               const SizedBox(width: 100, ),
-              Text('${pokemon.pokemonHeight} Meters', style: theme.textTheme.subtitle2,)
+              Text('${pokemon.pokemonHeight} Meters', style: theme.textTheme.bodySmall,)
             ],
           ),
         ),
@@ -232,9 +232,9 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
           padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
           child: Row(
             children: [
-              Text('Weight', style: theme.textTheme.bodyText1,),
+              Text('Weight', style: theme.textTheme.bodyMedium,),
               const SizedBox(width: 100, ),
-              Text('${pokemon.pokemonWeight} Kg', style: theme.textTheme.subtitle2,)
+              Text('${pokemon.pokemonWeight} Kg', style: theme.textTheme.bodySmall,)
             ],
           ),
         ),
@@ -242,9 +242,9 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
           padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
           child: Row(
             children: [
-              Text('Base Experience', style: theme.textTheme.bodyText1,),
+              Text('Base Experience', style: theme.textTheme.bodyMedium,),
               const SizedBox(width: 40, ),
-              Text('${pokemon.baseExperience} CAL', style: theme.textTheme.subtitle2,)
+              Text('${pokemon.baseExperience} CAL', style: theme.textTheme.bodySmall,)
             ],
           ),
         ),
@@ -252,9 +252,9 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
           padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
           child: Row(
             children: [
-              Text('Abilities', style: theme.textTheme.bodyText1,),
+              Text('Abilities', style: theme.textTheme.bodyMedium,),
               const SizedBox(width: 90, ),
-              Flexible(child: Text('$abilities, ', style: theme.textTheme.subtitle2,))
+              Flexible(child: Text('$abilities, ', style: theme.textTheme.bodySmall,))
             ],
           ),
         ),
@@ -322,13 +322,13 @@ var statValue = stat.baseStat! / 100;
         child: SizedBox(
             width: 80,
             child: Text(stat.stat!.name!.capitalize(), style: TextStyle(
-              fontSize: 10, color: theme.textTheme.bodyText1!.color,
-              fontFamily: theme.textTheme.bodyText1!.fontFamily
+              fontSize: 10, color: theme.textTheme.bodyMedium?.color,
+              fontFamily: theme.textTheme.bodyMedium?.fontFamily
             ),)),
       ),
       Padding(
         padding: const EdgeInsets.only(right: 20, bottom: 10),
-        child: Text("${stat.baseStat}", style: theme.textTheme.subtitle2,),
+        child: Text("${stat.baseStat}", style: theme.textTheme.bodySmall,),
       ),
       SizedBox(
           width: 150,
@@ -354,8 +354,8 @@ Widget pokemonMoveWidget({required BuildContext context, required Moves moves}){
          Column(
            crossAxisAlignment: CrossAxisAlignment.start,
            children: [
-             Text(moves.move!.name!.capitalize(), style: theme.textTheme.subtitle2,),
-  Text("Level 1", style: theme.textTheme.bodyText1,)
+             Text(moves.move!.name!.capitalize(), style: theme.textTheme.bodySmall,),
+  Text("Level 1", style: theme.textTheme.bodyMedium,)
         ],),
           CircularProgressIndicator(
             value: 0.6,

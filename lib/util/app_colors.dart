@@ -20,25 +20,25 @@ final lightThemeData = ThemeData(
   primarySwatch: swatchColors.lightPrimarySwatch,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   brightness: Brightness.light,
-  backgroundColor: Color(pokemonColorValues.backgroundColor),
+  scaffoldBackgroundColor: Color(pokemonColorValues.backgroundColor),
   cardColor: Color(pokemonColorValues.cardColor),
   floatingActionButtonTheme:  FloatingActionButtonThemeData(
     foregroundColor: Color(pokemonColorValues.secondaryColor),
     backgroundColor: swatchColors.lightPrimarySwatch[600]
   ),
 
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: Color(pokemonColorValues.secondaryColor),
     labelStyle: TextStyle(fontFamily: 'Lemonada', fontWeight: FontWeight.bold, fontSize: 12, color: Color(pokemonColorValues.secondaryColor)),
     unselectedLabelColor: Colors.black54,
     unselectedLabelStyle: TextStyle(fontFamily: 'Lemonada', fontSize: 13, color: Color(pokemonColorValues.secondaryColor)),
   ),
   textTheme: TextTheme(
-    headline5: TextStyle(fontFamily: 'Ewert', fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
-    headline6: TextStyle(color: Color(pokemonColorValues.secondaryColor)),
-    subtitle1: TextStyle(fontFamily: 'Lemonada', fontSize: 18, color: Color(pokemonColorValues.secondaryColor)),
-      subtitle2: TextStyle(fontFamily: 'Lemonada', fontSize: 16,fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
-      bodyText1: TextStyle(fontFamily: 'Lemonada', fontSize: 14, color: Color(pokemonColorValues.secondaryColor))
+    titleLarge: TextStyle(fontFamily: 'Ewert', fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
+    titleMedium: TextStyle(color: Color(pokemonColorValues.secondaryColor)),
+    titleSmall: TextStyle(fontFamily: 'Lemonada', fontSize: 18, color: Color(pokemonColorValues.secondaryColor)),
+      bodyLarge: TextStyle(fontFamily: 'Lemonada', fontSize: 16,fontWeight: FontWeight.bold, color: Color(pokemonColorValues.secondaryColor)),
+      bodyMedium: TextStyle(fontFamily: 'Lemonada', fontSize: 14, color: Color(pokemonColorValues.secondaryColor))
   ),
   buttonTheme: ButtonThemeData(buttonColor: Color(pokemonColorValues.secondaryColor)),
   indicatorColor: Color(pokemonColorValues.primaryColor)
