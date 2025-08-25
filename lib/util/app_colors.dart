@@ -27,7 +27,7 @@ final lightThemeData = ThemeData(
     backgroundColor: swatchColors.lightPrimarySwatch[600]
   ),
 
-  tabBarTheme: TabBarThemeData(
+  tabBarTheme: TabBarTheme(
     labelColor: Color(pokemonColorValues.secondaryColor),
     labelStyle: TextStyle(fontFamily: 'Lemonada', fontWeight: FontWeight.bold, fontSize: 12, color: Color(pokemonColorValues.secondaryColor)),
     unselectedLabelColor: Colors.black54,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pokemon/pokemons/bloc/gallery_view/gallery_view_cubit.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/presentation/widgets/pokemons_grid.dart';
 import 'package:pokemon/util/global_widgets.dart';
@@ -14,7 +15,28 @@ class AllPokemonsScreen extends StatelessWidget {
     // timeDilation = 3.0;
    return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('Creature Gallery', style: theme.textTheme.titleLarge,)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // const Spacer(),
+              Text('Creature Gallery', style: theme.textTheme.titleLarge,),
+              // const Spacer(),
+              const SizedBox(width: 8.0),
+              BlocBuilder<GalleryViewCubit, ViewType>(builder: (context, state){
+                return state == ViewType.grid ?
+                GestureDetector(
+                    onTap: (){
+                      context.read<GalleryViewCubit>().toggleView(ViewType.list);
+                    },
+                    child: Icon(Icons.list, color: theme.colorScheme.primary, size: 32,)) :
+                GestureDetector(
+                    onTap: (){
+                      context.read<GalleryViewCubit>().toggleView(ViewType.grid);
+                    },
+                    child: Icon(Icons.grid_view_outlined, color: theme.colorScheme.primary));
+              }),
+            ],
+          ),
         ),
         body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
       if(state is PokemonsLoaded){

@@ -46,8 +46,6 @@ final theme = Theme.of(context);
     tag: "pok${pokemon.pokemonName}",
     child: GestureDetector(
       onTap: () {
-        // Map<String, PokemonInfo> pokemonInfo = {"pokemon" : pokemon};
-        // return Beamer.of(context).beamToNamed('/pokemons', data: pokemonInfo);
         context.push("/gallery/creature", extra: pokemon);
       },
       child: Card(
@@ -58,20 +56,26 @@ final theme = Theme.of(context);
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CachedNetworkImage(
+                height: 150,
+                width: 150,
                 key: const Key("grid_image"),
                 imageUrl: pokemon.sprites?.artWork ?? "",
               errorWidget: (_, __, ___){
-                return imageErrorWidget;
+                return imageErrorWidget(size: 150);
               },
                 placeholder: (_, __){
-                return imagePlaceHolder(color: theme.primaryColorDark);
+                return imagePlaceHolder(color: theme.primaryColorDark, size: 150);
                 },
               ),
+              const SizedBox(height: 8.0,),
               Padding(
                 key: const Key("grid_pad"),
                 padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
                 child: Text(
-                  pokemon.pokemonName!.capitalize(), style: theme.textTheme.bodyMedium,
+                  pokemon.pokemonName!.capitalize(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium,
                   key: const Key("grid_text_name"),
                 ),
               ),

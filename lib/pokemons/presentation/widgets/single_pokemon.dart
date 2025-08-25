@@ -112,7 +112,7 @@ Widget pokemonImageCard({required String image,required String type, required Bu
           height: 180,
           child: CachedNetworkImage(imageUrl: image,
             errorWidget: (_, __, ___){
-              return imageErrorWidget;
+              return imageErrorWidget();
             },
             placeholder: (_, __){
               return imagePlaceHolder(color: theme.primaryColorDark);
