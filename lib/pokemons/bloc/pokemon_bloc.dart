@@ -11,14 +11,13 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
 
   List<PokemonInfo> allLoadedPokemons = [];
   int limit = 10;
-  int offset = 1288;
+  int offset = 0;
 
   PokemonsBloc({required this.pokemonRepository}) : super(PokemonsInitial()){
     scrollController.addListener(() {
       if(scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange){
         if(state is PokemonsLoaded){
-          // final currentState = state as PokemonsLoaded;
-          // add(PokemonsFetched(pageNumber: currentState.pageNumber + 1));
+          add(PokemonsFetched());
         }
       }
 

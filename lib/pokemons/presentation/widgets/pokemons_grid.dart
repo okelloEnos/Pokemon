@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
+import 'package:pokemon/pokemons/presentation/widgets/end_banner.dart';
+import 'package:pokemon/pokemons/presentation/widgets/shimmer_widget.dart';
 import 'package:pokemon/util/global_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../util/extensions.dart';
 
 // Widget allPokemonsGrid(List<PokemonInfo> pokemons){
@@ -43,20 +47,16 @@ import '../../../util/extensions.dart';
 //   );
 // }
 
-class AllPokemonsGrid extends StatelessWidget {
-  final PokemonsLoaded state;
-  const AllPokemonsGrid({required this.state, Key? key}) : super(key: key);
+class AllPokemonsGridLoading extends StatelessWidget {
+  const AllPokemonsGridLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<PokemonsBloc>();
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: GridView.builder(
-          // controller: bloc.scrollController,
           key: const Key("pokemon_grid"),
-          // itemCount: pokemons.length,
-          itemCount: (state.hasReachedMax ?? false) ? state.pokemons.length : state.pokemons.length + 1,
+          itemCount: 8,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 10,
@@ -64,17 +64,13 @@ class AllPokemonsGrid extends StatelessWidget {
               childAspectRatio: 2/2.5
           ),
           itemBuilder: (BuildContext context, int index){
-            if(index >= state.pokemons.length){
-              context.read<PokemonsBloc>().add(PokemonsFetched());
-              return const Text("Loading...");
-            }
             return AnimationConfiguration.staggeredGrid(
               position: index,
-              duration: const Duration(seconds: 1),
+              duration: const Duration(milliseconds: 800),
               columnCount: 2,
               child: ScaleAnimation(
                 child: FadeInAnimation(
-                  child: pokemonCard(context, state.pokemons[index]),
+                  child: pokemonCardLoading(context),
                 ),
               ),
             );
@@ -85,9 +81,90 @@ class AllPokemonsGrid extends StatelessWidget {
 }
 
 
-// Widget animationKindGrid(){
-//   return
-// }
+class AllPokemonsGrid extends StatefulWidget {
+  final PokemonsLoaded state;
+  const AllPokemonsGrid({required this.state, Key? key}) : super(key: key);
+
+  @override
+  State<AllPokemonsGrid> createState() => _AllPokemonsGridState();
+}
+
+class _AllPokemonsGridState extends State<AllPokemonsGrid> {
+
+  int _endTick = 0;
+
+  bool get _hasReachedMax => widget.state.hasReachedMax == true;
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<PokemonsBloc>();
+    return NotificationListener<ScrollNotification>(
+      onNotification: (n) {
+        final atBottom = n.metrics.pixels >= n.metrics.maxScrollExtent &&
+            n.metrics.atEdge;
+
+        if (atBottom && _hasReachedMax) {
+          setState(() => _endTick++);
+        }
+        return false;
+      },
+      child: CustomScrollView(
+        controller: bloc.scrollController,
+        slivers: [
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return AnimationConfiguration.staggeredGrid(
+                position: index,
+                duration: const Duration(milliseconds: 800),
+                columnCount: 2,
+                child: ScaleAnimation(
+                  child: FadeInAnimation(
+                    child: pokemonCard(context, widget.state.pokemons[index]),
+                  ),
+                ),
+              );
+            }, childCount: widget.state.pokemons.length),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 2 / 2.5,
+            ),
+          ),
+
+          if (widget.state.hasReachedMax != true)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                  child: SpinKitRipple(
+                    key: const Key("pokemon_loading"),
+                    color: Theme.of(context).primaryColorDark,
+                    size: 60.0,
+                  ),
+                ),
+              ),
+            ),
+
+          if (_hasReachedMax)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: EndOfListBanner(
+                  key: ValueKey(_endTick),
+                  message: "You’ve reached the end ✨",
+                ),
+              ),
+            ),
+          ///
+          const SliverToBoxAdapter(child: SizedBox(height: 16.0,),)
+        ],
+      ),
+    );
+
+  }
+}
+
 Widget pokemonCard(BuildContext context, PokemonInfo pokemon){
 final theme = Theme.of(context);
   return Hero(
@@ -103,17 +180,19 @@ final theme = Theme.of(context);
           child: Column(
             key: const Key("grid_column"),
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 8.0,),
               CachedNetworkImage(
-                height: 150,
-                width: 150,
+                height: 120,
+                width: 120,
                 key: const Key("grid_image"),
                 imageUrl: pokemon.sprites?.artWork ?? "",
               errorWidget: (_, __, ___){
-                return imageErrorWidget(size: 150);
+                return imageErrorWidget(size: 120);
               },
                 placeholder: (_, __){
-                return imagePlaceHolder(color: theme.primaryColorDark, size: 150);
+                return imagePlaceHolder(color: theme.primaryColorDark, size: 120);
                 },
               ),
               const SizedBox(height: 8.0,),
@@ -122,7 +201,8 @@ final theme = Theme.of(context);
                 padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
                 child: Text(
                   pokemon.pokemonName!.capitalize(),
-                  maxLines: 1,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium,
                   key: const Key("grid_text_name"),
@@ -132,6 +212,28 @@ final theme = Theme.of(context);
           ),
         ),
       ),
+    ),
+  );
+}
+
+Widget pokemonCardLoading(BuildContext context){
+
+  return Card(
+    key: const Key("grid_card_shimmer"),
+    child: Column(
+      key: const Key("grid_column_shimmer"),
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 8.0,),
+        ShimmerContainer(width: 120, height: 120, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100,),
+        const SizedBox(height: 8.0,),
+        Padding(
+          key: const Key("grid_pad_shimmer"),
+          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+          child: ShimmerContainer(width: 120, height: 12, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100 ),
+        ),
+      ],
     ),
   );
 }
