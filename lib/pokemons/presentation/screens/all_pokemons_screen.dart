@@ -40,7 +40,7 @@ class AllPokemonsScreen extends StatelessWidget {
         ),
         body: BlocBuilder<PokemonsBloc, PokemonStates>(builder: (context, state){
       if(state is PokemonsLoaded){
-        return  allPokemonsGrid(state.pokemons);
+        return  AllPokemonsGrid(state: state);
       }
       else if(state is PokemonsFailure){
         return Center(child: Text(state.errorText, key: const Key("error"),));

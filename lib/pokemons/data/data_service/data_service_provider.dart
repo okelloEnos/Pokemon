@@ -7,14 +7,15 @@ import 'package:pokemon/util/dio_exceptions.dart';
 // ignore_for_file: unused_catch_clause
 class DataService {
 
-  final String baseUrl = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10";
+  // final String baseUrl = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10";
+  final String baseUrl = "https://pokeapi.co/api/v2";
   final Dio dio;
 
   DataService({required this.dio});
 
-  Future<List<PokemonModel>> retrievePokemons() async {
+  Future<List<PokemonModel>> retrievePokemons({required int offset, required int limit}) async {
+    var url = "$baseUrl/pokemon?offset=$offset&limit=$limit";
     List<PokemonModel> pokemons = [];
-
     try {
       dio.interceptors.add(InterceptorsWrapper(
           onRequest:(options, handler){
@@ -38,11 +39,9 @@ class DataService {
             // you can resolve a `Response` object eg: `handler.resolve(response)`.
           }
       ));
-      final response = await dio.get(baseUrl);
+      final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        // print(response.data);
-        // print('Next Url : ${response.data["next"]}');
 
         pokemons = List.from(response.data["results"]).map((pokemonJson) =>
             PokemonModel(
