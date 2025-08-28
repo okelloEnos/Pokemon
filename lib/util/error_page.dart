@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_events.dart';
 import 'package:pokemon/util/my_lottie.dart';
-
 import '../pokemons/bloc/pokemon_bloc.dart';
 
 class CreatureCodexErrorWidget extends StatelessWidget {

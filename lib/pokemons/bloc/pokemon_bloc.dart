@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon/pokemons/bloc/pokemon_bloc_util.dart';
 import 'package:pokemon/pokemons/data/models/pokemon_model_util.dart';
+import 'package:pokemon/pokemons/data/repository/pokemon_hydrator.dart';
 import 'package:pokemon/pokemons/data/repository/pokemon_repository.dart';
 
 
@@ -29,27 +30,35 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
   }
   
   Future<void> _onPokemonsFetched(PokemonEvents event, Emitter<PokemonStates> emit) async{
+    final hydrator = PokemonHydrator();
       try{
         int currentOffset = offset;
         int currentLimit = limit;
         bool hasReachedMax = false;
         List<PokemonModel> pokemons = await pokemonRepository.retrieveAllPokemons(offset: currentOffset, limit: currentLimit);
-        // if offset == 30 from pokemons reduce 3 pokemons
-        if(offset == 30){
-          pokemons = pokemons.sublist(0, pokemons.length - 3);
-        }
+        // for(var pokemon in pokemons){
+        //   // All details (moves can be heavy; cap with maxMovesToHydrate: 50 during dev)
+        //   final full = await hydrator.hydrate('pikachu');
+        //
+        //   print(full.pokemon['name']);           // "pikachu"
+        //   print(full.englishGenus);              // e.g., "Mouse Pokémon"
+        //   print(full.englishFlavor);             // Recent English flavor text
+        //   print(full.typeDetails.length);        // Type resources (e.g., electric)
+        //   print(full.abilityDetails.length);     // Ability resources
+        //   print(full.moveDetails.length);        // All move resources (if not capped)
+        //   print(full.encounters.length);         // Encounter locations
+        //   print(full.evolutionChain?['id']);
+        // }
         List<PokemonInfo> pokemonsWithData = await pokemonRepository.retrievePokemonsWithTheirData(pokemons);
         List<PokemonInfo> allPokemons = [...allLoadedPokemons, ...pokemonsWithData];
         allLoadedPokemons = allPokemons;
 
-        // if(pokemons.isNotEmpty){
           if(pokemons.length < limit){
             offset += pokemons.length;
             hasReachedMax = true;
           } else {
             offset += limit;
           }
-        // }
 
         emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
       }
