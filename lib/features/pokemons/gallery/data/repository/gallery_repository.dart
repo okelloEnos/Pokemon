@@ -9,8 +9,12 @@ class GalleryRepositoryImpl implements GalleryRepository {
   @override
   Future<List<DataModel>> retrieveAllPokemons(
       {required int offset, required int limit}) async {
-    return await _remoteDataSource.retrievePokemons(
-        offset: offset, limit: limit);
+    var data =
+        await _remoteDataSource.retrievePokemons(offset: offset, limit: limit);
+    List<DataModel> pokemons = List.from(data)
+        .map((mappedData) => DataModel.fromJson(mappedData))
+        .toList();
+    return pokemons;
   }
 
   @override

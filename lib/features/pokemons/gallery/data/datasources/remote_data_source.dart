@@ -43,11 +43,6 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
       final response = await _dio.get(url);
 
       if (response.statusCode == 200) {
-        // pokemons = List.from(response.data["results"])
-        //     .map((pokemonJson) => PokemonModel(
-        //         pokemonName: pokemonJson["name"],
-        //         pokemonUrl: pokemonJson["url"]))
-        //     .toList();
         return response.data["results"];
       } else {
         throw Exception('Pokemons not received');
@@ -56,7 +51,6 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
 
   @override
   Future<dynamic> retrievePokemonsData({required DataModel pokemon}) async {
-    // List<PokemonInfo> pokemonsInfo = [];
 
     if(pokemon.url == null) throw(Exception("Pokemon url is null"));
 
@@ -66,7 +60,6 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
         var data = pokemonDataResponse.data;
 
         return data;
-
         // Species species =
         //     Species(name: data["species"]["name"], url: data["species"]["url"]);
         //
