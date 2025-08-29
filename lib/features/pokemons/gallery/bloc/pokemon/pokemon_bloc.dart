@@ -7,10 +7,10 @@ part 'pokemon_events.dart';
 part 'pokemon_states.dart';
 
 class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
-  final PokemonRepository pokemonRepository;
+  final GalleryRepository pokemonRepository;
   final ScrollController scrollController = ScrollController();
 
-  List<PokemonInfo> allLoadedPokemons = [];
+  List<PokemonInfoEntity> allLoadedPokemons = [];
   int limit = 10;
   int offset = 0;
 
@@ -23,7 +23,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
       }
 
       if(scrollController.offset <= scrollController.position.minScrollExtent && !scrollController.position.outOfRange){
-        print("at the top");
+        debugPrint("at the top");
       }
     });
     on<PokemonsFetched>(_onPokemonsFetched);
@@ -34,7 +34,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
         int currentOffset = offset;
         int currentLimit = limit;
         bool hasReachedMax = false;
-        List<PokemonModel> pokemons = await pokemonRepository.retrieveAllPokemons(offset: currentOffset, limit: currentLimit);
+        List<DataEntity> pokemons = await pokemonRepository.retrieveAllPokemons(offset: currentOffset, limit: currentLimit);
         // for(var pokemon in pokemons){
         //   // All details (moves can be heavy; cap with maxMovesToHydrate: 50 during dev)
         //   final full = await hydrator.hydrate('pikachu');
@@ -48,8 +48,12 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates>{
         //   print(full.encounters.length);         // Encounter locations
         //   print(full.evolutionChain?['id']);
         // }
-        List<PokemonInfo> pokemonsWithData = await pokemonRepository.retrievePokemonsWithTheirData(pokemons);
-        List<PokemonInfo> allPokemons = [...allLoadedPokemons, ...pokemonsWithData];
+        List<PokemonInfoEntity> pokemonsWithData = [];
+        for(DataEntity data in pokemons){
+          PokemonInfoEntity pokemonWithData = await pokemonRepository.retrievePokemonsWithTheirData(pokemon: data);
+          pokemonsWithData.add(pokemonWithData);
+        }
+        List<PokemonInfoEntity> allPokemons = [...allLoadedPokemons, ...pokemonsWithData];
         allLoadedPokemons = allPokemons;
 
           if(pokemons.length < limit){

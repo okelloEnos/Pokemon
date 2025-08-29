@@ -1,5 +1,8 @@
-import 'package:pokemon/features/pokemons/gallery/domain/entities/pokemon_entity.dart';
+import '../../../../features_barrel.dart';
 
 abstract class GalleryRepository {
-  Future<List<PokemonEntity>> fetchAllPokemons({required int offset, required int limit});
+
+  Future<List<DataEntity>> retrieveAllPokemons({required int offset, required int limit});
+
+  Future<PokemonInfoEntity> retrievePokemonsWithTheirData({required DataEntity pokemon});
 }

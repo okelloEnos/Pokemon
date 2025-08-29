@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../features_barrel.dart';
 
 class SinglePokemonScreen extends StatelessWidget {
-  final PokemonInfo pokemon;
+  final PokemonInfoEntity pokemon;
   const SinglePokemonScreen({Key? key, required this.pokemon}) : super(key: key);
 
   @override

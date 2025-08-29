@@ -1,139 +1,198 @@
 import 'package:equatable/equatable.dart';
+import 'package:pokemon/features/features_barrel.dart';
+import 'package:pokemon/features/pokemons/gallery/domain/entities/pokemon_info_entity.dart';
 
-class PokemonInfo extends Equatable{
-  final String? pokemonName;
-  final int? baseExperience;
-  final int? pokemonWeight;
-  final int? pokemonHeight;
-  final List<Abilities>? abilities;
-  // final List<Form>? forms;
-  // final List<GameIndice>? gameIndices;
-  final List<Moves>? moves;
-  final Species? species;
-  final Sprites? sprites;
-  final List<Stats>? stats;
-  final List<PokemonTypes>? types;
+class PokemonInfoModel extends PokemonInfoEntity{
 
-  @override
-  List<Object?> get props => [pokemonName, baseExperience, pokemonWeight,
-  pokemonHeight, abilities, moves, species, sprites, stats, types];
+  const PokemonInfoModel({
+    required String? pokemonName,
+    required int? baseExperience,
+    required int? pokemonWeight,
+    required int? pokemonHeight,
+    required List<AbilitiesModel>? abilities,
+    required List<MovesModel>? moves,
+    required DataModel? species,
+    required SpritesModel? sprites,
+    required List<StatsModel>? stats,
+    required List<PokemonTypesModel>? types,
+  }) : super(
+    pokemonName: pokemonName,
+    baseExperience: baseExperience,
+    pokemonWeight: pokemonWeight,
+    pokemonHeight: pokemonHeight,
+    abilities: abilities,
+    moves: moves,
+    species: species,
+    sprites: sprites,
+    stats: stats,
+    types: types
+  );
+
+  Map<String, dynamic> toJson(){
+    return {
+      "name": pokemonName,
+      "base_experience": baseExperience,
+      "weight": pokemonWeight,
+      "height": pokemonHeight,
+      "abilities": abilities?.map((ability) => AbilitiesModel.fromEntity(ability).toJson()).toList(),
+      "moves": moves?.map((move) => MovesModel.fromEntity(move).toJson()).toList(),
+      "species": species != null ? DataModel.fromEntity(entity: species).toJson() : null,
+      "sprites": sprites != null ? SpritesModel.fromEntity(sprites).toJson() : null,
+      "stats": stats?.map((stat) => StatsModel.fromEntity(stat).toJson()).toList(),
+      "types": types?.map((type) => PokemonTypesModel.fromEntity(type).toJson()).toList(),
+    };
+  }
+
+  factory PokemonInfoModel.fromJson(Map<String, dynamic> json) {
+    return PokemonInfoModel(
+      pokemonName: json['name'],
+      baseExperience: json['base_experience'],
+      pokemonWeight: json['weight'],
+      pokemonHeight: json['height'],
+      abilities: json['abilities']?.map((ability) => AbilitiesModel.fromJson(ability))
+          .toList(),
+      moves: json['moves']
+          ?.map((move) => MovesModel.fromJson(move))
+          .toList(),
+      species: json['species'] != null
+          ? DataModel.fromJson(json['species'])
+          : null,
+      sprites: json['sprites'] != null
+          ? SpritesModel.fromJson(json['sprites'])
+          : null,
+      stats: json['stats']
+          ?.map((stat) => StatsModel.fromJson(stat))
+          .toList(),
+      types: json['types']
+          ?.map((type) => PokemonTypesModel.fromJson(type))
+          .toList(),
+    );
+  }
+
+  factory PokemonInfoModel.fromEntity(PokemonInfoEntity entity) {
+    return PokemonInfoModel(
+      pokemonName: entity.pokemonName,
+      baseExperience: entity.baseExperience,
+      pokemonWeight: entity.pokemonWeight,
+      pokemonHeight: entity.pokemonHeight,
+      abilities: entity.abilities?.map((ability) => AbilitiesModel.fromEntity(ability)).toList(),
+      moves: entity.moves?.map((move) => MovesModel.fromEntity(move)).toList(),
+      species: entity.species != null
+          ? DataModel.fromEntity(entity: entity.species!)
+          : null,
+      sprites: entity.sprites != null
+          ? SpritesModel.fromEntity(entity.sprites!)
+          : null,
+      stats: entity.stats?.map((stat) => StatsModel.fromEntity(stat)).toList(),
+      types: entity.types?.map((type) => PokemonTypesModel.fromEntity(type)).toList(),
+    );
+  }
+}
+
+class AbilitiesModel extends AbilitiesEntity{
+
+  const AbilitiesModel({
+    bool? isHidden,
+    int? slot,
+    DataModel? ability
+  }) : super(
+    isHidden: isHidden,
+    slot: slot,
+    ability: ability
+  );
+
+  factory AbilitiesModel.fromJson(Map<String, dynamic> json) {
+    return AbilitiesModel(
+      isHidden: json['is_hidden'],
+      slot: json['slot'],
+      ability: json['ability'] != null
+          ? DataModel.fromJson(json['ability'])
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'name': pokemonName,
-      'base_experience': baseExperience,
-      'height': pokemonHeight,
-      'weight': pokemonWeight,
-      'abilities': List<dynamic>.from(abilities!.map((innerAbilities) => innerAbilities.toJson())),
-      'moves': List<dynamic>.from(moves!.map((innerMoves) => innerMoves.toJson())),
-      'stats': List<dynamic>.from(stats!.map((innerStats) => innerStats.toJson())),
-      'sprites': sprites!.toJson(),
-      'species': species!.toJson(),
-      'types': List<dynamic>.from(types!.map((innerTypes) => innerTypes.toJson())),
-    };
-  }
-  const PokemonInfo({this.pokemonName, this.baseExperience, this.pokemonWeight, this.pokemonHeight,
-  this.abilities, this.moves, this.species, this.sprites,
-  this.stats, this.types});
-
-}
-
-class Abilities extends Equatable{
-  final bool? isHidden;
-  final int? slot;
-  final Ability? ability;
-
-  const Abilities({this.isHidden, this.ability, this.slot});
-
-  Map<String, dynamic> toJson(){
-    return {
       "is_hidden": isHidden,
       "slot": slot,
-      "ability": ability!.toJson()
+      "ability": ability != null ? DataModel.fromEntity(entity: ability).toJson() : null,
     };
   }
-  @override
-  List<Object?> get props => [
-    isHidden, slot, ability
-  ];
 
-
+  factory AbilitiesModel.fromEntity(AbilitiesEntity entity) {
+    return AbilitiesModel(
+      isHidden: entity.isHidden,
+      slot: entity.slot,
+      ability: entity.ability != null
+          ? DataModel.fromEntity(entity: entity.ability)
+          : null,
+    );
+  }
 
 }
 
-class Ability extends Equatable{
-  final String? name;
-  final String? url;
+class MovesModel extends MovesEntity{
 
-  const Ability({this.name, this.url});
+  const MovesModel({
+    required DataModel? move
+  }) : super(
+    move: move
+  );
+
+  factory MovesModel.fromJson(Map<String, dynamic> json) {
+    return MovesModel(
+      move: json['move'] != null
+          ? DataModel.fromJson(json['move'])
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson(){
     return {
-      "name": name,
-      "url": url
-    };
-  }
-  @override
-  List<Object?> get props => [name, url];
-}
-
-class Moves extends Equatable{
-  final Move? move;
-
-  const Moves({this.move});
-
-  Map<String, dynamic> toJson(){
-    return {
-      "move" : move!.toJson()
-    };
-  }
-  @override
-  List<Object?> get props => [move];
-}
-
-class Move extends Equatable{
-  final String? name;
-  final String? url;
-
-  const Move({this.name, this.url});
-
-  Map<String, dynamic> toJson(){
-    return {
-      "name": name,
-      "url": url
+      "move": move != null ? DataModel.fromEntity(entity: move).toJson() : null
     };
   }
 
-  @override
-  List<Object?> get props => [name, url];
-}
-
-
-class Species extends Equatable{
-  final String? name;
-  final String? url;
-
-  const Species({this.name, this.url});
-
-  Map<String, dynamic> toJson(){
-    return {
-      "name": name,
-      "url": url
-    };
+  factory MovesModel.fromEntity(MovesEntity entity) {
+    return MovesModel(
+      move: entity.move != null
+          ? DataModel.fromEntity(entity: entity.move)
+          : null,
+    );
   }
-
-  @override
-  List<Object?> get props => [name, url];
 }
 
-class Sprites extends Equatable{
-  final String? backDefault;
-  final String? frontDefault;
-  final String? dreamWorld;
-  final String? home;
-  final String? artWork;
+class SpritesModel extends SpritesEntity{
 
-  const Sprites({this.backDefault, this.frontDefault, this.dreamWorld, this.home, this.artWork});
+  const SpritesModel({
+    required String? backDefault,
+    required String? frontDefault,
+    required String? dreamWorld,
+    required String? home,
+    required String? artWork
+  }) : super(
+    backDefault: backDefault,
+    frontDefault: frontDefault,
+    dreamWorld: dreamWorld,
+    home: home,
+    artWork: artWork
+  );
+
+  factory SpritesModel.fromJson(Map<String, dynamic> json) {
+    return SpritesModel(
+      backDefault: json['back_default'],
+      frontDefault: json['front_default'],
+      dreamWorld: json['dream_world'] != null
+          ? json['dream_world']['front_default']
+          : null,
+      home: json['home'] != null
+          ? json['home']['front_default']
+          : null,
+      artWork: json['official-artwork'] != null
+          ? json['official-artwork']['front_default']
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson(){
     return {
@@ -145,76 +204,92 @@ class Sprites extends Equatable{
     };
   }
 
-  @override
-  List<Object?> get props => [backDefault, frontDefault, dreamWorld, home, artWork];
+  factory SpritesModel.fromEntity(SpritesEntity? entity) {
+    return SpritesModel(
+      backDefault: entity?.backDefault,
+      frontDefault: entity?.frontDefault,
+      dreamWorld: entity?.dreamWorld,
+      home: entity?.home,
+      artWork: entity?.artWork
+    );
+  }
 }
 
-class Stats extends Equatable{
-  final int? baseStat;
-  final int? effort;
-  final Stat? stat;
+class StatsModel extends StatsEntity{
 
-  const Stats({this.baseStat, this.effort, this.stat});
+  const StatsModel({
+    required int? baseStat,
+    required int? effort,
+    required DataModel? stat
+  }) : super(
+    baseStat: baseStat,
+    effort: effort,
+    stat: stat
+  );
+
+  factory StatsModel.fromJson(Map<String, dynamic> json) {
+    return StatsModel(
+      baseStat: json['base_stat'],
+      effort: json['effort'],
+      stat: json['stat'] != null
+          ? DataModel.fromJson(json['stat'])
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson(){
     return {
       "base_stat": baseStat,
       "effort": effort,
-      "stat": stat!.toJson()
+      "stat": stat != null ? DataModel.fromEntity(entity: stat).toJson() : null
     };
   }
 
-  @override
-  List<Object?> get props => [baseStat, effort, stat];
+  factory StatsModel.fromEntity(StatsEntity entity) {
+    return StatsModel(
+      baseStat: entity.baseStat,
+      effort: entity.effort,
+      stat: entity.stat != null
+          ? DataModel.fromEntity(entity: entity.stat)
+          : null,
+    );
+  }
 }
 
+class PokemonTypesModel extends PokemonTypesEntity{
 
-class Stat extends Equatable{
-  final String? name;
-  final String? url;
+  const PokemonTypesModel({
+    required DataModel? pokemonType,
+    required int? slot
+  }) : super(
+    pokemonType: pokemonType,
+    slot: slot
+  );
 
-  const Stat({this.name, this.url});
-
-  Map<String, dynamic> toJson(){
-    return {
-      "name": name,
-      "url": url
-    };
+  factory PokemonTypesModel.fromJson(Map<String, dynamic> json) {
+    return PokemonTypesModel(
+      pokemonType: json['type'] != null
+          ? DataModel.fromJson(json['type'])
+          : null,
+      slot: json['slot'],
+    );
   }
 
-  @override
-  List<Object?> get props => [name, url];
-}
-
-class PokemonTypes extends Equatable{
-  final int? slot;
-  final PokemonType? pokemonType;
-
-  const PokemonTypes({this.slot, this.pokemonType});
-
   Map<String, dynamic> toJson(){
     return {
-      "type": pokemonType!.toJson(),
+      "type": pokemonType != null ? DataModel.fromEntity(entity: pokemonType).toJson() : null,
       "slot": slot
     };
   }
-  @override
-  List<Object?> get props => [slot, pokemonType];
-}
 
-class PokemonType extends Equatable{
-  final String? name;
-  final String? url;
-
-  const PokemonType({this.name, this.url});
-
-  Map<String, dynamic> toJson(){
-    return {
-      "name": name,
-      "url": url
-    };
+  factory PokemonTypesModel.fromEntity(PokemonTypesEntity entity) {
+    return PokemonTypesModel(
+      pokemonType: entity.pokemonType != null
+          ? DataModel.fromEntity(entity: entity.pokemonType)
+          : null,
+      slot: entity.slot,
+    );
   }
 
-  @override
-  List<Object?> get props => [name, url];
+
 }

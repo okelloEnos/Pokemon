@@ -22,7 +22,7 @@ final galleryRoute = GoRoute(
             create: (context) {
               return PokemonsBloc(
                   pokemonRepository:
-                  PokemonRepository(dataService: DataService(dio: Dio())))
+                  GalleryRepositoryImpl(remoteDataSource: GalleryRemoteDataSourceImpl(dio: Dio())))
                 ..add(PokemonsFetched());
             },
           ),
@@ -39,7 +39,7 @@ final creatureRoute = GoRoute(
     path: 'creature',
     name: 'creature',
     builder: (context, state) {
-      final pokemon = state.extra as PokemonInfo;
+      final pokemon = state.extra as PokemonInfoEntity;
       return SinglePokemonScreen(pokemon: pokemon);
     });
 

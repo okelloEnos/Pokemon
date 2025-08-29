@@ -4,8 +4,10 @@ import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 
 abstract class GalleryRemoteDataSource {
-  Future<List<PokemonModel>> retrievePokemons(
-      {required int offset, required int limit});
+  Future<dynamic> retrievePokemons({required int offset, required int limit});
+  Future<dynamic> retrievePokemonsData({required DataModel pokemon});
+  // Future<List<PokemonModel>> retrievePokemons(
+  //     {required int offset, required int limit});
 }
 
 class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
@@ -14,12 +16,12 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
   const GalleryRemoteDataSourceImpl({required Dio dio}) : _dio = dio;
 
   @override
-  Future<List<PokemonModel>> retrievePokemons(
+  Future<dynamic> retrievePokemons(
       {required int offset, required int limit}) async {
     // var url = "$baseUrl/pokemon?offset=$offset&limit=$limit";
     var url = "$baseUrl/pokemon?offset=$offset&limit=$limit";
-    List<PokemonModel> pokemons = [];
-    try {
+    List<dynamic> pokemons = [];
+
       _dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
         // Do something before request is sent
         return handler.next(options); //continue
@@ -41,97 +43,92 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
       final response = await _dio.get(url);
 
       if (response.statusCode == 200) {
-        pokemons = List.from(response.data["results"])
-            .map((pokemonJson) => PokemonModel(
-                pokemonName: pokemonJson["name"],
-                pokemonUrl: pokemonJson["url"]))
-            .toList();
+        // pokemons = List.from(response.data["results"])
+        //     .map((pokemonJson) => PokemonModel(
+        //         pokemonName: pokemonJson["name"],
+        //         pokemonUrl: pokemonJson["url"]))
+        //     .toList();
+        return response.data["results"];
       } else {
         throw Exception('Pokemons not received');
       }
-    } on DioError catch (e) {
-      throw DioExceptions.fromDioError(e);
-    } on SocketException catch (e) {
-      throw Exception("Hey, Server is Down");
-    } on FormatException catch (e) {
-      throw Exception("Hey, We cannot Handle the Format");
-    }
-
-    return pokemons;
   }
 
-  Future<List<PokemonInfo>> retrievePokemonsData(
-      List<PokemonModel> pokemons) async {
-    List<PokemonInfo> pokemonsInfo = [];
+  @override
+  Future<dynamic> retrievePokemonsData({required DataModel pokemon}) async {
+    // List<PokemonInfo> pokemonsInfo = [];
 
-    for (PokemonModel pokemonModel in pokemons) {
-      var pokemonDataResponse = await _dio.get(pokemonModel.pokemonUrl!);
+    if(pokemon.url == null) throw(Exception("Pokemon url is null"));
+
+      var pokemonDataResponse = await _dio.get(pokemon.url!);
 
       if (pokemonDataResponse.statusCode == 200) {
         var data = pokemonDataResponse.data;
 
-        Species species =
-            Species(name: data["species"]["name"], url: data["species"]["url"]);
+        return data;
 
-        var spritesMap = data["sprites"];
-        Sprites sprites = Sprites(
-            backDefault: spritesMap["back_default"],
-            frontDefault: spritesMap["front_default"],
-            dreamWorld: spritesMap["other"]["dream_world"]["front_default"],
-            home: spritesMap["other"]["home"]["front_default"],
-            artWork: spritesMap["other"]["official-artwork"]["front_default"]);
-
-        List<Stats> stats = List.from(data["stats"]).map((statsMap) {
-          var statMap = statsMap["stat"];
-          var stat = Stat(name: statMap["name"], url: statMap["url"]);
-          return Stats(
-              baseStat: statsMap["base_stat"],
-              effort: statsMap["effort"],
-              stat: stat);
-        }).toList();
-
-        List<Abilities> abilities =
-            List.from(data["abilities"]).map((abilitiesMap) {
-          var abilityMap = abilitiesMap["ability"];
-          var ability =
-              Ability(name: abilityMap["name"], url: abilityMap["url"]);
-          return Abilities(
-              isHidden: abilitiesMap["is_hidden"],
-              slot: abilitiesMap["slot"],
-              ability: ability);
-        }).toList();
-
-        List<Moves> moves = List.from(data["moves"]).map((movesMap) {
-          var moveMap = movesMap["move"];
-          var move = Move(name: moveMap["name"], url: moveMap["url"]);
-          return Moves(move: move);
-        }).toList();
-
-        List<PokemonTypes> types = List.from(data["types"]).map((pokemonTypes) {
-          var type = pokemonTypes["type"];
-          var pokemonType = PokemonType(name: type["name"], url: type["url"]);
-          return PokemonTypes(
-              slot: pokemonTypes["slot"], pokemonType: pokemonType);
-        }).toList();
-        var pokemonData = PokemonInfo(
-            pokemonName: data["name"],
-            baseExperience: data["base_experience"],
-            pokemonHeight: data["height"],
-            pokemonWeight: data["weight"],
-            abilities: abilities,
-            // forms: data[],
-            // gameIndices: data[],
-            moves: moves,
-            species: species,
-            sprites: sprites,
-            stats: stats,
-            types: types);
-
-        pokemonsInfo.add(pokemonData);
+        // Species species =
+        //     Species(name: data["species"]["name"], url: data["species"]["url"]);
+        //
+        // var spritesMap = data["sprites"];
+        // Sprites sprites = Sprites(
+        //     backDefault: spritesMap["back_default"],
+        //     frontDefault: spritesMap["front_default"],
+        //     dreamWorld: spritesMap["other"]["dream_world"]["front_default"],
+        //     home: spritesMap["other"]["home"]["front_default"],
+        //     artWork: spritesMap["other"]["official-artwork"]["front_default"]);
+        //
+        // List<Stats> stats = List.from(data["stats"]).map((statsMap) {
+        //   var statMap = statsMap["stat"];
+        //   var stat = Stat(name: statMap["name"], url: statMap["url"]);
+        //   return Stats(
+        //       baseStat: statsMap["base_stat"],
+        //       effort: statsMap["effort"],
+        //       stat: stat);
+        // }).toList();
+        //
+        // List<Abilities> abilities =
+        //     List.from(data["abilities"]).map((abilitiesMap) {
+        //   var abilityMap = abilitiesMap["ability"];
+        //   var ability =
+        //       Ability(name: abilityMap["name"], url: abilityMap["url"]);
+        //   return Abilities(
+        //       isHidden: abilitiesMap["is_hidden"],
+        //       slot: abilitiesMap["slot"],
+        //       ability: ability);
+        // }).toList();
+        //
+        // List<Moves> moves = List.from(data["moves"]).map((movesMap) {
+        //   var moveMap = movesMap["move"];
+        //   var move = Move(name: moveMap["name"], url: moveMap["url"]);
+        //   return Moves(move: move);
+        // }).toList();
+        //
+        // List<PokemonTypes> types = List.from(data["types"]).map((pokemonTypes) {
+        //   var type = pokemonTypes["type"];
+        //   var pokemonType = PokemonType(name: type["name"], url: type["url"]);
+        //   return PokemonTypes(
+        //       slot: pokemonTypes["slot"], pokemonType: pokemonType);
+        // }).toList();
+        // var pokemonData = PokemonInfo(
+        //     pokemonName: data["name"],
+        //     baseExperience: data["base_experience"],
+        //     pokemonHeight: data["height"],
+        //     pokemonWeight: data["weight"],
+        //     abilities: abilities,
+        //     // forms: data[],
+        //     // gameIndices: data[],
+        //     moves: moves,
+        //     species: species,
+        //     sprites: sprites,
+        //     stats: stats,
+        //     types: types);
+        //
+        // pokemonsInfo.add(pokemonData);
       }
-    }
-
-    return pokemonsInfo;
+      else {
+        throw Exception('Pokemon data not received');
+      }
   }
 
 // Future<List<PokemonInfo>> retrievePokemonsData(List<PokemonModel> pokemons) async {

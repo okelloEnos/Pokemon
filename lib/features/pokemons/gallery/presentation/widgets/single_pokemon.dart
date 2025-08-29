@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 
-Widget singlePokemonWidget({required PokemonInfo pokemon, required BuildContext context}){
+Widget singlePokemonWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   final PageStorageBucket _bucket = PageStorageBucket();
   final theme = Theme.of(context);
 final height = MediaQuery.of(context).padding.top;
@@ -130,7 +130,7 @@ Widget pokemonImageCard({required String image,required String type, required Bu
 class PokemonsDetailsTab extends StatefulWidget {
   const PokemonsDetailsTab({Key? key, required this.pokemonInfo}) : super(key: key);
 
-  final PokemonInfo pokemonInfo;
+  final PokemonInfoEntity pokemonInfo;
 
   @override
   _PokemonsDetailsTabState createState() => _PokemonsDetailsTabState();
@@ -193,7 +193,7 @@ static const List<Tab> pokemonsTabs = <Tab>[
 }
 
 
-Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext context}){
+Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   final theme = Theme.of(context);
   String abilities = "";
   for(var ability in pokemon.abilities!) {
@@ -262,7 +262,7 @@ Widget pokemonAboutWidget({required PokemonInfo pokemon, required BuildContext c
   );
 }
 
-Widget pokemonStatsWidget({required PokemonInfo pokemon, required BuildContext context}){
+Widget pokemonStatsWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   // final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.only(top: 10),
@@ -279,7 +279,7 @@ Widget pokemonStatsWidget({required PokemonInfo pokemon, required BuildContext c
   );
 }
 
-Widget pokemonEvolutionWidget({required PokemonInfo pokemon, required BuildContext context}){
+Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   // final theme = Theme.of(context);
   return Column(
     children: [
@@ -293,7 +293,7 @@ Widget pokemonEvolutionWidget({required PokemonInfo pokemon, required BuildConte
   );
 }
 
-Widget pokemonMovesWidget({required PokemonInfo pokemon, required BuildContext context}){
+Widget pokemonMovesWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   // final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.only(top: 20),
@@ -310,7 +310,7 @@ Widget pokemonMovesWidget({required PokemonInfo pokemon, required BuildContext c
   );
 }
 
-Widget pokemonStatWidget({required BuildContext context, required Stats stat}){
+Widget pokemonStatWidget({required BuildContext context, required StatsEntity stat}){
 final theme = Theme.of(context);
 var statValue = stat.baseStat! / 100;
   return Row(
@@ -336,7 +336,7 @@ var statValue = stat.baseStat! / 100;
   );
 }
 
-Widget pokemonMoveWidget({required BuildContext context, required Moves moves}){
+Widget pokemonMoveWidget({required BuildContext context, required MovesEntity moves}){
   final theme = Theme.of(context);
 
   return Card(

@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 
@@ -212,7 +211,7 @@ class _AllPokemonsGridState extends State<AllPokemonsGrid> {
   }
 }
 
-Widget pokemonCard(BuildContext context, PokemonInfo pokemon){
+Widget pokemonCard(BuildContext context, PokemonInfoEntity pokemon){
 final theme = Theme.of(context);
   return Hero(
     key: const Key("grid_hero"),

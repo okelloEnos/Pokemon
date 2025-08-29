@@ -18,7 +18,7 @@ class PokemonsFailure extends PokemonStates{
 }
 
 class PokemonsLoaded extends PokemonStates{
-  final List<PokemonInfo> pokemons;
+  final List<PokemonInfoEntity> pokemons;
   // int pageNumber;
   final bool? hasReachedMax;
   final String? error;
@@ -28,7 +28,7 @@ class PokemonsLoaded extends PokemonStates{
   // = const <PokemonInfo> [], this.hasReachedMax = false, this.error = ''
   });
 
-  PokemonsLoaded copyWith({List<PokemonInfo>? pokemons, bool? hasReachedMax, String? error}){
+  PokemonsLoaded copyWith({List<PokemonInfoEntity>? pokemons, bool? hasReachedMax, String? error}){
     return PokemonsLoaded(
       pokemons: pokemons ?? this.pokemons,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
