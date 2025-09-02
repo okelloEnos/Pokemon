@@ -93,7 +93,7 @@ class SinglePokemonScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("${pokemon.pokemonName}".capitalize(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),),
-                  Text("(${pokemon.genus})", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
+                  Text("(${pokemon.genus}, ${pokemon.habitat?.capitalize() ?? ""})", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
                   const SizedBox(height: 8.0,),
                   Text("${pokemon.description}", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
                 ],

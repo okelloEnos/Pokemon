@@ -60,6 +60,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   page_transition: ^2.1.0
   get_it: ^8.2.0
+  palette_generator: ^0.3.3+5
+#  palette_generator: ^0.3.3+7
 
 dev_dependencies:
   flutter_test:

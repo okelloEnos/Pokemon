@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:pokemon/core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 import 'package:dio/dio.dart';
@@ -36,6 +37,15 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
     on<PokemonsFetched>(_onPokemonsFetched);
   }
 
+  // Future<void> getDominantColor() async {
+  //   final PaletteGenerator paletteGenerator =
+  //   await PaletteGenerator.fromImageProvider(
+  //       NetworkImage(widget.weeklyCardModel.productImage));
+  //
+  //   widget.weeklyCardModel.dominantColor.value =
+  //       paletteGenerator.lightVibrantColor?.color ?? secondaryColor;
+  // }
+
   Future<void> _onPokemonsFetched(
       PokemonEvents event, Emitter<PokemonStates> emit) async {
     try {
@@ -51,6 +61,8 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
         PokemonInfoEntity pokemonWithData = await pokemonRepository
             .retrievePokemonsWithTheirData(name: data.name);
 
+        final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(pokemonWithData.sprites!.artWork!));
+
         List<PokemonInfoEntity> variants = [];
         for (DataEntity variant in pokemonWithData.variants ?? []) {
           try {
@@ -62,8 +74,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
           }
         }
 
-        pokemonsWithData
-            .add(pokemonWithData.copyWith(variantsComplete: variants));
+        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: paletteGenerator.lightVibrantColor?.color ?? Colors.grey));
       }
       List<PokemonInfoEntity> allPokemons = [
         ...allLoadedPokemons,

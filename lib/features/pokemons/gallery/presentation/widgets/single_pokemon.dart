@@ -212,6 +212,10 @@ Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildCon
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+    Container(
+        height: 6,
+        width: double.infinity,
+        color: pokemon.color),
         const SizedBox(height: 16.0,),
         Row(
           children: [

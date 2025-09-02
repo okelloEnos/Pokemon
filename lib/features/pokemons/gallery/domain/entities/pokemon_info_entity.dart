@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../features_barrel.dart';
 
@@ -24,6 +25,7 @@ class PokemonInfoEntity extends Equatable {
   final String? growthRate;
   final String? habitat;
   final List<DataEntity>? eggGroups;
+  final Color? color;
 
   @override
   List<Object?> get props => [
@@ -46,7 +48,9 @@ class PokemonInfoEntity extends Equatable {
         genderSplit,
         growthRate,
     habitat,
-        eggGroups
+        eggGroups,
+        variantsComplete,
+        color,
       ];
 
   const PokemonInfoEntity(
@@ -70,7 +74,8 @@ class PokemonInfoEntity extends Equatable {
       this.growthRate,
       this.habitat,
       this.genderSplit,
-      this.eggGroups});
+      this.eggGroups,
+      this.color});
 
   // copyWith method
   PokemonInfoEntity copyWith({
@@ -95,6 +100,7 @@ class PokemonInfoEntity extends Equatable {
     String? habitat,
     List<DataEntity>? eggGroups,
     List<PokemonInfoEntity>? variantsComplete,
+    Color? color,
   }) {
     return PokemonInfoEntity(
       pokemonName: pokemonName ?? this.pokemonName,
@@ -118,6 +124,7 @@ class PokemonInfoEntity extends Equatable {
       habitat: habitat ?? this.habitat,
       eggGroups: eggGroups ?? this.eggGroups,
       variantsComplete: variantsComplete ?? this.variantsComplete,
+      color: color ?? this.color,
     );
   }
 }
