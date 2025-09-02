@@ -2,9 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 class GalleryViewCubit extends Cubit<ViewType> {
-  GalleryViewCubit() : super(ViewType.grid){
-    // initial state is grid view
-  }
+  GalleryViewCubit() : super(ViewType.grid);
 
   void toggleView(ViewType type) {
     emit(type);

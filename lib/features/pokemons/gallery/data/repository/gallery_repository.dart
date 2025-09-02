@@ -1,3 +1,4 @@
+import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 
 class GalleryRepositoryImpl implements GalleryRepository {
@@ -19,9 +20,22 @@ class GalleryRepositoryImpl implements GalleryRepository {
 
   @override
   Future<PokemonInfoModel> retrievePokemonsWithTheirData(
-      {required DataEntity pokemon}) async {
-    var infoData = await _remoteDataSource.retrievePokemonsData(
-        pokemon: DataModel.fromEntity(entity: pokemon));
-    return PokemonInfoModel.fromJson(infoData);
+      {required String? name}) async {
+    var infoData = await _remoteDataSource.retrievePokemonsData(name: name);
+    // // core data
+    // var coreData = infoData["core"];
+    // // species data
+    // var speciesData = infoData["species"];
+    // // form data
+    // var formData = infoData["forms"];
+    //
+    // final description = latestEnglishDescription(speciesData);
+    // final genera = latestEnglishGenera(speciesData);
+    // coreData['description'] = description;
+    // coreData['genus'] = genera;
+
+    PokemonInfoModel pokemonInfo = PokemonInfoModel.fromJson(infoData);
+
+    return pokemonInfo;
   }
 }

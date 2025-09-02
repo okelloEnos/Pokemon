@@ -104,7 +104,7 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
                         state: state,
                         context: context)
                     : state is PokemonsFailure
-                        ? const CreatureCodexErrorWidget()
+                        ? CreatureCodexErrorWidget(message: state.errorText,)
                         : allPokemonsLoading(),
               );
             },

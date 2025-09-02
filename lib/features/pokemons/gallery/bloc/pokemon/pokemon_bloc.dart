@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:pokemon/core/core_barrel.dart';
 import '../../../../features_barrel.dart';
+import 'package:dio/dio.dart';
 
 part 'pokemon_events.dart';
 
@@ -40,13 +42,29 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
       int currentOffset = offset;
       int currentLimit = limit;
       bool hasReachedMax = false;
+
       List<DataEntity> pokemons = await pokemonRepository.retrieveAllPokemons(
           offset: currentOffset, limit: currentLimit);
+
       List<PokemonInfoEntity> pokemonsWithData = [];
       for (DataEntity data in pokemons) {
         PokemonInfoEntity pokemonWithData = await pokemonRepository
-            .retrievePokemonsWithTheirData(pokemon: data);
-        pokemonsWithData.add(pokemonWithData);
+            .retrievePokemonsWithTheirData(name: data.name);
+
+        List<PokemonInfoEntity> variants = [];
+        for (DataEntity variant in pokemonWithData.variants ?? []) {
+          // if(variant.pokemonName == data.name) continue;
+          try {
+            PokemonInfoEntity pokemonVariant = await pokemonRepository
+                .retrievePokemonsWithTheirData(name: variant.name);
+            variants.add(pokemonVariant);
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+        }
+
+        pokemonsWithData
+            .add(pokemonWithData.copyWith(variantsComplete: variants));
       }
       List<PokemonInfoEntity> allPokemons = [
         ...allLoadedPokemons,
@@ -62,7 +80,11 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
       }
 
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
-    } catch (e) {
+    }
+    on DioError catch (e) {
+      emit(PokemonsFailure(errorText: DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
+    }
+    catch (e, s) {
       emit(PokemonsFailure(errorText: e.toString()));
     }
   }

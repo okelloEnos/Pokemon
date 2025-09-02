@@ -20,9 +20,7 @@ final galleryRoute = GoRoute(
         providers: [
           BlocProvider<PokemonsBloc>(
             create: (context) {
-              return PokemonsBloc(
-                  pokemonRepository:
-                  GalleryRepositoryImpl(remoteDataSource: GalleryRemoteDataSourceImpl(dio: Dio())))
+              return locator<PokemonsBloc>()
                 ..add(PokemonsFetched());
             },
           ),

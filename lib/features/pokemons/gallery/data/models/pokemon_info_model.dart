@@ -1,23 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:pokemon/features/features_barrel.dart';
-import 'package:pokemon/features/pokemons/gallery/domain/entities/pokemon_info_entity.dart';
-
 import '../../../../../core/core_barrel.dart';
 
 class PokemonInfoModel extends PokemonInfoEntity {
   const PokemonInfoModel({
-    required String? pokemonName,
-    required int? baseExperience,
-    required int? pokemonWeight,
-    required int? pokemonHeight,
-    required List<AbilitiesModel>? abilities,
-    required List<MovesModel>? moves,
-    required DataModel? species,
-    required SpritesModel? sprites,
-    required List<StatsModel>? stats,
-    required List<PokemonTypesModel>? types,
+    String? pokemonName,
+    String? description,
+    String? genus,
+    int? baseExperience,
+    int? pokemonWeight,
+    int? pokemonHeight,
+    List<AbilitiesModel>? abilities,
+    List<MovesModel>? moves,
+    DataModel? species,
+    SpritesModel? sprites,
+    List<StatsModel>? stats,
+    List<PokemonTypesModel>? types,
+    List<DataModel>? variants,
+    int? baseHappiness,
+    int? captureRate,
+    int? hatchCounter,
+    int? genderSplit,
+    String? growthRate,
+    List<DataModel>? eggGroups,
+    List<PokemonInfoModel>? variantsComplete,
   }) : super(
             pokemonName: pokemonName,
+            description: description,
+            genus: genus,
             baseExperience: baseExperience,
             pokemonWeight: pokemonWeight,
             pokemonHeight: pokemonHeight,
@@ -26,11 +36,21 @@ class PokemonInfoModel extends PokemonInfoEntity {
             species: species,
             sprites: sprites,
             stats: stats,
-            types: types);
+            types: types,
+            variants: variants,
+            baseHappiness: baseHappiness,
+            captureRate: captureRate,
+            hatchCounter: hatchCounter,
+            genderSplit: genderSplit,
+            growthRate: growthRate,
+            eggGroups: eggGroups,
+            variantsComplete: variantsComplete);
 
   Map<String, dynamic> toJson() {
     return {
       "name": pokemonName,
+      "description": description,
+      "genus": genus,
       "base_experience": baseExperience,
       "weight": pokemonWeight,
       "height": pokemonHeight,
@@ -49,6 +69,20 @@ class PokemonInfoModel extends PokemonInfoEntity {
       "types": types
           ?.map((type) => PokemonTypesModel.fromEntity(type).toJson())
           .toList(),
+      "variants": variants
+          ?.map((variant) => DataModel.fromEntity(entity: variant).toJson())
+          .toList(),
+      "variants_complete": variantsComplete
+          ?.map((variant) => PokemonInfoModel.fromEntity(variant).toJson())
+          .toList(),
+      "base_happiness": baseHappiness,
+      "capture_rate": captureRate,
+      "hatch_counter": hatchCounter,
+      "gender_split": genderSplit,
+      "growth_rate": growthRate,
+      "egg_groups": eggGroups
+          ?.map((egg) => DataModel.fromEntity(entity: egg).toJson())
+          .toList(),
     };
   }
 
@@ -63,9 +97,21 @@ class PokemonInfoModel extends PokemonInfoEntity {
     List<PokemonTypesModel> types = parseList<PokemonTypesModel>(
         json: json['types'],
         fromJson: (map) => PokemonTypesModel.fromJson(map));
+    List<DataModel> variants = parseList<DataModel>(
+        json: json['variants'],
+        fromJson: (map) => DataModel.fromJson(map));
+    List<PokemonInfoModel> variantsComplete = parseList<PokemonInfoModel>(
+        json: json['variants_complete'],
+        fromJson: (map) => PokemonInfoModel.fromJson(map));
+
+    List<DataModel> eggs = parseList<DataModel>(
+        json: json['egg_groups'], fromJson: (map) => DataModel.fromJson(map));
+    // List<DataModel> eggs = [];
 
     return PokemonInfoModel(
       pokemonName: json['name'],
+      description: json['description'],
+      genus: json['genus'],
       baseExperience: json['base_experience'],
       pokemonWeight: json['weight'],
       pokemonHeight: json['height'],
@@ -78,12 +124,22 @@ class PokemonInfoModel extends PokemonInfoEntity {
           : null,
       stats: stats,
       types: types,
+      variants: variants,
+      baseHappiness: json['base_happiness'],
+      captureRate: json['capture_rate'],
+      hatchCounter: json['hatch_counter'],
+      genderSplit: json['gender_rate'],
+      growthRate: json['growth_rate'],
+      eggGroups: eggs,
+      variantsComplete: variantsComplete,
     );
   }
 
   factory PokemonInfoModel.fromEntity(PokemonInfoEntity entity) {
     return PokemonInfoModel(
       pokemonName: entity.pokemonName,
+      description: entity.description,
+      genus: entity.genus,
       baseExperience: entity.baseExperience,
       pokemonWeight: entity.pokemonWeight,
       pokemonHeight: entity.pokemonHeight,
@@ -100,6 +156,20 @@ class PokemonInfoModel extends PokemonInfoEntity {
       stats: entity.stats?.map((stat) => StatsModel.fromEntity(stat)).toList(),
       types: entity.types
           ?.map((type) => PokemonTypesModel.fromEntity(type))
+          .toList(),
+      variants: entity.variants
+          ?.map((variant) => DataModel.fromEntity(entity: variant))
+          .toList(),
+      variantsComplete: entity.variantsComplete
+          ?.map((variant) => PokemonInfoModel.fromEntity(variant))
+          .toList(),
+      baseHappiness: entity.baseHappiness,
+      captureRate: entity.captureRate,
+      hatchCounter: entity.hatchCounter,
+      genderSplit: entity.genderSplit,
+      growthRate: entity.growthRate,
+      eggGroups: entity.eggGroups
+          ?.map((egg) => DataModel.fromEntity(entity: egg))
           .toList(),
     );
   }
@@ -184,7 +254,9 @@ class SpritesModel extends SpritesEntity {
       dreamWorld: json['other']['dream_world'] != null
           ? json['other']['dream_world']['front_default']
           : null,
-      home: json['other']['home'] != null ? json['other']['home']['front_default'] : null,
+      home: json['other']['home'] != null
+          ? json['other']['home']['front_default']
+          : null,
       artWork: json['other']['official-artwork'] != null
           ? json['other']['official-artwork']['front_default']
           : null,

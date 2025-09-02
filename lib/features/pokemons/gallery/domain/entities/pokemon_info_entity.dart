@@ -2,8 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../features_barrel.dart';
 
-class PokemonInfoEntity extends Equatable{
+class PokemonInfoEntity extends Equatable {
   final String? pokemonName;
+  final String? description;
+  final String? genus;
   final int? baseExperience;
   final int? pokemonWeight;
   final int? pokemonHeight;
@@ -13,18 +15,109 @@ class PokemonInfoEntity extends Equatable{
   final SpritesEntity? sprites;
   final List<StatsEntity>? stats;
   final List<PokemonTypesEntity>? types;
+  final List<PokemonInfoEntity>? variantsComplete;
+  final List<DataEntity>? variants;
+  final int? baseHappiness;
+  final int? captureRate;
+  final int? hatchCounter;
+  final int? genderSplit;
+  final String? growthRate;
+  final List<DataEntity>? eggGroups;
 
   @override
-  List<Object?> get props => [pokemonName, baseExperience, pokemonWeight,
-  pokemonHeight, abilities, moves, species, sprites, stats, types];
+  List<Object?> get props => [
+        pokemonName,
+        description,
+        genus,
+        baseExperience,
+        pokemonWeight,
+        pokemonHeight,
+        abilities,
+        moves,
+        species,
+        sprites,
+        stats,
+        types,
+        variants,
+        baseHappiness,
+        captureRate,
+        hatchCounter,
+        genderSplit,
+        growthRate,
+        eggGroups
+      ];
 
-  const PokemonInfoEntity({this.pokemonName, this.baseExperience, this.pokemonWeight, this.pokemonHeight,
-  this.abilities, this.moves, this.species, this.sprites,
-  this.stats, this.types});
+  const PokemonInfoEntity(
+      {this.pokemonName,
+      this.description,
+      this.baseExperience,
+      this.pokemonWeight,
+      this.pokemonHeight,
+      this.abilities,
+      this.moves,
+      this.species,
+      this.sprites,
+      this.genus,
+      this.variantsComplete,
+      this.stats,
+      this.types,
+      this.variants,
+      this.baseHappiness,
+      this.captureRate,
+      this.hatchCounter,
+      this.growthRate,
+      this.genderSplit,
+      this.eggGroups});
 
+  // copyWith method
+  PokemonInfoEntity copyWith({
+    String? pokemonName,
+    String? description,
+    String? genus,
+    int? baseExperience,
+    int? pokemonWeight,
+    int? pokemonHeight,
+    List<AbilitiesEntity>? abilities,
+    List<MovesEntity>? moves,
+    DataEntity? species,
+    SpritesEntity? sprites,
+    List<StatsEntity>? stats,
+    List<PokemonTypesEntity>? types,
+    List<DataEntity>? variants,
+    int? baseHappiness,
+    int? captureRate,
+    int? hatchCounter,
+    int? genderSplit,
+    String? growthRate,
+    List<DataEntity>? eggGroups,
+    List<PokemonInfoEntity>? variantsComplete,
+  }) {
+    return PokemonInfoEntity(
+      pokemonName: pokemonName ?? this.pokemonName,
+      description: description ?? this.description,
+      genus: genus ?? this.genus,
+      baseExperience: baseExperience ?? this.baseExperience,
+      pokemonWeight: pokemonWeight ?? this.pokemonWeight,
+      pokemonHeight: pokemonHeight ?? this.pokemonHeight,
+      abilities: abilities ?? this.abilities,
+      moves: moves ?? this.moves,
+      species: species ?? this.species,
+      sprites: sprites ?? this.sprites,
+      stats: stats ?? this.stats,
+      types: types ?? this.types,
+      variants: variants ?? this.variants,
+      baseHappiness: baseHappiness ?? this.baseHappiness,
+      captureRate: captureRate ?? this.captureRate,
+      hatchCounter: hatchCounter ?? this.hatchCounter,
+      genderSplit: genderSplit ?? this.genderSplit,
+      growthRate: growthRate ?? this.growthRate,
+      eggGroups: eggGroups ?? this.eggGroups,
+      variantsComplete: variantsComplete ?? this.variantsComplete,
+    );
+  }
 }
 
-class AbilitiesEntity extends Equatable{
+class AbilitiesEntity extends Equatable {
   final bool? isHidden;
   final int? slot;
   final DataEntity? ability;
@@ -32,12 +125,10 @@ class AbilitiesEntity extends Equatable{
   const AbilitiesEntity({this.isHidden, this.ability, this.slot});
 
   @override
-  List<Object?> get props => [
-    isHidden, slot, ability
-  ];
+  List<Object?> get props => [isHidden, slot, ability];
 }
 
-class MovesEntity extends Equatable{
+class MovesEntity extends Equatable {
   final DataEntity? move;
 
   const MovesEntity({this.move});
@@ -46,20 +137,26 @@ class MovesEntity extends Equatable{
   List<Object?> get props => [move];
 }
 
-class SpritesEntity extends Equatable{
+class SpritesEntity extends Equatable {
   final String? backDefault;
   final String? frontDefault;
   final String? dreamWorld;
   final String? home;
   final String? artWork;
 
-  const SpritesEntity({this.backDefault, this.frontDefault, this.dreamWorld, this.home, this.artWork});
+  const SpritesEntity(
+      {this.backDefault,
+      this.frontDefault,
+      this.dreamWorld,
+      this.home,
+      this.artWork});
 
   @override
-  List<Object?> get props => [backDefault, frontDefault, dreamWorld, home, artWork];
+  List<Object?> get props =>
+      [backDefault, frontDefault, dreamWorld, home, artWork];
 }
 
-class StatsEntity extends Equatable{
+class StatsEntity extends Equatable {
   final int? baseStat;
   final int? effort;
   final DataEntity? stat;
@@ -70,7 +167,7 @@ class StatsEntity extends Equatable{
   List<Object?> get props => [baseStat, effort, stat];
 }
 
-class PokemonTypesEntity extends Equatable{
+class PokemonTypesEntity extends Equatable {
   final int? slot;
   final DataEntity? pokemonType;
 
