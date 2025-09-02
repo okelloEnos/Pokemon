@@ -22,17 +22,6 @@ class GalleryRepositoryImpl implements GalleryRepository {
   Future<PokemonInfoModel> retrievePokemonsWithTheirData(
       {required String? name}) async {
     var infoData = await _remoteDataSource.retrievePokemonsData(name: name);
-    // // core data
-    // var coreData = infoData["core"];
-    // // species data
-    // var speciesData = infoData["species"];
-    // // form data
-    // var formData = infoData["forms"];
-    //
-    // final description = latestEnglishDescription(speciesData);
-    // final genera = latestEnglishGenera(speciesData);
-    // coreData['description'] = description;
-    // coreData['genus'] = genera;
 
     PokemonInfoModel pokemonInfo = PokemonInfoModel.fromJson(infoData);
 

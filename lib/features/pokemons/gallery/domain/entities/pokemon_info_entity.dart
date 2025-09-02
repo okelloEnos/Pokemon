@@ -22,6 +22,7 @@ class PokemonInfoEntity extends Equatable {
   final int? hatchCounter;
   final int? genderSplit;
   final String? growthRate;
+  final String? habitat;
   final List<DataEntity>? eggGroups;
 
   @override
@@ -44,6 +45,7 @@ class PokemonInfoEntity extends Equatable {
         hatchCounter,
         genderSplit,
         growthRate,
+    habitat,
         eggGroups
       ];
 
@@ -66,6 +68,7 @@ class PokemonInfoEntity extends Equatable {
       this.captureRate,
       this.hatchCounter,
       this.growthRate,
+      this.habitat,
       this.genderSplit,
       this.eggGroups});
 
@@ -89,6 +92,7 @@ class PokemonInfoEntity extends Equatable {
     int? hatchCounter,
     int? genderSplit,
     String? growthRate,
+    String? habitat,
     List<DataEntity>? eggGroups,
     List<PokemonInfoEntity>? variantsComplete,
   }) {
@@ -111,6 +115,7 @@ class PokemonInfoEntity extends Equatable {
       hatchCounter: hatchCounter ?? this.hatchCounter,
       genderSplit: genderSplit ?? this.genderSplit,
       growthRate: growthRate ?? this.growthRate,
+      habitat: habitat ?? this.habitat,
       eggGroups: eggGroups ?? this.eggGroups,
       variantsComplete: variantsComplete ?? this.variantsComplete,
     );

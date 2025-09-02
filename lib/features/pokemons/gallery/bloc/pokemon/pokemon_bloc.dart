@@ -53,7 +53,6 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
 
         List<PokemonInfoEntity> variants = [];
         for (DataEntity variant in pokemonWithData.variants ?? []) {
-          // if(variant.pokemonName == data.name) continue;
           try {
             PokemonInfoEntity pokemonVariant = await pokemonRepository
                 .retrievePokemonsWithTheirData(name: variant.name);

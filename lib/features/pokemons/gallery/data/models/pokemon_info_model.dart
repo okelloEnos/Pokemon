@@ -22,6 +22,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
     int? hatchCounter,
     int? genderSplit,
     String? growthRate,
+    String? habitat,
     List<DataModel>? eggGroups,
     List<PokemonInfoModel>? variantsComplete,
   }) : super(
@@ -43,6 +44,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
             hatchCounter: hatchCounter,
             genderSplit: genderSplit,
             growthRate: growthRate,
+            habitat: habitat,
             eggGroups: eggGroups,
             variantsComplete: variantsComplete);
 
@@ -80,6 +82,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
       "hatch_counter": hatchCounter,
       "gender_split": genderSplit,
       "growth_rate": growthRate,
+      "habitat": habitat,
       "egg_groups": eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg).toJson())
           .toList(),
@@ -113,8 +116,8 @@ class PokemonInfoModel extends PokemonInfoEntity {
       description: json['description'],
       genus: json['genus'],
       baseExperience: json['base_experience'],
-      pokemonWeight: json['weight'],
-      pokemonHeight: json['height'],
+      pokemonWeight: json['weight'], // hectograms
+      pokemonHeight: json['height'], // decimetres
       abilities: abilities,
       moves: moves,
       species:
@@ -130,6 +133,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
       hatchCounter: json['hatch_counter'],
       genderSplit: json['gender_rate'],
       growthRate: json['growth_rate'],
+      habitat: json['habitat'],
       eggGroups: eggs,
       variantsComplete: variantsComplete,
     );
@@ -168,6 +172,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
       hatchCounter: entity.hatchCounter,
       genderSplit: entity.genderSplit,
       growthRate: entity.growthRate,
+      habitat: entity.habitat,
       eggGroups: entity.eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg))
           .toList(),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
@@ -100,14 +101,25 @@ final height = MediaQuery.of(context).padding.top;
   );
 }
 
-Widget pokemonImageCard({required String image,required String type, required BuildContext context}){
+Widget pokemonImageCard({required String image,required String type, required BuildContext context, double? height}){
   final theme = Theme.of(context);
 
+  return SizedBox(
+    height: height ?? 150,
+    child: CachedNetworkImage(imageUrl: image,
+      errorWidget: (_, __, ___){
+        return imageErrorWidget();
+      },
+      placeholder: (_, __){
+        return imagePlaceHolder(color: theme.primaryColorDark);
+      },
+    ),
+  );
   return  SingleChildScrollView(
     child: Column(
       children: [
         SizedBox(
-          height: 180,
+          height: 150,
           child: CachedNetworkImage(imageUrl: image,
             errorWidget: (_, __, ___){
               return imageErrorWidget();
@@ -195,68 +207,280 @@ static const List<Tab> pokemonsTabs = <Tab>[
 
 Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   final theme = Theme.of(context);
-  String abilities = "";
-  for(var ability in pokemon.abilities!) {
-  abilities += ability.ability!.name!;
-  if(pokemon.abilities!.last != ability){
-    abilities += ", ";
-  }
-  }
 
   return SingleChildScrollView(
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0, bottom: 0.0),
-          child: Row(
-            children: [
-              Text('Species', style: theme.textTheme.bodyMedium,),
-              const SizedBox(width: 90, ),
-              Text('${pokemon.species!.name}', style: theme.textTheme.bodySmall,)
-            ],
-          ),
+        const SizedBox(height: 16.0,),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Height', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${((pokemon.pokemonHeight ?? 0) / 10)} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        WidgetSpan(
+                            child:  Text('Meters', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                        ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Weight', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${((pokemon.pokemonWeight ?? 0) / 10)} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        WidgetSpan(
+                            child:  Text('Kg', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                        ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Base Experience', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${pokemon.baseExperience} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        WidgetSpan(
+                            child:  Text('XP', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                        ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
-          child: Row(
-            children: [
-              Text('Height', style: theme.textTheme.bodyMedium,),
-              const SizedBox(width: 100, ),
-              Text('${pokemon.pokemonHeight} Meters', style: theme.textTheme.bodySmall,)
-            ],
-          ),
+        const SizedBox(height: 8.0,),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Capture Rate', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${pokemon.captureRate} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        WidgetSpan(
+                            child:  Text("(${catchDifficultyLabel(captureRate: pokemon.captureRate ?? 0)})", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Base Happiness', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${pokemon.baseHappiness} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        WidgetSpan(
+                            child:  Text("(${friendshipLabel(baseHappiness: pokemon.baseHappiness ?? 0)})", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
-          child: Row(
-            children: [
-              Text('Weight', style: theme.textTheme.bodyMedium,),
-              const SizedBox(width: 100, ),
-              Text('${pokemon.pokemonWeight} Kg', style: theme.textTheme.bodySmall,)
-            ],
-          ),
+        const SizedBox(height: 8.0,),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Growth Rate', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  RichText(text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                            child:  Text('${pokemon.growthRate} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+                        ),
+                        // WidgetSpan(
+                        //     child:  Text('Meters', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                        // ),
+                      ]
+                  )),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Gender', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+                  const SizedBox(height: 2.0),
+                  genderSplit(genderRate: pokemon.genderSplit) == null ?
+                  Text('Genderless', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),) :
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RichText(text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                                child:  Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.male),
+                                    const SizedBox(width: 4.0),
+                                    Text('${genderSplit(genderRate: pokemon.genderSplit)?['male']} %', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
+                                  ],
+                                )
+                            ),
+                            // WidgetSpan(
+                            //     child:  Text('Kg', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                            // ),
+                          ]
+                      )),
+                      const SizedBox(width: 16.0),
+                      RichText(text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                                child:  Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.female),
+                                    const SizedBox(width: 4.0),
+                                    Text('${genderSplit(genderRate: pokemon.genderSplit)?['female']} %', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
+                                  ],
+                                )
+                            ),
+                            // WidgetSpan(
+                            //     child:  Text('Kg', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+                            // ),
+                          ]
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(width: 8.0),
+            // Expanded(
+            //   flex: 2,
+            //   child: Column(
+            //     mainAxisSize: MainAxisSize.min,
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       const Text('Gender', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+            //       const SizedBox(height: 2.0),
+            //       RichText(text: TextSpan(
+            //           children: [
+            //             WidgetSpan(
+            //                 child:  Text('${pokemon.baseHappiness} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),)
+            //             ),
+            //             // WidgetSpan(
+            //             //     child:  Text('XP', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
+            //             // ),
+            //           ]
+            //       )),
+            //     ],
+            //   ),
+            // ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
-          child: Row(
-            children: [
-              Text('Base Experience', style: theme.textTheme.bodyMedium,),
-              const SizedBox(width: 40, ),
-              Text('${pokemon.baseExperience} CAL', style: theme.textTheme.bodySmall,)
-            ],
-          ),
+        const SizedBox(height: 8.0,),
+        const Text('Types', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for(PokemonTypesEntity type in (pokemon.types ?? [])) type.pokemonType?.name == null ? const SizedBox.shrink() : Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Chip(label: Text(type.pokemonType?.name?.capitalize() ?? "", style: theme.textTheme.bodySmall,), backgroundColor: theme.primaryColorLight,),
+            )
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 0.0),
-          child: Row(
-            children: [
-              Text('Abilities', style: theme.textTheme.bodyMedium,),
-              const SizedBox(width: 90, ),
-              Flexible(child: Text('$abilities, ', style: theme.textTheme.bodySmall,))
-            ],
-          ),
+        const SizedBox(height: 8.0,),
+        const Text('Abilities', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for(AbilitiesEntity ability in (pokemon.abilities ?? [])) ability.ability?.name == null ? const SizedBox.shrink() : Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Chip(label: Text(ability.ability!.name!.capitalize(), style: theme.textTheme.bodySmall,), backgroundColor: theme.primaryColorLight,),
+            )
+          ],
         ),
-
+        const SizedBox(height: 8.0,),
+        const Text('Egg Groups', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for(DataEntity egg in (pokemon.eggGroups ?? [])) egg.name == null ? const SizedBox.shrink() : Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Chip(label: Text(egg.name?.capitalize() ?? "", style: theme.textTheme.bodySmall,), backgroundColor: theme.primaryColorLight,),
+            )
+          ],
+        ),
+        disableSlider ? (pokemon.variantsComplete ?? []).isEmpty ? const SizedBox.shrink() : const SizedBox(height: 8.0,) : const SizedBox.shrink(),
+        disableSlider ? (pokemon.variantsComplete ?? []).isEmpty ? const SizedBox.shrink() : const Text('Variants', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),) : const SizedBox.shrink(),
+        disableSlider ? (pokemon.variantsComplete ?? []).isEmpty ? const SizedBox.shrink() : Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for(PokemonInfoEntity variant in pokemon.variantsComplete ?? []) variant.sprites?.artWork == null ? const SizedBox.shrink() : Expanded(child: pokemonImageCard(image: variant.sprites!.artWork!,type: "Art Work", context: context))
+          ],
+        ) : const SizedBox.shrink(),
       ],
     ),
   );

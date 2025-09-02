@@ -58,7 +58,9 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
 
     final results = await Future.wait([
       _dio.get(coreDataBaseUrl),
-      _dio.get(speciesBaseUrl),
+      _dio.get(speciesBaseUrl, options: Options(
+        validateStatus: (s) => s != null && (s == 404 || (s >= 200 && s < 300)),
+      )),
       _dio.get(formBaseUrl),
     ]);
     debugPrint("${[
@@ -68,10 +70,10 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
     ]}");
 
     if (results[0].statusCode == 200 &&
-        results[1].statusCode == 200 &&
+        (results[1].statusCode == 200 || results[1].statusCode == 404) &&
         results[2].statusCode == 200) {
       var coreData = results[0].data;
-      var speciesData = results[1].data;
+      Map<String, dynamic> speciesData = results[1].statusCode == 404 ? {} : results[1].data;
       var formData = results[2].data;
 
       final description = latestEnglishDescription(speciesData);
@@ -81,13 +83,25 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
       coreData['base_happiness'] = speciesData['base_happiness'];
       coreData['capture_rate'] = speciesData['capture_rate'];
       coreData['hatch_counter'] = speciesData['hatch_counter'];
-      coreData['gender_split'] = speciesData['gender_rate'];
+      coreData['gender_rate'] = speciesData['gender_rate'];
+      coreData['habitat'] = speciesData['habitat']?['name'];
       coreData['growth_rate'] = speciesData['growth_rate']?['name'];
       coreData['egg_groups'] = speciesData['egg_groups'];
-      coreData['variants'] = speciesData['varieties']
+      if(speciesData['varieties'] != null) {
+        if(disableSlider){
+          coreData['variants'] = speciesData['varieties']
           .where((variety) => variety['is_default'] == false)
-          .map((variety) => variety['pokemon'])
-          .toList();
+              .map((variety) => variety['pokemon'])
+              .toList();
+        }
+        else{
+          coreData['variants'] = speciesData['varieties']
+          // .where((variety) => variety['is_default'] == false)
+              .map((variety) => variety['pokemon'])
+              .toList();
+        }
+
+      }
 
       // coreData['variants'] = speciesData['varieties'];
 
