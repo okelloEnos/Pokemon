@@ -56,7 +56,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
         PokemonInfoEntity pokemonWithData =
             await _useCase.coreDataRequest(name: data.name);
 
-        // final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(pokemonWithData.sprites!.artWork!));
+        final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(pokemonWithData.sprites!.artWork!));
 
         List<PokemonInfoEntity> variants = [];
         for (DataEntity variant in pokemonWithData.variants ?? []) {
@@ -69,9 +69,9 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
           }
         }
 
-        // pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: paletteGenerator.lightVibrantColor?.color ?? Colors.grey));
-        pokemonsWithData
-            .add(pokemonWithData.copyWith(variantsComplete: variants));
+        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: paletteGenerator.dominantColor?.color ?? Colors.grey));
+        // pokemonsWithData
+        //     .add(pokemonWithData.copyWith(variantsComplete: variants));
       }
       List<PokemonInfoEntity> allPokemons = [
         ...allLoadedPokemons,

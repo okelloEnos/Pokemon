@@ -18,7 +18,7 @@ class PokemonEvolutionBloc extends Bloc<PokemonEvolutionEvent, PokemonEvolutionS
     try {
       List<EvolutionPokemonEntity> pokemonsEvolution = [];
       String? url = event.evolutionChain?.url;
-      url = "https://pokeapi.co/api/v2/evolution-chain/10/";
+      // url = "https://pokeapi.co/api/v2/evolution-chain/10/";
       EvolutionEntity evolutionChain = await _useCase.evolutionDataRequest(url: url);
       // evolutionChain = evolutionChain.copyWith(evolveSpeciesFrom: event.evolvesFrom);
       ChainEntity? pokemonChain = evolutionChain.chain;
@@ -51,3 +51,9 @@ class PokemonEvolutionBloc extends Bloc<PokemonEvolutionEvent, PokemonEvolutionS
     }
   }
 }
+// todo: shimmer effect when loading evolution chain and moves
+// todo: handle error state when fetching evolution chain and moves
+// todo: Gallery list view toggle (grid/list)
+// todo: upgrade the card in gallery
+// todo: customizing the pull to refresh indicator ui and the logic to make new call
+// todo: pull more pokemon when reach the end of the list
