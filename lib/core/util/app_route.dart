@@ -44,6 +44,10 @@ final creatureRoute = GoRoute(
           BlocProvider<PokemonMoveBloc>(
             create: (context) => locator<PokemonMoveBloc>(),
           ),
+          BlocProvider<PokemonEvolutionBloc>(
+            create: (context) => locator<PokemonEvolutionBloc>(),
+          ),
+
         ],
         child: SinglePokemonScreen(pokemon: pokemon),
       );

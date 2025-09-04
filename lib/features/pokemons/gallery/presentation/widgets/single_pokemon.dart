@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokemon/features/pokemons/pokemon_evolution/pokemon_evolution_barrel.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
 
@@ -190,6 +191,10 @@ static const List<Tab> pokemonsTabs = <Tab>[
               case "Stats":
                 return pokemonStatsWidget(pokemon: widget.pokemonInfo, context: context);
               case "Evolution" :
+                context.read<PokemonEvolutionBloc>().add(FetchEvolutionChainEvent(
+                  evolvesFrom: widget.pokemonInfo.evolvesFrom,
+                  evolutionChain: widget.pokemonInfo.evolutionChain
+                ));
                 return pokemonEvolutionWidget(pokemon: widget.pokemonInfo, context: context);
               case "About" :
               default:
@@ -513,16 +518,32 @@ Widget pokemonStatsWidget({required PokemonInfoEntity pokemon, required BuildCon
 
 Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   // final theme = Theme.of(context);
-  return Column(
-    children: [
-      Row(
+  return BlocBuilder<PokemonEvolutionBloc, PokemonEvolutionState>(
+  builder: (context, state) {
+    if(state is PokemonEvolutionLoaded){
+      List<EvolutionPokemonEntity> evolutionChain = state.evolution;
+      return Column(
         children: [
-          const Text('Height'),
-          Text('${pokemon.pokemonHeight}')
+          Row(
+            children: [
+              const Text('Height'),
+              Text('${pokemon.pokemonHeight}')
+            ],
+          )
         ],
-      )
-    ],
-  );
+      );
+    }
+    else if (state is PokemonEvolutionError){
+      return Center(
+        child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium,),
+      );
+    }
+
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  },
+);
 }
 
 Widget pokemonMovesWidget({required PokemonInfoEntity pokemon, required BuildContext context}){

@@ -49,9 +49,9 @@ class GalleryRepositoryImpl implements GalleryRepository {
   }
 
   @override
-  Future<DataModel> retrieveEvolutionData({required String? name}) async {
-    var evolutionData = await _remoteDataSource.retrieveEvolutionData(name: name);
-    DataModel evolution = DataModel.fromJson(evolutionData);
+  Future<EvolutionModel> retrieveEvolutionData({required String? url}) async {
+    var evolutionData = await _remoteDataSource.retrieveEvolutionData(url: url);
+    EvolutionModel evolution = EvolutionModel.fromJson(evolutionData);
     return evolution;
   }
 

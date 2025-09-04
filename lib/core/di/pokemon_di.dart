@@ -21,4 +21,7 @@ void invokePokemonDI({required GetIt locator}) {
   locator.registerFactory(
           () => PokemonMoveBloc(useCase: locator()));
 
+  locator.registerFactory(
+          () => PokemonEvolutionBloc(useCase: locator()));
+
 }

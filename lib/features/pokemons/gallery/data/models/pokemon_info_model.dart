@@ -25,6 +25,8 @@ class PokemonInfoModel extends PokemonInfoEntity {
     String? habitat,
     List<DataModel>? eggGroups,
     List<PokemonInfoModel>? variantsComplete,
+    DataModel? evolutionChain,
+    DataModel? evolvesFrom,
   }) : super(
             pokemonName: pokemonName,
             description: description,
@@ -46,7 +48,9 @@ class PokemonInfoModel extends PokemonInfoEntity {
             growthRate: growthRate,
             habitat: habitat,
             eggGroups: eggGroups,
-            variantsComplete: variantsComplete);
+            variantsComplete: variantsComplete,
+  evolutionChain: evolutionChain,
+  evolvesFrom: evolvesFrom);
 
   Map<String, dynamic> toJson() {
     return {
@@ -86,6 +90,8 @@ class PokemonInfoModel extends PokemonInfoEntity {
       "egg_groups": eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg).toJson())
           .toList(),
+      "evolution_chain": evolutionChain != null ? DataModel.fromEntity(entity: evolutionChain).toJson() : null,
+      "evolves_from": evolvesFrom != null ? DataModel.fromEntity(entity: evolvesFrom).toJson() : null,
     };
   }
 
@@ -136,6 +142,8 @@ class PokemonInfoModel extends PokemonInfoEntity {
       habitat: json['habitat'],
       eggGroups: eggs,
       variantsComplete: variantsComplete,
+      evolutionChain: json['evolution_chain'] != null ? DataModel.fromJson(json['evolution_chain']) : null,
+      evolvesFrom: json['evolves_from'] != null ? DataModel.fromJson(json['evolves_from']) : null,
     );
   }
 
@@ -176,6 +184,8 @@ class PokemonInfoModel extends PokemonInfoEntity {
       eggGroups: entity.eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg))
           .toList(),
+      evolutionChain: entity.evolutionChain != null ? DataModel.fromEntity(entity: entity.evolutionChain!) : null,
+      evolvesFrom: entity.evolvesFrom != null ? DataModel.fromEntity(entity: entity.evolvesFrom!) : null,
     );
   }
 }
@@ -538,3 +548,177 @@ class MachineModel extends MachineEntity {
   }
 }
 
+class EvolutionModel extends EvolutionEntity {
+  const EvolutionModel({DataModel? species, List<DataModel>? evolvesTo, ChainModel? chain})
+      : super(species: species, evolvesTo: evolvesTo, chain: chain);
+
+  factory EvolutionModel.fromJson(Map<String, dynamic> json) {
+    List<DataModel> evolvesTo = parseList<DataModel>(
+        json: json['evolves_to'],
+        fromJson: (map) => DataModel.fromJson(map));
+
+
+    return EvolutionModel(
+      species: json['species'] != null ? DataModel.fromJson(json['species']) : null,
+      evolvesTo: evolvesTo,
+      chain: json['chain'] != null ? ChainModel.fromJson(json['chain']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "species": species != null ? DataModel.fromEntity(entity: species).toJson() : null,
+      "evolves_to": evolvesTo?.map((evolve) => DataModel.fromEntity(entity: evolve).toJson()).toList(),
+      "chain": chain != null ? ChainModel.fromEntity(entity: chain).toJson() : null
+    };
+  }
+
+  factory EvolutionModel.fromEntity(EvolutionEntity entity) {
+    return EvolutionModel(
+      species: entity.species != null ? DataModel.fromEntity(entity: entity.species) : null,
+      evolvesTo: entity.evolvesTo?.map((evolve) => DataModel.fromEntity(entity: evolve)).toList(),
+      chain: entity.chain != null ? ChainModel.fromEntity(entity: entity.chain) : null
+    );
+  }
+}
+
+class ChainModel extends ChainEntity {
+  const ChainModel({bool? isBaby, List<EvolutionDetailModel>? evolutionDetails,
+    DataModel? species, List<ChainModel>? evolvesTo})
+      : super(species: species, evolvesTo: evolvesTo, isBaby: isBaby, evolutionDetails: evolutionDetails);
+
+  factory ChainModel.fromJson(Map<String, dynamic> json) {
+    List<ChainModel> evolvesTo = parseList<ChainModel>(
+        json: json['evolves_to'],
+        fromJson: (map) => ChainModel.fromJson(map));
+
+    return ChainModel(
+      species: json['species'] != null ? DataModel.fromJson(json['species']) : null,
+      evolvesTo: evolvesTo,
+      isBaby: json['is_baby'],
+      evolutionDetails: parseList<EvolutionDetailModel>(
+          json: json['evolution_details'],
+          fromJson: (map) => EvolutionDetailModel.fromJson(map))
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "species": species != null ? DataModel.fromEntity(entity: species).toJson() : null,
+      "evolves_to": evolvesTo?.map((evolve) => ChainModel.fromEntity(entity: evolve).toJson()).toList(),
+      "is_baby": isBaby,
+      "evolution_details": evolutionDetails?.map((detail) => EvolutionDetailModel.fromEntity(entity: detail).toJson()).toList()
+    };
+  }
+
+  factory ChainModel.fromEntity({required ChainEntity? entity}) {
+    return ChainModel(
+      species: entity?.species != null ? DataModel.fromEntity(entity: entity?.species) : null,
+      evolvesTo: entity?.evolvesTo?.map((evolve) => ChainModel.fromEntity(entity: evolve)).toList(),
+      isBaby: entity?.isBaby,
+      evolutionDetails: entity?.evolutionDetails?.map((detail) => EvolutionDetailModel.fromEntity(entity: detail)).toList()
+    );
+  }
+}
+
+class EvolutionDetailModel extends EvolutionDetailEntity {
+  const EvolutionDetailModel({String? gender, String? heldItem, String? item,
+    String? knownMove, String? knownMoveType, String? location, String? minAffection,
+    String? minBeauty, String? minHappiness, String? minLevel, String? needsOverworldRain,
+    String? partySpecies, String? partyType, String? relativePhysicalStats,
+    String? timeOfDay, String? tradeSpecies, DataModel? trigger, String? turnUpsideDown})
+      : super(gender: gender,
+      heldItem: heldItem,
+      item: item,
+      knownMove: knownMove,
+      knownMoveType: knownMoveType,
+      location: location,
+      minAffection: minAffection,
+      minBeauty: minBeauty,
+      minHappiness: minHappiness,
+      minLevel: minLevel,
+      needsOverworldRain: needsOverworldRain,
+      partySpecies: partySpecies,
+      partyType: partyType,
+      relativePhysicalStats: relativePhysicalStats,
+      timeOfDay: timeOfDay,
+      tradeSpecies: tradeSpecies,
+      trigger: trigger,
+      turnUpsideDown: turnUpsideDown);
+
+  factory EvolutionDetailModel.fromJson(Map<String, dynamic> json) {
+    return EvolutionDetailModel(
+      gender: json['gender']?.toString(),
+      heldItem: json['held_item']?.toString(),
+      item: json['item']?.toString(),
+      knownMove: json['known_move']?.toString(),
+      knownMoveType: json['known_move_type']?.toString(),
+      location: json['location']?.toString(),
+      minAffection: json['min_affection']?.toString(),
+      minBeauty: json['min_beauty']?.toString(),
+      minHappiness: json['min_happiness']?.toString(),
+      minLevel: json['min_level']?.toString(),
+      needsOverworldRain: json['needs_overworld_rain']?.toString(),
+      partySpecies: json['party_species']?.toString(),
+      partyType: json['party_type']?.toString(),
+      relativePhysicalStats: json['relative_physical_stats']?.toString(),
+      timeOfDay: json['time_of_day']?.toString(),
+      tradeSpecies: json['trade_species']?.toString(),
+      trigger: json['trigger'] != null
+          ? DataModel.fromJson(json['trigger'])
+          : null,
+      turnUpsideDown: json['turn_upside_down']?.toString(),
+
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "gender": gender,
+      "held_item": heldItem,
+      "item": item,
+      "known_move": knownMove,
+      "known_move_type": knownMoveType,
+      "location": location,
+      "min_affection": minAffection,
+      "min_beauty": minBeauty,
+      "min_happiness": minHappiness,
+      "min_level": minLevel,
+      "needs_overworld_rain": needsOverworldRain,
+      "party_species": partySpecies,
+      "party_type": partyType,
+      "relative_physical_stats": relativePhysicalStats,
+      "time_of_day": timeOfDay,
+      "trade_species": tradeSpecies,
+      "trigger": trigger != null ? DataModel
+          .fromEntity(entity: trigger)
+          .toJson() : null,
+      "turn_upside_down": turnUpsideDown
+    };
+  }
+
+  factory EvolutionDetailModel.fromEntity(
+      {required EvolutionDetailEntity entity}) {
+    return EvolutionDetailModel(
+        gender: entity.gender,
+        heldItem: entity.heldItem,
+        item: entity.item,
+        knownMove: entity.knownMove,
+        knownMoveType: entity.knownMoveType,
+        location: entity.location,
+        minAffection: entity.minAffection,
+        minBeauty: entity.minBeauty,
+        minHappiness: entity.minHappiness,
+        minLevel: entity.minLevel,
+        needsOverworldRain: entity.needsOverworldRain,
+        partySpecies: entity.partySpecies,
+        partyType: entity.partyType,
+        relativePhysicalStats: entity.relativePhysicalStats,
+        timeOfDay: entity.timeOfDay,
+        tradeSpecies: entity.tradeSpecies,
+        trigger: entity.trigger != null ? DataModel.fromEntity(
+            entity: entity.trigger) : null,
+        turnUpsideDown: entity.turnUpsideDown
+    );
+  }
+}

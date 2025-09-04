@@ -13,5 +13,5 @@ abstract class GalleryRepository {
 
   Future<MovesEntity> retrieveMovesData({required String? url});
 
-  Future<DataEntity> retrieveEvolutionData({required String? name});
+  Future<EvolutionEntity> retrieveEvolutionData({required String? url});
 }
