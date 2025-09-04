@@ -18,6 +18,16 @@ class GalleryRepositoryImpl implements GalleryRepository {
     return pokemons;
   }
 
+  // @override
+  // Future<PokemonInfoModel> retrievePokemonsWithTheirData(
+  //     {required String? name}) async {
+  //   var infoData = await _remoteDataSource.retrievePokemonsData(name: name);
+  //
+  //   PokemonInfoModel pokemonInfo = PokemonInfoModel.fromJson(infoData);
+  //
+  //   return pokemonInfo;
+  // }
+
   @override
   Future<PokemonInfoModel> retrievePokemonsWithTheirData(
       {required String? name}) async {
@@ -29,15 +39,15 @@ class GalleryRepositoryImpl implements GalleryRepository {
   }
 
   @override
-  Future<dynamic> retrieveFormData({required String? name}) async {
-    var formData = await _remoteDataSource.retrieveFormData(name: name);
+  Future<dynamic> retrieveFormData({required String? url}) async {
+    var formData = await _remoteDataSource.retrieveFormData(url: url);
     return formData;
   }
 
   @override
-  Future<DataModel> retrieveSpeciesData({required String? name}) async {
-    var speciesData = await _remoteDataSource.retrieveSpeciesData(name: name);
-    DataModel species = DataModel.fromJson(speciesData);
+  Future<SpeciesModel> retrieveSpeciesData({required String? url}) async {
+    var speciesData = await _remoteDataSource.retrieveSpeciesData(url: url);
+    SpeciesModel species = SpeciesModel.fromJson(speciesData);
     return species;
   }
 
@@ -54,5 +64,4 @@ class GalleryRepositoryImpl implements GalleryRepository {
     EvolutionModel evolution = EvolutionModel.fromJson(evolutionData);
     return evolution;
   }
-
 }

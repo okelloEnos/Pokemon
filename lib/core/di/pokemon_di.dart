@@ -5,23 +5,20 @@ import '../../features/features_barrel.dart';
 void invokePokemonDI({required GetIt locator}) {
   // data source
   locator.registerLazySingleton<GalleryRemoteDataSource>(
-          () => GalleryRemoteDataSourceImpl(dio: locator()));
+      () => GalleryRemoteDataSourceImpl(dio: locator()));
 
   // repository
   locator.registerLazySingleton<GalleryRepository>(
-          () => GalleryRepositoryImpl(remoteDataSource: locator()));
+      () => GalleryRepositoryImpl(remoteDataSource: locator()));
 
   // use case
-  locator.registerLazySingleton(() => FetchAllPokemonUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => FetchAllPokemonUseCase(repository: locator()));
 
   // bloc
-  locator.registerFactory(
-      () => PokemonsBloc(pokemonRepository: locator()));
+  locator.registerFactory(() => PokemonsBloc(useCase: locator()));
 
-  locator.registerFactory(
-          () => PokemonMoveBloc(useCase: locator()));
+  locator.registerFactory(() => PokemonMoveBloc(useCase: locator()));
 
-  locator.registerFactory(
-          () => PokemonEvolutionBloc(useCase: locator()));
-
+  locator.registerFactory(() => PokemonEvolutionBloc(useCase: locator()));
 }

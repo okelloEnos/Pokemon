@@ -28,6 +28,7 @@ class PokemonInfoEntity extends Equatable {
   final Color? color;
   final DataEntity? evolutionChain;
   final DataEntity? evolvesFrom;
+  final SpeciesEntity? speciesData;
 
   @override
   List<Object?> get props => [
@@ -49,12 +50,13 @@ class PokemonInfoEntity extends Equatable {
         hatchCounter,
         genderSplit,
         growthRate,
-    habitat,
+        habitat,
         eggGroups,
         variantsComplete,
         color,
         evolutionChain,
         evolvesFrom,
+        speciesData,
       ];
 
   const PokemonInfoEntity(
@@ -81,7 +83,8 @@ class PokemonInfoEntity extends Equatable {
       this.eggGroups,
       this.color,
       this.evolutionChain,
-      this.evolvesFrom});
+      this.evolvesFrom,
+      this.speciesData});
 
   // copyWith method
   PokemonInfoEntity copyWith({
@@ -109,6 +112,7 @@ class PokemonInfoEntity extends Equatable {
     Color? color,
     DataEntity? evolutionChain,
     DataEntity? evolvesFrom,
+    SpeciesEntity? speciesData,
   }) {
     return PokemonInfoEntity(
       pokemonName: pokemonName ?? this.pokemonName,
@@ -123,6 +127,93 @@ class PokemonInfoEntity extends Equatable {
       sprites: sprites ?? this.sprites,
       stats: stats ?? this.stats,
       types: types ?? this.types,
+      variants: variants ?? this.variants,
+      baseHappiness: baseHappiness ?? this.baseHappiness,
+      captureRate: captureRate ?? this.captureRate,
+      hatchCounter: hatchCounter ?? this.hatchCounter,
+      genderSplit: genderSplit ?? this.genderSplit,
+      growthRate: growthRate ?? this.growthRate,
+      habitat: habitat ?? this.habitat,
+      eggGroups: eggGroups ?? this.eggGroups,
+      variantsComplete: variantsComplete ?? this.variantsComplete,
+      color: color ?? this.color,
+      evolutionChain: evolutionChain ?? this.evolutionChain,
+      evolvesFrom: evolvesFrom ?? this.evolvesFrom,
+      speciesData: speciesData ?? this.speciesData,
+    );
+  }
+}
+
+class SpeciesEntity extends Equatable {
+  final String? description;
+  final String? genus;
+  final int? baseHappiness;
+  final int? captureRate;
+  final int? hatchCounter;
+  final int? genderSplit;
+  final String? growthRate;
+  final String? habitat;
+  final List<DataEntity>? eggGroups;
+  final Color? color;
+  final DataEntity? evolutionChain;
+  final DataEntity? evolvesFrom;
+  final List<PokemonInfoEntity>? variantsComplete;
+  final List<DataEntity>? variants;
+
+  @override
+  List<Object?> get props => [
+        description,
+        genus,
+        variants,
+        baseHappiness,
+        captureRate,
+        hatchCounter,
+        genderSplit,
+        growthRate,
+        habitat,
+        eggGroups,
+        variantsComplete,
+        color,
+        evolutionChain,
+        evolvesFrom,
+      ];
+
+  const SpeciesEntity(
+      {this.description,
+      this.genus,
+      this.variantsComplete,
+      this.variants,
+      this.baseHappiness,
+      this.captureRate,
+      this.hatchCounter,
+      this.growthRate,
+      this.habitat,
+      this.genderSplit,
+      this.eggGroups,
+      this.color,
+      this.evolutionChain,
+      this.evolvesFrom});
+
+  // copyWith method
+  PokemonInfoEntity copyWith({
+    String? description,
+    String? genus,
+    List<DataEntity>? variants,
+    int? baseHappiness,
+    int? captureRate,
+    int? hatchCounter,
+    int? genderSplit,
+    String? growthRate,
+    String? habitat,
+    List<DataEntity>? eggGroups,
+    List<PokemonInfoEntity>? variantsComplete,
+    Color? color,
+    DataEntity? evolutionChain,
+    DataEntity? evolvesFrom,
+  }) {
+    return PokemonInfoEntity(
+      description: description ?? this.description,
+      genus: genus ?? this.genus,
       variants: variants ?? this.variants,
       baseHappiness: baseHappiness ?? this.baseHappiness,
       captureRate: captureRate ?? this.captureRate,
@@ -170,18 +261,47 @@ class MovesEntity extends Equatable {
   final DataEntity? target;
   final DataEntity? type;
 
-
-  const MovesEntity({this.move, this.versionGroupDetails, this.accuracy,
-    this.contestCombos, this.contestEffect, this.contestType, this.damageClass,
-    this.effectEntries, this.flavourTextEntries, this.generation,
-    this.learnedByPokemon, this.machines, this.power, this.pp, this.priority,
-    this.superContestEffect, this.target, this.type});
+  const MovesEntity(
+      {this.move,
+      this.versionGroupDetails,
+      this.accuracy,
+      this.contestCombos,
+      this.contestEffect,
+      this.contestType,
+      this.damageClass,
+      this.effectEntries,
+      this.flavourTextEntries,
+      this.generation,
+      this.learnedByPokemon,
+      this.machines,
+      this.power,
+      this.pp,
+      this.priority,
+      this.superContestEffect,
+      this.target,
+      this.type});
 
   @override
-  List<Object?> get props => [move, versionGroupDetails, accuracy, contestCombos,
-    contestEffect, contestType, damageClass, effectEntries, flavourTextEntries,
-    generation, learnedByPokemon, machines, power, pp, priority,
-    superContestEffect, target, type];
+  List<Object?> get props => [
+        move,
+        versionGroupDetails,
+        accuracy,
+        contestCombos,
+        contestEffect,
+        contestType,
+        damageClass,
+        effectEntries,
+        flavourTextEntries,
+        generation,
+        learnedByPokemon,
+        machines,
+        power,
+        pp,
+        priority,
+        superContestEffect,
+        target,
+        type
+      ];
 
   // copyWith method
   MovesEntity copyWith({
@@ -315,7 +435,8 @@ class EvolutionEntity extends Equatable {
   final List<DataEntity>? evolvesTo;
   final ChainEntity? chain;
 
-  const EvolutionEntity({this.species, this.evolvesTo, this.chain, this.evolveSpeciesFrom});
+  const EvolutionEntity(
+      {this.species, this.evolvesTo, this.chain, this.evolveSpeciesFrom});
 
   @override
   List<Object?> get props => [species, evolvesTo, chain, evolveSpeciesFrom];
@@ -342,7 +463,8 @@ class ChainEntity extends Equatable {
   final DataEntity? species;
   final List<ChainEntity>? evolvesTo;
 
-  const ChainEntity({this.species, this.evolvesTo, this.evolutionDetails, this.isBaby});
+  const ChainEntity(
+      {this.species, this.evolvesTo, this.evolutionDetails, this.isBaby});
 
   @override
   List<Object?> get props => [species, evolvesTo, evolutionDetails, isBaby];
@@ -368,22 +490,47 @@ class EvolutionDetailEntity extends Equatable {
   final DataEntity? trigger;
   final String? turnUpsideDown;
 
-  const EvolutionDetailEntity({
-    this.gender, this.heldItem, this.item, this.knownMove, this.knownMoveType,
-    this.location, this.minAffection, this.minBeauty, this.minHappiness,
-    this.minLevel, this.needsOverworldRain, this.partySpecies, this.partyType,
-    this.relativePhysicalStats, this.timeOfDay, this.tradeSpecies, this.trigger,
-    this.turnUpsideDown
-});
+  const EvolutionDetailEntity(
+      {this.gender,
+      this.heldItem,
+      this.item,
+      this.knownMove,
+      this.knownMoveType,
+      this.location,
+      this.minAffection,
+      this.minBeauty,
+      this.minHappiness,
+      this.minLevel,
+      this.needsOverworldRain,
+      this.partySpecies,
+      this.partyType,
+      this.relativePhysicalStats,
+      this.timeOfDay,
+      this.tradeSpecies,
+      this.trigger,
+      this.turnUpsideDown});
 
   @override
   List<Object?> get props => [
-    gender, heldItem, item, knownMove, knownMoveType, location, minAffection,
-    minBeauty, minHappiness, minLevel, needsOverworldRain, partySpecies,
-    partyType, relativePhysicalStats, timeOfDay, tradeSpecies, trigger,
-    turnUpsideDown
-  ];
-
+        gender,
+        heldItem,
+        item,
+        knownMove,
+        knownMoveType,
+        location,
+        minAffection,
+        minBeauty,
+        minHappiness,
+        minLevel,
+        needsOverworldRain,
+        partySpecies,
+        partyType,
+        relativePhysicalStats,
+        timeOfDay,
+        tradeSpecies,
+        trigger,
+        turnUpsideDown
+      ];
 }
 
 class EvolutionPokemonEntity extends Equatable {
@@ -392,7 +539,8 @@ class EvolutionPokemonEntity extends Equatable {
   final bool? isBaby;
   final bool? isLast;
 
-  const EvolutionPokemonEntity({this.name, this.imageUrl, this.isBaby, this.isLast});
+  const EvolutionPokemonEntity(
+      {this.name, this.imageUrl, this.isBaby, this.isLast});
 
   @override
   List<Object?> get props => [name, imageUrl, isBaby, isLast];

@@ -27,6 +27,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
     List<PokemonInfoModel>? variantsComplete,
     DataModel? evolutionChain,
     DataModel? evolvesFrom,
+    SpeciesModel? speciesData,
   }) : super(
             pokemonName: pokemonName,
             description: description,
@@ -49,8 +50,9 @@ class PokemonInfoModel extends PokemonInfoEntity {
             habitat: habitat,
             eggGroups: eggGroups,
             variantsComplete: variantsComplete,
-  evolutionChain: evolutionChain,
-  evolvesFrom: evolvesFrom);
+            evolutionChain: evolutionChain,
+            evolvesFrom: evolvesFrom,
+            speciesData: speciesData);
 
   Map<String, dynamic> toJson() {
     return {
@@ -90,8 +92,15 @@ class PokemonInfoModel extends PokemonInfoEntity {
       "egg_groups": eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg).toJson())
           .toList(),
-      "evolution_chain": evolutionChain != null ? DataModel.fromEntity(entity: evolutionChain).toJson() : null,
-      "evolves_from": evolvesFrom != null ? DataModel.fromEntity(entity: evolvesFrom).toJson() : null,
+      "evolution_chain": evolutionChain != null
+          ? DataModel.fromEntity(entity: evolutionChain).toJson()
+          : null,
+      "evolves_from": evolvesFrom != null
+          ? DataModel.fromEntity(entity: evolvesFrom).toJson()
+          : null,
+      "species_data": speciesData != null
+          ? SpeciesModel.fromEntity(entity: speciesData).toJson()
+          : null,
     };
   }
 
@@ -107,8 +116,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
         json: json['types'],
         fromJson: (map) => PokemonTypesModel.fromJson(map));
     List<DataModel> variants = parseList<DataModel>(
-        json: json['variants'],
-        fromJson: (map) => DataModel.fromJson(map));
+        json: json['variants'], fromJson: (map) => DataModel.fromJson(map));
     List<PokemonInfoModel> variantsComplete = parseList<PokemonInfoModel>(
         json: json['variants_complete'],
         fromJson: (map) => PokemonInfoModel.fromJson(map));
@@ -122,8 +130,10 @@ class PokemonInfoModel extends PokemonInfoEntity {
       description: json['description'],
       genus: json['genus'],
       baseExperience: json['base_experience'],
-      pokemonWeight: json['weight'], // hectograms
-      pokemonHeight: json['height'], // decimetres
+      pokemonWeight: json['weight'],
+      // hectograms
+      pokemonHeight: json['height'],
+      // decimetres
       abilities: abilities,
       moves: moves,
       species:
@@ -142,8 +152,12 @@ class PokemonInfoModel extends PokemonInfoEntity {
       habitat: json['habitat'],
       eggGroups: eggs,
       variantsComplete: variantsComplete,
-      evolutionChain: json['evolution_chain'] != null ? DataModel.fromJson(json['evolution_chain']) : null,
-      evolvesFrom: json['evolves_from'] != null ? DataModel.fromJson(json['evolves_from']) : null,
+      evolutionChain: json['evolution_chain'] != null
+          ? DataModel.fromJson(json['evolution_chain'])
+          : null,
+      evolvesFrom: json['evolves_from'] != null
+          ? DataModel.fromJson(json['evolves_from'])
+          : null,
     );
   }
 
@@ -184,8 +198,130 @@ class PokemonInfoModel extends PokemonInfoEntity {
       eggGroups: entity.eggGroups
           ?.map((egg) => DataModel.fromEntity(entity: egg))
           .toList(),
-      evolutionChain: entity.evolutionChain != null ? DataModel.fromEntity(entity: entity.evolutionChain!) : null,
-      evolvesFrom: entity.evolvesFrom != null ? DataModel.fromEntity(entity: entity.evolvesFrom!) : null,
+      evolutionChain: entity.evolutionChain != null
+          ? DataModel.fromEntity(entity: entity.evolutionChain!)
+          : null,
+      evolvesFrom: entity.evolvesFrom != null
+          ? DataModel.fromEntity(entity: entity.evolvesFrom!)
+          : null,
+    );
+  }
+}
+
+class SpeciesModel extends SpeciesEntity {
+  const SpeciesModel({
+    String? description,
+    String? genus,
+    List<DataModel>? variants,
+    int? baseHappiness,
+    int? captureRate,
+    int? hatchCounter,
+    int? genderSplit,
+    String? growthRate,
+    String? habitat,
+    List<DataModel>? eggGroups,
+    List<PokemonInfoModel>? variantsComplete,
+    DataModel? evolutionChain,
+    DataModel? evolvesFrom,
+  }) : super(
+            description: description,
+            genus: genus,
+            variants: variants,
+            baseHappiness: baseHappiness,
+            captureRate: captureRate,
+            hatchCounter: hatchCounter,
+            genderSplit: genderSplit,
+            growthRate: growthRate,
+            habitat: habitat,
+            eggGroups: eggGroups,
+            variantsComplete: variantsComplete,
+            evolutionChain: evolutionChain,
+            evolvesFrom: evolvesFrom);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "description": description,
+      "genus": genus,
+      "variants": variants
+          ?.map((variant) => DataModel.fromEntity(entity: variant).toJson())
+          .toList(),
+      "variants_complete": variantsComplete
+          ?.map((variant) => PokemonInfoModel.fromEntity(variant).toJson())
+          .toList(),
+      "base_happiness": baseHappiness,
+      "capture_rate": captureRate,
+      "hatch_counter": hatchCounter,
+      "gender_split": genderSplit,
+      "growth_rate": growthRate,
+      "habitat": habitat,
+      "egg_groups": eggGroups
+          ?.map((egg) => DataModel.fromEntity(entity: egg).toJson())
+          .toList(),
+      "evolution_chain": evolutionChain != null
+          ? DataModel.fromEntity(entity: evolutionChain).toJson()
+          : null,
+      "evolves_from": evolvesFrom != null
+          ? DataModel.fromEntity(entity: evolvesFrom).toJson()
+          : null,
+    };
+  }
+
+  factory SpeciesModel.fromJson(Map<String, dynamic> json) {
+    List<DataModel> variants = parseList<DataModel>(
+        json: json['variants'], fromJson: (map) => DataModel.fromJson(map));
+    List<PokemonInfoModel> variantsComplete = parseList<PokemonInfoModel>(
+        json: json['variants_complete'],
+        fromJson: (map) => PokemonInfoModel.fromJson(map));
+
+    List<DataModel> eggs = parseList<DataModel>(
+        json: json['egg_groups'], fromJson: (map) => DataModel.fromJson(map));
+
+    return SpeciesModel(
+      description: json['description'],
+      genus: json['genus'],
+      variants: variants,
+      baseHappiness: json['base_happiness'],
+      captureRate: json['capture_rate'],
+      hatchCounter: json['hatch_counter'],
+      genderSplit: json['gender_rate'],
+      growthRate: json['growth_rate'],
+      habitat: json['habitat'],
+      eggGroups: eggs,
+      variantsComplete: variantsComplete,
+      evolutionChain: json['evolution_chain'] != null
+          ? DataModel.fromJson(json['evolution_chain'])
+          : null,
+      evolvesFrom: json['evolves_from'] != null
+          ? DataModel.fromJson(json['evolves_from'])
+          : null,
+    );
+  }
+
+  factory SpeciesModel.fromEntity({required SpeciesEntity? entity}) {
+    return SpeciesModel(
+      description: entity?.description,
+      genus: entity?.genus,
+      variants: entity?.variants
+          ?.map((variant) => DataModel.fromEntity(entity: variant))
+          .toList(),
+      variantsComplete: entity?.variantsComplete
+          ?.map((variant) => PokemonInfoModel.fromEntity(variant))
+          .toList(),
+      baseHappiness: entity?.baseHappiness,
+      captureRate: entity?.captureRate,
+      hatchCounter: entity?.hatchCounter,
+      genderSplit: entity?.genderSplit,
+      growthRate: entity?.growthRate,
+      habitat: entity?.habitat,
+      eggGroups: entity?.eggGroups
+          ?.map((egg) => DataModel.fromEntity(entity: egg))
+          .toList(),
+      evolutionChain: entity?.evolutionChain != null
+          ? DataModel.fromEntity(entity: entity!.evolutionChain!)
+          : null,
+      evolvesFrom: entity?.evolvesFrom != null
+          ? DataModel.fromEntity(entity: entity!.evolvesFrom!)
+          : null,
     );
   }
 }
@@ -244,55 +380,65 @@ class MovesModel extends MovesEntity {
     String? superContestEffect,
     DataModel? target,
     DataModel? type,
-  }) : super(move: move, versionGroupDetails: versionGroupDetails,
-    accuracy: accuracy, contestCombos: contestCombos,
-    contestEffect: contestEffect, contestType: contestType,
-    damageClass: damageClass, effectEntries: effectEntries,
-    flavourTextEntries: flavourTextEntries, generation: generation,
-    learnedByPokemon: learnedByPokemon, machines: machines,
-    power: power, pp: pp, priority: priority,
-    superContestEffect: superContestEffect, target: target,
-    type: type);
+  }) : super(
+            move: move,
+            versionGroupDetails: versionGroupDetails,
+            accuracy: accuracy,
+            contestCombos: contestCombos,
+            contestEffect: contestEffect,
+            contestType: contestType,
+            damageClass: damageClass,
+            effectEntries: effectEntries,
+            flavourTextEntries: flavourTextEntries,
+            generation: generation,
+            learnedByPokemon: learnedByPokemon,
+            machines: machines,
+            power: power,
+            pp: pp,
+            priority: priority,
+            superContestEffect: superContestEffect,
+            target: target,
+            type: type);
 
   factory MovesModel.fromJson(Map<String, dynamic> json) {
     return MovesModel(
-      move: json['move'] != null ? DataModel.fromJson(json['move']) : null,
-      versionGroupDetails: parseList<VersionGroupDetailsModel>(
-          json: json['version_group_details'],
-          fromJson: (map) => VersionGroupDetailsModel.fromJson(map)),
-      accuracy: json['accuracy'],
-      contestCombos: json['contest_combos'],
-      contestEffect: json['contest_effect'] != null
-          ? DataModel.fromJson(json['contest_effect'])
-          : null,
-      contestType: json['contest_type'] != null
-          ? DataModel.fromJson(json['contest_type'])
-          : null,
-      damageClass: json['damage_class'] != null
-          ? DataModel.fromJson(json['damage_class'])
-          : null,
-      effectEntries: parseList<EffectModel>(
-          json: json['effect_entries'],
-          fromJson: (map) => EffectModel.fromJson(map)),
-      flavourTextEntries: parseList<MoveFlavourModel>(
-          json: json['flavor_text_entries'],
-          fromJson: (map) => MoveFlavourModel.fromJson(map)),
-      generation: json['generation'] != null
-          ? DataModel.fromJson(json['generation'])
-          : null,
-      learnedByPokemon: parseList<DataModel>(
-          json: json['learned_by_pokemon'],
-          fromJson: (map) => DataModel.fromJson(map)),
-      machines: parseList<MachineModel>(
-          json: json['machines'],
-          fromJson: (map) => MachineModel.fromJson(map)),
-      power: json['power'],
-      pp: json['pp'],
-      priority: json['priority'],
-      superContestEffect: json['super_contest_effect']?['url'],
-      target: json['target'] != null ? DataModel.fromJson(json['target']) : null,
-      type: json['type'] != null ? DataModel.fromJson(json['type']) : null
-    );
+        move: json['move'] != null ? DataModel.fromJson(json['move']) : null,
+        versionGroupDetails: parseList<VersionGroupDetailsModel>(
+            json: json['version_group_details'],
+            fromJson: (map) => VersionGroupDetailsModel.fromJson(map)),
+        accuracy: json['accuracy'],
+        contestCombos: json['contest_combos'],
+        contestEffect: json['contest_effect'] != null
+            ? DataModel.fromJson(json['contest_effect'])
+            : null,
+        contestType: json['contest_type'] != null
+            ? DataModel.fromJson(json['contest_type'])
+            : null,
+        damageClass: json['damage_class'] != null
+            ? DataModel.fromJson(json['damage_class'])
+            : null,
+        effectEntries: parseList<EffectModel>(
+            json: json['effect_entries'],
+            fromJson: (map) => EffectModel.fromJson(map)),
+        flavourTextEntries: parseList<MoveFlavourModel>(
+            json: json['flavor_text_entries'],
+            fromJson: (map) => MoveFlavourModel.fromJson(map)),
+        generation: json['generation'] != null
+            ? DataModel.fromJson(json['generation'])
+            : null,
+        learnedByPokemon: parseList<DataModel>(
+            json: json['learned_by_pokemon'],
+            fromJson: (map) => DataModel.fromJson(map)),
+        machines: parseList<MachineModel>(
+            json: json['machines'],
+            fromJson: (map) => MachineModel.fromJson(map)),
+        power: json['power'],
+        pp: json['pp'],
+        priority: json['priority'],
+        superContestEffect: json['super_contest_effect']?['url'],
+        target:
+            json['target'] != null ? DataModel.fromJson(json['target']) : null,
+        type: json['type'] != null ? DataModel.fromJson(json['type']) : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -450,8 +596,7 @@ class MoveFlavourModel extends MoveFlavourEntity {
   factory MoveFlavourModel.fromJson(Map<String, dynamic> json) {
     return MoveFlavourModel(
       text: json['flavor_text'],
-      version:
-      json['version_group'] != null
+      version: json['version_group'] != null
           ? DataModel.fromJson(json['version_group'])
           : null,
     );
@@ -460,8 +605,9 @@ class MoveFlavourModel extends MoveFlavourEntity {
   Map<String, dynamic> toJson() {
     return {
       "flavor_text": text,
-      "version_group":
-      version != null ? DataModel.fromEntity(entity: version).toJson() : null
+      "version_group": version != null
+          ? DataModel.fromEntity(entity: version).toJson()
+          : null
     };
   }
 
@@ -509,7 +655,8 @@ class VersionGroupDetailsModel extends VersionGroupDetailsEntity {
     };
   }
 
-  factory VersionGroupDetailsModel.fromEntity(VersionGroupDetailsEntity entity) {
+  factory VersionGroupDetailsModel.fromEntity(
+      VersionGroupDetailsEntity entity) {
     return VersionGroupDetailsModel(
       levelLearnedAt: entity.levelLearnedAt,
       moveLearnMethod: entity.moveLearnMethod != null
@@ -529,37 +676,42 @@ class MachineModel extends MachineEntity {
   factory MachineModel.fromJson(Map<String, dynamic> json) {
     return MachineModel(
       url: json['machine']?['url'],
-      version: json['version_group'] != null ? DataModel.fromJson(json['version_group']) : null,
+      version: json['version_group'] != null
+          ? DataModel.fromJson(json['version_group'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "url": url,
-      "version_group": version != null ? DataModel.fromEntity(entity: version).toJson() : null
+      "version_group": version != null
+          ? DataModel.fromEntity(entity: version).toJson()
+          : null
     };
   }
 
   factory MachineModel.fromEntity(MachineEntity entity) {
     return MachineModel(
-      url: entity.url,
-      version: entity.version != null ? DataModel.fromEntity(entity: entity.version) : null
-    );
+        url: entity.url,
+        version: entity.version != null
+            ? DataModel.fromEntity(entity: entity.version)
+            : null);
   }
 }
 
 class EvolutionModel extends EvolutionEntity {
-  const EvolutionModel({DataModel? species, List<DataModel>? evolvesTo, ChainModel? chain})
+  const EvolutionModel(
+      {DataModel? species, List<DataModel>? evolvesTo, ChainModel? chain})
       : super(species: species, evolvesTo: evolvesTo, chain: chain);
 
   factory EvolutionModel.fromJson(Map<String, dynamic> json) {
     List<DataModel> evolvesTo = parseList<DataModel>(
-        json: json['evolves_to'],
-        fromJson: (map) => DataModel.fromJson(map));
-
+        json: json['evolves_to'], fromJson: (map) => DataModel.fromJson(map));
 
     return EvolutionModel(
-      species: json['species'] != null ? DataModel.fromJson(json['species']) : null,
+      species:
+          json['species'] != null ? DataModel.fromJson(json['species']) : null,
       evolvesTo: evolvesTo,
       chain: json['chain'] != null ? ChainModel.fromJson(json['chain']) : null,
     );
@@ -567,84 +719,128 @@ class EvolutionModel extends EvolutionEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "species": species != null ? DataModel.fromEntity(entity: species).toJson() : null,
-      "evolves_to": evolvesTo?.map((evolve) => DataModel.fromEntity(entity: evolve).toJson()).toList(),
-      "chain": chain != null ? ChainModel.fromEntity(entity: chain).toJson() : null
+      "species": species != null
+          ? DataModel.fromEntity(entity: species).toJson()
+          : null,
+      "evolves_to": evolvesTo
+          ?.map((evolve) => DataModel.fromEntity(entity: evolve).toJson())
+          .toList(),
+      "chain":
+          chain != null ? ChainModel.fromEntity(entity: chain).toJson() : null
     };
   }
 
   factory EvolutionModel.fromEntity(EvolutionEntity entity) {
     return EvolutionModel(
-      species: entity.species != null ? DataModel.fromEntity(entity: entity.species) : null,
-      evolvesTo: entity.evolvesTo?.map((evolve) => DataModel.fromEntity(entity: evolve)).toList(),
-      chain: entity.chain != null ? ChainModel.fromEntity(entity: entity.chain) : null
-    );
+        species: entity.species != null
+            ? DataModel.fromEntity(entity: entity.species)
+            : null,
+        evolvesTo: entity.evolvesTo
+            ?.map((evolve) => DataModel.fromEntity(entity: evolve))
+            .toList(),
+        chain: entity.chain != null
+            ? ChainModel.fromEntity(entity: entity.chain)
+            : null);
   }
 }
 
 class ChainModel extends ChainEntity {
-  const ChainModel({bool? isBaby, List<EvolutionDetailModel>? evolutionDetails,
-    DataModel? species, List<ChainModel>? evolvesTo})
-      : super(species: species, evolvesTo: evolvesTo, isBaby: isBaby, evolutionDetails: evolutionDetails);
+  const ChainModel(
+      {bool? isBaby,
+      List<EvolutionDetailModel>? evolutionDetails,
+      DataModel? species,
+      List<ChainModel>? evolvesTo})
+      : super(
+            species: species,
+            evolvesTo: evolvesTo,
+            isBaby: isBaby,
+            evolutionDetails: evolutionDetails);
 
   factory ChainModel.fromJson(Map<String, dynamic> json) {
     List<ChainModel> evolvesTo = parseList<ChainModel>(
-        json: json['evolves_to'],
-        fromJson: (map) => ChainModel.fromJson(map));
+        json: json['evolves_to'], fromJson: (map) => ChainModel.fromJson(map));
 
     return ChainModel(
-      species: json['species'] != null ? DataModel.fromJson(json['species']) : null,
-      evolvesTo: evolvesTo,
-      isBaby: json['is_baby'],
-      evolutionDetails: parseList<EvolutionDetailModel>(
-          json: json['evolution_details'],
-          fromJson: (map) => EvolutionDetailModel.fromJson(map))
-    );
+        species: json['species'] != null
+            ? DataModel.fromJson(json['species'])
+            : null,
+        evolvesTo: evolvesTo,
+        isBaby: json['is_baby'],
+        evolutionDetails: parseList<EvolutionDetailModel>(
+            json: json['evolution_details'],
+            fromJson: (map) => EvolutionDetailModel.fromJson(map)));
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "species": species != null ? DataModel.fromEntity(entity: species).toJson() : null,
-      "evolves_to": evolvesTo?.map((evolve) => ChainModel.fromEntity(entity: evolve).toJson()).toList(),
+      "species": species != null
+          ? DataModel.fromEntity(entity: species).toJson()
+          : null,
+      "evolves_to": evolvesTo
+          ?.map((evolve) => ChainModel.fromEntity(entity: evolve).toJson())
+          .toList(),
       "is_baby": isBaby,
-      "evolution_details": evolutionDetails?.map((detail) => EvolutionDetailModel.fromEntity(entity: detail).toJson()).toList()
+      "evolution_details": evolutionDetails
+          ?.map((detail) =>
+              EvolutionDetailModel.fromEntity(entity: detail).toJson())
+          .toList()
     };
   }
 
   factory ChainModel.fromEntity({required ChainEntity? entity}) {
     return ChainModel(
-      species: entity?.species != null ? DataModel.fromEntity(entity: entity?.species) : null,
-      evolvesTo: entity?.evolvesTo?.map((evolve) => ChainModel.fromEntity(entity: evolve)).toList(),
-      isBaby: entity?.isBaby,
-      evolutionDetails: entity?.evolutionDetails?.map((detail) => EvolutionDetailModel.fromEntity(entity: detail)).toList()
-    );
+        species: entity?.species != null
+            ? DataModel.fromEntity(entity: entity?.species)
+            : null,
+        evolvesTo: entity?.evolvesTo
+            ?.map((evolve) => ChainModel.fromEntity(entity: evolve))
+            .toList(),
+        isBaby: entity?.isBaby,
+        evolutionDetails: entity?.evolutionDetails
+            ?.map((detail) => EvolutionDetailModel.fromEntity(entity: detail))
+            .toList());
   }
 }
 
 class EvolutionDetailModel extends EvolutionDetailEntity {
-  const EvolutionDetailModel({String? gender, String? heldItem, String? item,
-    String? knownMove, String? knownMoveType, String? location, String? minAffection,
-    String? minBeauty, String? minHappiness, String? minLevel, String? needsOverworldRain,
-    String? partySpecies, String? partyType, String? relativePhysicalStats,
-    String? timeOfDay, String? tradeSpecies, DataModel? trigger, String? turnUpsideDown})
-      : super(gender: gender,
-      heldItem: heldItem,
-      item: item,
-      knownMove: knownMove,
-      knownMoveType: knownMoveType,
-      location: location,
-      minAffection: minAffection,
-      minBeauty: minBeauty,
-      minHappiness: minHappiness,
-      minLevel: minLevel,
-      needsOverworldRain: needsOverworldRain,
-      partySpecies: partySpecies,
-      partyType: partyType,
-      relativePhysicalStats: relativePhysicalStats,
-      timeOfDay: timeOfDay,
-      tradeSpecies: tradeSpecies,
-      trigger: trigger,
-      turnUpsideDown: turnUpsideDown);
+  const EvolutionDetailModel(
+      {String? gender,
+      String? heldItem,
+      String? item,
+      String? knownMove,
+      String? knownMoveType,
+      String? location,
+      String? minAffection,
+      String? minBeauty,
+      String? minHappiness,
+      String? minLevel,
+      String? needsOverworldRain,
+      String? partySpecies,
+      String? partyType,
+      String? relativePhysicalStats,
+      String? timeOfDay,
+      String? tradeSpecies,
+      DataModel? trigger,
+      String? turnUpsideDown})
+      : super(
+            gender: gender,
+            heldItem: heldItem,
+            item: item,
+            knownMove: knownMove,
+            knownMoveType: knownMoveType,
+            location: location,
+            minAffection: minAffection,
+            minBeauty: minBeauty,
+            minHappiness: minHappiness,
+            minLevel: minLevel,
+            needsOverworldRain: needsOverworldRain,
+            partySpecies: partySpecies,
+            partyType: partyType,
+            relativePhysicalStats: relativePhysicalStats,
+            timeOfDay: timeOfDay,
+            tradeSpecies: tradeSpecies,
+            trigger: trigger,
+            turnUpsideDown: turnUpsideDown);
 
   factory EvolutionDetailModel.fromJson(Map<String, dynamic> json) {
     return EvolutionDetailModel(
@@ -664,11 +860,9 @@ class EvolutionDetailModel extends EvolutionDetailEntity {
       relativePhysicalStats: json['relative_physical_stats']?.toString(),
       timeOfDay: json['time_of_day']?.toString(),
       tradeSpecies: json['trade_species']?.toString(),
-      trigger: json['trigger'] != null
-          ? DataModel.fromJson(json['trigger'])
-          : null,
+      trigger:
+          json['trigger'] != null ? DataModel.fromJson(json['trigger']) : null,
       turnUpsideDown: json['turn_upside_down']?.toString(),
-
     );
   }
 
@@ -690,9 +884,9 @@ class EvolutionDetailModel extends EvolutionDetailEntity {
       "relative_physical_stats": relativePhysicalStats,
       "time_of_day": timeOfDay,
       "trade_species": tradeSpecies,
-      "trigger": trigger != null ? DataModel
-          .fromEntity(entity: trigger)
-          .toJson() : null,
+      "trigger": trigger != null
+          ? DataModel.fromEntity(entity: trigger).toJson()
+          : null,
       "turn_upside_down": turnUpsideDown
     };
   }
@@ -716,9 +910,9 @@ class EvolutionDetailModel extends EvolutionDetailEntity {
         relativePhysicalStats: entity.relativePhysicalStats,
         timeOfDay: entity.timeOfDay,
         tradeSpecies: entity.tradeSpecies,
-        trigger: entity.trigger != null ? DataModel.fromEntity(
-            entity: entity.trigger) : null,
-        turnUpsideDown: entity.turnUpsideDown
-    );
+        trigger: entity.trigger != null
+            ? DataModel.fromEntity(entity: entity.trigger)
+            : null,
+        turnUpsideDown: entity.turnUpsideDown);
   }
 }

@@ -13,8 +13,8 @@ class FetchAllPokemonUseCase {
     return await _repository.retrieveAllPokemons(offset: offset, limit: limit);
   }
 
-  Future<List<DataEntity>> speciesDataRequest({required int offset, required int limit}) async {
-    return await _repository.retrieveAllPokemons(offset: offset, limit: limit);
+  Future<SpeciesEntity> speciesDataRequest({required String? url}) async {
+    return await _repository.retrieveSpeciesData(url: url);
   }
 
   /// clean
