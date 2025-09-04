@@ -6,4 +6,12 @@ abstract class GalleryRepository {
 
   Future<PokemonInfoEntity> retrievePokemonsWithTheirData(
       {required String? name});
+
+  Future<dynamic> retrieveFormData({required String? name});
+
+  Future<DataEntity> retrieveSpeciesData({required String? name});
+
+  Future<MovesEntity> retrieveMovesData({required String? url});
+
+  Future<DataEntity> retrieveEvolutionData({required String? name});
 }

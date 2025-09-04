@@ -12,10 +12,13 @@ void invokePokemonDI({required GetIt locator}) {
           () => GalleryRepositoryImpl(remoteDataSource: locator()));
 
   // use case
-  // locator.registerLazySingleton(() => CustomerProfileUseCase(repository: locator()));
+  locator.registerLazySingleton(() => FetchAllPokemonUseCase(repository: locator()));
 
   // bloc
   locator.registerFactory(
       () => PokemonsBloc(pokemonRepository: locator()));
+
+  locator.registerFactory(
+          () => PokemonMoveBloc(useCase: locator()));
 
 }

@@ -33,7 +33,6 @@ Future<void> invokeCoreDI({required GetIt locator}) async {
     dio.interceptors.add(InterceptorsWrapper(
       onError: (DioError e, ErrorInterceptorHandler handler) async {
         if (e.response?.statusCode == 401) {
-
           // timeoutCallback();
           //
           // // locator.get<SharedPrefsRepositoryImpl>().setLoginToken(token: '');

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokemon/features/features_barrel.dart';
@@ -26,7 +27,7 @@ final galleryRoute = GoRoute(
           ),
           BlocProvider<GalleryViewCubit>(
             create: (context) => GalleryViewCubit(),
-          )
+          ),
         ],
         child: const AllPokemonsScreen(),
       );
@@ -38,7 +39,14 @@ final creatureRoute = GoRoute(
     name: 'creature',
     builder: (context, state) {
       final pokemon = state.extra as PokemonInfoEntity;
-      return SinglePokemonScreen(pokemon: pokemon);
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<PokemonMoveBloc>(
+            create: (context) => locator<PokemonMoveBloc>(),
+          ),
+        ],
+        child: SinglePokemonScreen(pokemon: pokemon),
+      );
     });
 
 /// app route configuration

@@ -37,15 +37,6 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
     on<PokemonsFetched>(_onPokemonsFetched);
   }
 
-  // Future<void> getDominantColor() async {
-  //   final PaletteGenerator paletteGenerator =
-  //   await PaletteGenerator.fromImageProvider(
-  //       NetworkImage(widget.weeklyCardModel.productImage));
-  //
-  //   widget.weeklyCardModel.dominantColor.value =
-  //       paletteGenerator.lightVibrantColor?.color ?? secondaryColor;
-  // }
-
   Future<void> _onPokemonsFetched(
       PokemonEvents event, Emitter<PokemonStates> emit) async {
     try {

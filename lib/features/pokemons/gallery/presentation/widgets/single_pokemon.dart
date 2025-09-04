@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
@@ -150,10 +151,12 @@ class PokemonsDetailsTab extends StatefulWidget {
 
 class _PokemonsDetailsTabState extends State<PokemonsDetailsTab> with SingleTickerProviderStateMixin{
 late TabController _tabController;
+// https://www.behance.net/gallery/155301139/Daily-UI-Pokdex
+//   https://www.behance.net/gallery/158115601/Pokedex-App-Case-Study
 static const List<Tab> pokemonsTabs = <Tab>[
   Tab(text: "About"),
-  Tab(text: "Stats",),
-  Tab(text: "Evolution",),
+  Tab(text: "Stats",), // https://dribbble.com/shots/25682407-App-UI-Mobile-Game-Statistics-Character-Statistics
+  Tab(text: "Evolution",), // https://dribbble.com/shots/14184018-Pok-dex-App-V-2
   Tab(text: "Moves",)
 ];
 
@@ -182,6 +185,7 @@ static const List<Tab> pokemonsTabs = <Tab>[
           children: pokemonsTabs.map((Tab tab){
             switch(tab.text){
               case "Moves":
+                context.read<PokemonMoveBloc>().add(FetchMovesDetailsEvent(moves: widget.pokemonInfo.moves ?? []));
                 return pokemonMovesWidget(pokemon: widget.pokemonInfo, context: context);
               case "Stats":
                 return pokemonStatsWidget(pokemon: widget.pokemonInfo, context: context);
@@ -523,19 +527,35 @@ Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required Buil
 
 Widget pokemonMovesWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
   // final theme = Theme.of(context);
-  return Padding(
-    padding: const EdgeInsets.only(top: 20),
-    child: ListView.builder(
-        itemCount: pokemon.moves!.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index){
-          var move = pokemon.moves![index];
-          return Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 0.0),
-            child: pokemonMoveWidget(context: context, moves: move),
-          );
-        }),
-  );
+  return BlocBuilder<PokemonMoveBloc, PokemonMoveState>(
+  builder: (context, state) {
+    if(state is PokemonMoveLoaded){
+      List<MovesEntity> moves = state.moves;
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: ListView.builder(
+            itemCount: moves.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index){
+              MovesEntity move = moves[index];
+              return Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 0.0),
+                child: pokemonMoveWidget(context: context, moves: move),
+              );
+            }),
+      );
+    }
+    else if (state is PokemonMoveError){
+      return Center(
+        child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium,),
+      );
+    }
+
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  },
+);
 }
 
 Widget pokemonStatWidget({required BuildContext context, required StatsEntity stat}){

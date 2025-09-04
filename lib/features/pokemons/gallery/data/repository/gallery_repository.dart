@@ -27,4 +27,32 @@ class GalleryRepositoryImpl implements GalleryRepository {
 
     return pokemonInfo;
   }
+
+  @override
+  Future<dynamic> retrieveFormData({required String? name}) async {
+    var formData = await _remoteDataSource.retrieveFormData(name: name);
+    return formData;
+  }
+
+  @override
+  Future<DataModel> retrieveSpeciesData({required String? name}) async {
+    var speciesData = await _remoteDataSource.retrieveSpeciesData(name: name);
+    DataModel species = DataModel.fromJson(speciesData);
+    return species;
+  }
+
+  @override
+  Future<MovesModel> retrieveMovesData({required String? url}) async {
+    var movesData = await _remoteDataSource.retrieveMovesData(url: url);
+    MovesModel move = MovesModel.fromJson(movesData);
+    return move;
+  }
+
+  @override
+  Future<DataModel> retrieveEvolutionData({required String? name}) async {
+    var evolutionData = await _remoteDataSource.retrieveEvolutionData(name: name);
+    DataModel evolution = DataModel.fromJson(evolutionData);
+    return evolution;
+  }
+
 }

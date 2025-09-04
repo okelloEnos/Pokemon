@@ -215,11 +215,73 @@ class AbilitiesModel extends AbilitiesEntity {
 }
 
 class MovesModel extends MovesEntity {
-  const MovesModel({required DataModel? move}) : super(move: move);
+  const MovesModel({
+    DataModel? move,
+    List<VersionGroupDetailsModel>? versionGroupDetails,
+    int? accuracy,
+    var contestCombos,
+    DataModel? contestEffect,
+    DataModel? contestType,
+    DataModel? damageClass,
+    List<EffectModel>? effectEntries,
+    List<MoveFlavourModel>? flavourTextEntries,
+    DataModel? generation,
+    List<DataModel>? learnedByPokemon,
+    List<MachineModel>? machines,
+    int? power,
+    int? pp,
+    int? priority,
+    String? superContestEffect,
+    DataModel? target,
+    DataModel? type,
+  }) : super(move: move, versionGroupDetails: versionGroupDetails,
+    accuracy: accuracy, contestCombos: contestCombos,
+    contestEffect: contestEffect, contestType: contestType,
+    damageClass: damageClass, effectEntries: effectEntries,
+    flavourTextEntries: flavourTextEntries, generation: generation,
+    learnedByPokemon: learnedByPokemon, machines: machines,
+    power: power, pp: pp, priority: priority,
+    superContestEffect: superContestEffect, target: target,
+    type: type);
 
   factory MovesModel.fromJson(Map<String, dynamic> json) {
     return MovesModel(
       move: json['move'] != null ? DataModel.fromJson(json['move']) : null,
+      versionGroupDetails: parseList<VersionGroupDetailsModel>(
+          json: json['version_group_details'],
+          fromJson: (map) => VersionGroupDetailsModel.fromJson(map)),
+      accuracy: json['accuracy'],
+      contestCombos: json['contest_combos'],
+      contestEffect: json['contest_effect'] != null
+          ? DataModel.fromJson(json['contest_effect'])
+          : null,
+      contestType: json['contest_type'] != null
+          ? DataModel.fromJson(json['contest_type'])
+          : null,
+      damageClass: json['damage_class'] != null
+          ? DataModel.fromJson(json['damage_class'])
+          : null,
+      effectEntries: parseList<EffectModel>(
+          json: json['effect_entries'],
+          fromJson: (map) => EffectModel.fromJson(map)),
+      flavourTextEntries: parseList<MoveFlavourModel>(
+          json: json['flavor_text_entries'],
+          fromJson: (map) => MoveFlavourModel.fromJson(map)),
+      generation: json['generation'] != null
+          ? DataModel.fromJson(json['generation'])
+          : null,
+      learnedByPokemon: parseList<DataModel>(
+          json: json['learned_by_pokemon'],
+          fromJson: (map) => DataModel.fromJson(map)),
+      machines: parseList<MachineModel>(
+          json: json['machines'],
+          fromJson: (map) => MachineModel.fromJson(map)),
+      power: json['power'],
+      pp: json['pp'],
+      priority: json['priority'],
+      superContestEffect: json['super_contest_effect']?['url'],
+      target: json['target'] != null ? DataModel.fromJson(json['target']) : null,
+      type: json['type'] != null ? DataModel.fromJson(json['type']) : null
     );
   }
 
@@ -350,3 +412,129 @@ class PokemonTypesModel extends PokemonTypesEntity {
     );
   }
 }
+
+class EffectModel extends EffectEntity {
+  const EffectModel({String? effect, String? shortEffect})
+      : super(effect: effect, shortEffect: shortEffect);
+
+  factory EffectModel.fromJson(Map<String, dynamic> json) {
+    return EffectModel(
+      effect: json['effect'],
+      shortEffect: json['short_effect'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"effect": effect, "short_effect": shortEffect};
+  }
+
+  factory EffectModel.fromEntity(EffectEntity entity) {
+    return EffectModel(effect: entity.effect, shortEffect: entity.shortEffect);
+  }
+}
+
+class MoveFlavourModel extends MoveFlavourEntity {
+  const MoveFlavourModel({String? text, DataModel? version})
+      : super(text: text, version: version);
+
+  factory MoveFlavourModel.fromJson(Map<String, dynamic> json) {
+    return MoveFlavourModel(
+      text: json['flavor_text'],
+      version:
+      json['version_group'] != null
+          ? DataModel.fromJson(json['version_group'])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "flavor_text": text,
+      "version_group":
+      version != null ? DataModel.fromEntity(entity: version).toJson() : null
+    };
+  }
+
+  factory MoveFlavourModel.fromEntity(MoveFlavourEntity entity) {
+    return MoveFlavourModel(
+      text: entity.text,
+      version: entity.version != null
+          ? DataModel.fromEntity(entity: entity.version)
+          : null,
+    );
+  }
+}
+
+class VersionGroupDetailsModel extends VersionGroupDetailsEntity {
+  const VersionGroupDetailsModel(
+      {int? levelLearnedAt,
+      DataModel? moveLearnMethod,
+      DataModel? versionGroup})
+      : super(
+            levelLearnedAt: levelLearnedAt,
+            moveLearnMethod: moveLearnMethod,
+            versionGroup: versionGroup);
+
+  factory VersionGroupDetailsModel.fromJson(Map<String, dynamic> json) {
+    return VersionGroupDetailsModel(
+      levelLearnedAt: json['level_learned_at'],
+      moveLearnMethod: json['move_learn_method'] != null
+          ? DataModel.fromJson(json['move_learn_method'])
+          : null,
+      versionGroup: json['version_group'] != null
+          ? DataModel.fromJson(json['version_group'])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "level_learned_at": levelLearnedAt,
+      "move_learn_method": moveLearnMethod != null
+          ? DataModel.fromEntity(entity: moveLearnMethod).toJson()
+          : null,
+      "version_group": versionGroup != null
+          ? DataModel.fromEntity(entity: versionGroup).toJson()
+          : null
+    };
+  }
+
+  factory VersionGroupDetailsModel.fromEntity(VersionGroupDetailsEntity entity) {
+    return VersionGroupDetailsModel(
+      levelLearnedAt: entity.levelLearnedAt,
+      moveLearnMethod: entity.moveLearnMethod != null
+          ? DataModel.fromEntity(entity: entity.moveLearnMethod)
+          : null,
+      versionGroup: entity.versionGroup != null
+          ? DataModel.fromEntity(entity: entity.versionGroup)
+          : null,
+    );
+  }
+}
+
+class MachineModel extends MachineEntity {
+  const MachineModel({String? url, DataModel? version})
+      : super(url: url, version: version);
+
+  factory MachineModel.fromJson(Map<String, dynamic> json) {
+    return MachineModel(
+      url: json['machine']?['url'],
+      version: json['version_group'] != null ? DataModel.fromJson(json['version_group']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "url": url,
+      "version_group": version != null ? DataModel.fromEntity(entity: version).toJson() : null
+    };
+  }
+
+  factory MachineModel.fromEntity(MachineEntity entity) {
+    return MachineModel(
+      url: entity.url,
+      version: entity.version != null ? DataModel.fromEntity(entity: entity.version) : null
+    );
+  }
+}
+

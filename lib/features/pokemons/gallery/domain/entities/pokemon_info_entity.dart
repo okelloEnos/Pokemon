@@ -142,11 +142,91 @@ class AbilitiesEntity extends Equatable {
 
 class MovesEntity extends Equatable {
   final DataEntity? move;
+  final List<VersionGroupDetailsEntity>? versionGroupDetails;
+  final int? accuracy;
+  final contestCombos;
+  final DataEntity? contestEffect;
+  final DataEntity? contestType;
+  final DataEntity? damageClass;
+  final List<EffectEntity>? effectEntries;
+  final List<MoveFlavourEntity>? flavourTextEntries;
+  final DataEntity? generation;
+  final List<DataEntity>? learnedByPokemon;
+  final List<MachineEntity>? machines;
+  final int? power;
+  final int? pp;
+  final int? priority;
+  final String? superContestEffect;
+  final DataEntity? target;
+  final DataEntity? type;
 
-  const MovesEntity({this.move});
+
+  const MovesEntity({this.move, this.versionGroupDetails, this.accuracy,
+    this.contestCombos, this.contestEffect, this.contestType, this.damageClass,
+    this.effectEntries, this.flavourTextEntries, this.generation,
+    this.learnedByPokemon, this.machines, this.power, this.pp, this.priority,
+    this.superContestEffect, this.target, this.type});
 
   @override
-  List<Object?> get props => [move];
+  List<Object?> get props => [move, versionGroupDetails, accuracy, contestCombos,
+    contestEffect, contestType, damageClass, effectEntries, flavourTextEntries,
+    generation, learnedByPokemon, machines, power, pp, priority,
+    superContestEffect, target, type];
+
+  // copyWith method
+  MovesEntity copyWith({
+    DataEntity? move,
+    List<VersionGroupDetailsEntity>? versionGroupDetails,
+    int? accuracy,
+    contestCombos,
+    DataEntity? contestEffect,
+    DataEntity? contestType,
+    DataEntity? damageClass,
+    List<EffectEntity>? effectEntries,
+    List<MoveFlavourEntity>? flavourTextEntries,
+    DataEntity? generation,
+    List<DataEntity>? learnedByPokemon,
+    List<MachineEntity>? machines,
+    int? power,
+    int? pp,
+    int? priority,
+    String? superContestEffect,
+    DataEntity? target,
+    DataEntity? type,
+  }) {
+    return MovesEntity(
+      move: move ?? this.move,
+      versionGroupDetails: versionGroupDetails ?? this.versionGroupDetails,
+      accuracy: accuracy ?? this.accuracy,
+      contestCombos: contestCombos ?? this.contestCombos,
+      contestEffect: contestEffect ?? this.contestEffect,
+      contestType: contestType ?? this.contestType,
+      damageClass: damageClass ?? this.damageClass,
+      effectEntries: effectEntries ?? this.effectEntries,
+      flavourTextEntries: flavourTextEntries ?? this.flavourTextEntries,
+      generation: generation ?? this.generation,
+      learnedByPokemon: learnedByPokemon ?? this.learnedByPokemon,
+      machines: machines ?? this.machines,
+      power: power ?? this.power,
+      pp: pp ?? this.pp,
+      priority: priority ?? this.priority,
+      superContestEffect: superContestEffect ?? this.superContestEffect,
+      target: target ?? this.target,
+      type: type ?? this.type,
+    );
+  }
+}
+
+class VersionGroupDetailsEntity extends Equatable {
+  final int? levelLearnedAt;
+  final DataEntity? moveLearnMethod;
+  final DataEntity? versionGroup;
+
+  const VersionGroupDetailsEntity(
+      {this.levelLearnedAt, this.moveLearnMethod, this.versionGroup});
+
+  @override
+  List<Object?> get props => [levelLearnedAt, moveLearnMethod, versionGroup];
 }
 
 class SpritesEntity extends Equatable {
@@ -187,4 +267,34 @@ class PokemonTypesEntity extends Equatable {
 
   @override
   List<Object?> get props => [slot, pokemonType];
+}
+
+class EffectEntity extends Equatable {
+  final String? effect;
+  final String? shortEffect;
+
+  const EffectEntity({this.effect, this.shortEffect});
+
+  @override
+  List<Object?> get props => [effect, shortEffect];
+}
+
+class MoveFlavourEntity extends Equatable {
+  final String? text;
+  final DataEntity? version;
+
+  const MoveFlavourEntity({this.text, this.version});
+
+  @override
+  List<Object?> get props => [text, version];
+}
+
+class MachineEntity extends Equatable {
+  final String? url;
+  final DataEntity? version;
+
+  const MachineEntity({this.url, this.version});
+
+  @override
+  List<Object?> get props => [url, version];
 }
