@@ -51,11 +51,9 @@ class PokemonEvolutionBloc extends Bloc<PokemonEvolutionEvent, PokemonEvolutionS
     }
   }
 }
-// todo: Gallery list view toggle (grid/list)
-// todo: upgrade the card in gallery
+
 // todo: customizing the pull to refresh indicator ui and the logic to make new call
 // todo: pull more pokemon when reach the end of the list
 
 // todo: animations when navigating to single pokemon screen
-//  todo: add pokemon ball at the background of single pokemon screen
-// todo: saving view preference in local storage
+// todo: add pokemon ball at the background of single pokemon screen

@@ -4,6 +4,7 @@ import '../../../../../core/core_barrel.dart';
 
 class PokemonInfoModel extends PokemonInfoEntity {
   const PokemonInfoModel({
+    String? id,
     String? pokemonName,
     String? description,
     String? genus,
@@ -29,6 +30,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
     DataModel? evolvesFrom,
     SpeciesModel? speciesData,
   }) : super(
+            id: id,
             pokemonName: pokemonName,
             description: description,
             genus: genus,
@@ -56,6 +58,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "name": pokemonName,
       "description": description,
       "genus": genus,
@@ -126,6 +129,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
     // List<DataModel> eggs = [];
 
     return PokemonInfoModel(
+      id: json['id']?.toString(),
       pokemonName: json['name'],
       description: json['description'],
       genus: json['genus'],
@@ -163,6 +167,7 @@ class PokemonInfoModel extends PokemonInfoEntity {
 
   factory PokemonInfoModel.fromEntity(PokemonInfoEntity entity) {
     return PokemonInfoModel(
+      id: entity.id,
       pokemonName: entity.pokemonName,
       description: entity.description,
       genus: entity.genus,

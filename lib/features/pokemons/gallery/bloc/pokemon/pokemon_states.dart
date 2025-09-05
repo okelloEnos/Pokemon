@@ -35,6 +35,8 @@ class PokemonsLoaded extends PokemonStates {
   List<Object?> get props => [pokemons, hasReachedMax, error];
 }
 
+class PokemonsLoading extends PokemonStates {}
+
 extension PokemonsStateX on PokemonStates {
   bool get isInitial => this == PokemonsInitial();
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../features_barrel.dart';
 
 class PokemonInfoEntity extends Equatable {
+  final String? id;
   final String? pokemonName;
   final String? description;
   final String? genus;
@@ -32,6 +33,7 @@ class PokemonInfoEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    id,
         pokemonName,
         description,
         genus,
@@ -60,7 +62,9 @@ class PokemonInfoEntity extends Equatable {
       ];
 
   const PokemonInfoEntity(
-      {this.pokemonName,
+      {
+        this.id,
+        this.pokemonName,
       this.description,
       this.baseExperience,
       this.pokemonWeight,
@@ -88,6 +92,7 @@ class PokemonInfoEntity extends Equatable {
 
   // copyWith method
   PokemonInfoEntity copyWith({
+    String? id,
     String? pokemonName,
     String? description,
     String? genus,
@@ -115,6 +120,7 @@ class PokemonInfoEntity extends Equatable {
     SpeciesEntity? speciesData,
   }) {
     return PokemonInfoEntity(
+      id: id ?? this.id,
       pokemonName: pokemonName ?? this.pokemonName,
       description: description ?? this.description,
       genus: genus ?? this.genus,

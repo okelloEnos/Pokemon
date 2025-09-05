@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,12 +19,12 @@ class AllPokemonsGridLoading extends StatelessWidget {
       child: GridView.builder(
           physics: const ClampingScrollPhysics(),
           key: const Key("pokemon_grid"),
-          itemCount: 8,
+          itemCount: 14,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 2/2.5
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+            childAspectRatio: 4 / 3,
           ),
           itemBuilder: (BuildContext context, int index){
             return AnimationConfiguration.staggeredGrid(
@@ -52,10 +50,10 @@ Widget allPokemonsLoading(){
       key: const Key("pokemon_grid"),
       itemCount: 8,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 2/2.5
+        crossAxisCount: 2,
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        childAspectRatio: 4 / 3,
       ),
       itemBuilder: (BuildContext context, int index){
         return AnimationConfiguration.staggeredGrid(
@@ -69,16 +67,11 @@ Widget allPokemonsLoading(){
           ),
         );
 
-      }) : GridView.builder(
+      }) :
+    ListView.builder(
         physics: const ClampingScrollPhysics(),
-        key: const Key("pokemon_grid"),
-        itemCount: 8,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 2/2.5
-        ),
+        key: const Key("pokemon_list"),
+        itemCount: 12,
         itemBuilder: (BuildContext context, int index){
           return AnimationConfiguration.staggeredGrid(
             position: index,
@@ -86,7 +79,7 @@ Widget allPokemonsLoading(){
             columnCount: 2,
             child: ScaleAnimation(
               child: FadeInAnimation(
-                child: pokemonCardLoading(context),
+                child: pokemonListCardLoading(context),
               ),
             ),
           );
@@ -141,33 +134,6 @@ Widget allPokemonsView({required var bloc, required var state, required var cont
     }, childCount: state.pokemons.length));
   },
 ),
-      SliverToBoxAdapter(child: pokemonCardLoading(context)),
-  SliverToBoxAdapter(child: pokemonListCardLoading(context)),
-
-      // if (state.hasReachedMax != true)
-      //   SliverToBoxAdapter(
-      //     child: Center(
-      //       child: Padding(
-      //         padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-      //         child: SpinKitRipple(
-      //           key: const Key("pokemon_loading"),
-      //           color: Theme.of(context).primaryColorDark,
-      //           size: 60.0,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-
-      // if (_hasReachedMax)
-      //   SliverToBoxAdapter(
-      //     child: Padding(
-      //       padding: const EdgeInsets.only(bottom: 16.0),
-      //       child: EndOfListBanner(
-      //         key: ValueKey(_endTick),
-      //         message: "You’ve reached the end ✨",
-      //       ),
-      //     ),
-      //   ),
       ///
       const SliverToBoxAdapter(child: SizedBox(height: 16.0,),)
     ],
@@ -267,7 +233,8 @@ class _AllPokemonsGridState extends State<AllPokemonsGrid> {
 Widget pokemonCard(BuildContext context, PokemonInfoEntity pokemon){
 final theme = Theme.of(context);
   return Hero(
-    key: const Key("grid_hero"),
+    // key: const Key("grid_hero"),
+    key: ValueKey("${pokemon.pokemonName}${pokemon.id}"),
     tag: "pok${pokemon.pokemonName}",
     child: GestureDetector(
       onTap: () {
@@ -301,14 +268,20 @@ final theme = Theme.of(context);
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    pokemon.pokemonName?.capitalize() ?? "",
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
-                    key: const Key("grid_text_name"),
+                  Row(
+                    children: [
+                      Text(
+                        pokemon.pokemonName?.capitalize() ?? "",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
+                        key: const Key("grid_text_name"),
+                      ),
+                      Text("# ${pokemon.id}"),
+                    ],
                   ),
+
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -362,21 +335,41 @@ final theme = Theme.of(context);
 Widget pokemonCardLoading(BuildContext context){
 
   return Card(
-    key: const Key("grid_card_shimmer"),
-    child: Column(
-      key: const Key("grid_column_shimmer"),
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 8.0,),
-        ShimmerContainer(width: 120, height: 120, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100,),
-        const SizedBox(height: 8.0,),
-        Padding(
-          key: const Key("grid_pad_shimmer"),
-          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-          child: ShimmerContainer(width: 120, height: 12, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100 ),
-        ),
-      ],
+    color: Colors.white,
+    // key: const Key("grid_card_shimmer"),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        // key: const Key("grid_column_shimmer"),
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 4.0,),
+          ShimmerContainer(width: 100, height: 12, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0),
+          const SizedBox(height: 8.0,),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ShimmerContainer(width: 50, height: 15, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0, ),
+                  const SizedBox(height: 8.0,),
+                  ShimmerContainer(width: 60, height: 15, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0, ),
+                ],
+              ),
+              const Spacer(),
+              ShimmerContainer(width: 65, height: 65, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0,),
+            ],
+          ),
+          const SizedBox(height: 8.0,),
+        ],
+      ),
     ),
   );
 }
@@ -428,14 +421,20 @@ Widget pokemonListCard(BuildContext context, PokemonInfoEntity pokemon){
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    pokemon.pokemonName?.capitalize() ?? "",
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
-                    key: const Key("grid_text_name"),
+                  Row(
+                    children: [
+                      Text(
+                        pokemon.pokemonName?.capitalize() ?? "",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
+                        key: const Key("grid_text_name"),
+                      ),
+                      Text("# ${pokemon.id}"),
+                    ],
                   ),
+
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -490,22 +489,46 @@ Widget pokemonListCard(BuildContext context, PokemonInfoEntity pokemon){
 
 Widget pokemonListCardLoading(BuildContext context){
 
-  return Card(
-    key: const Key("list_card_shimmer"),
-    child: Column(
-      key: const Key("grid_column_shimmer"),
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 8.0,),
-        ShimmerContainer(width: 120, height: 120, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100,),
-        const SizedBox(height: 8.0,),
-        Padding(
-          key: const Key("grid_pad_shimmer"),
-          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-          child: ShimmerContainer(width: 120, height: 12, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100 ),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 16.0),
+    child: SizedBox(
+      height: 150,
+      child: Card(
+        elevation: 4.0,
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        key: const Key("list_card_shimmer"),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            key: const Key("grid_column_shimmer"),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 4.0,),
+              ShimmerContainer(width: 120, height: 15.0, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ShimmerContainer(width: 50, height: 15.0, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0),
+                      const SizedBox(width: 8.0,),
+                      ShimmerContainer(width: 60, height: 15.0, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0),
+                    ],
+                  ),
+                  ShimmerContainer(width: 80, height: 80, baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, borderRadius: 4.0),
+                ],
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     ),
   );
 }

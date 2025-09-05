@@ -26,7 +26,7 @@ class CreatureCodexErrorWidget extends StatelessWidget {
           ),
         ),
         // const SizedBox(height: 8.0,),
-        Text(description ?? "Well, that was unexpected. Give it another shot.",
+        Text(description ?? "Well, that was unexpected. Give it another shot. \n $message",
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: fontSize),
           textAlign: TextAlign.center,
         ),

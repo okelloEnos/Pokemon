@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pokemon/core/core_barrel.dart';
 import 'package:pokemon/features/pokemons/gallery/domain/domain_barrel.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../features_barrel.dart';
 import 'package:dio/dio.dart';
 
@@ -15,6 +16,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
   // final GalleryRepository pokemonRepository;
   final FetchAllPokemonUseCase _useCase;
   final ScrollController scrollController = ScrollController();
+  final RefreshController refreshController = RefreshController(initialRefresh: false);
 
   List<PokemonInfoEntity> allLoadedPokemons = [];
   int limit = 10;
@@ -42,11 +44,19 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
   }
 
   Future<void> _onPokemonsFetched(
-      PokemonEvents event, Emitter<PokemonStates> emit) async {
+      PokemonsFetched event, Emitter<PokemonStates> emit) async {
+    emit(PokemonsLoading());
     try {
       int currentOffset = offset;
       int currentLimit = limit;
       bool hasReachedMax = false;
+
+      // if(event.offset != null || event.limit != null){
+      //   allLoadedPokemons.clear();
+      //   currentLimit = 10;
+      //   currentOffset = 0;
+      //   hasReachedMax = false;
+      // }
 
       List<DataEntity> pokemons =
           await _useCase.call(offset: currentOffset, limit: currentLimit);
@@ -86,12 +96,23 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
         offset += limit;
       }
 
+      refreshController.loadComplete();
+      // refreshController.refreshCompleted();
+      // if(hasReachedMax){
+      //   refreshController.loadNoData();
+      // }
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
     } on DioError catch (e) {
+      refreshController.refreshFailed();
+      refreshController.loadFailed();
+
       emit(PokemonsFailure(
           errorText:
               DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
     } catch (e, s) {
+      refreshController.refreshFailed();
+      refreshController.loadFailed();
+
       emit(PokemonsFailure(errorText: e.toString()));
     }
   }

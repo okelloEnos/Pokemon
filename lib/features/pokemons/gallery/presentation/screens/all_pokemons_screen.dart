@@ -18,8 +18,6 @@ class AllPokemonsScreen extends StatefulWidget {
 }
 
 class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -140,36 +138,15 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
           child: BlocBuilder<PokemonsBloc, PokemonStates>(
             builder: (context, state) {
               return SmartRefresher(
-                controller: _refreshController,
+                controller: context.read<PokemonsBloc>().refreshController,
                 enablePullUp: true,
                 header: const WaterDropHeader(),
                 footer: const MoreFooter(),
                 onRefresh: () async {
-                  await Future.delayed(const Duration(milliseconds: 1000));
-                  //
-                  //         if (data.length == 0) {
-                  //           for (int i = 0; i < 10; i++) {
-                  //             data.add("Item $i");
-                  //           }
-                  //         }
-                  if (mounted) setState(() {});
-                  _refreshController.refreshCompleted();
-                  //
-                  //         /*
-                  //   if(failed){
-                  //    _refreshController.refreshFailed();
-                  //   }
-                  // */
+                  context.read<PokemonsBloc>().add(PokemonsFetched(offset: 0, limit: 10));
                 },
                 onLoading: () async {
-                  //monitor fetch data from network
-                  await Future.delayed(const Duration(milliseconds: 1000));
-                  // for (int i = 0; i < 10; i++) {
-                  //   data.add("Item $i");
-                  // }
-                  //    pageIndex++;
-                  if (mounted) setState(() {});
-                  _refreshController.loadComplete();
+                  context.read<PokemonsBloc>().add(PokemonsFetched());
                 },
                 child: state is PokemonsLoaded
                     ? allPokemonsView(
@@ -181,6 +158,20 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
                         : allPokemonsLoading(),
               );
             },
+            // listener: (context, state) {
+            //   if (state is PokemonsFailure) {
+            //     // _refreshController.refreshFailed();
+            //     // _refreshController.loadFailed();
+            //   }
+            //   else
+            //   if(state is PokemonsLoaded){
+            //     // _refreshController.loadComplete();
+            //     // _refreshController.refreshCompleted();
+            //     // if(state.hasReachedMax ?? false){
+            //     //   _refreshController.loadNoData();
+            //     // }
+            //   }
+            // },
           ),
         ),
       ),

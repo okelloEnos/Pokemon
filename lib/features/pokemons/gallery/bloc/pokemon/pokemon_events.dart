@@ -6,6 +6,12 @@ abstract class PokemonEvents extends Equatable {
 }
 
 class PokemonsFetched extends PokemonEvents {
+  final int? offset;
+  final int? limit;
+
+  PokemonsFetched({this.offset, this.limit});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [offset, limit];
+
 }
