@@ -5,42 +5,44 @@ import '../../../../core_barrel.dart';
 
 class CreatureCodexErrorWidget extends StatelessWidget {
   final String? message;
-  const CreatureCodexErrorWidget({Key? key, this.message }) : super(key: key);
+  final double? size;
+  final String? description;
+  final Size? minimumBtnSize;
+  final VoidCallback? onRetry;
+  final String? btnText;
+  final double? fontSize;
+  const CreatureCodexErrorWidget({Key? key, this.message, this.size, this.description, this.minimumBtnSize, this.onRetry, this.btnText, this.fontSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 32.0),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 32.0, top: 0.0, left: 16.0, right: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // mainAxisSize: MainAxisSize.min,
-          children: [
-            const Center(
-              child: MyLottie(
-                lottie: 'assets/lottie/error.json',
-                size: Size(250, 250),
-              ),
-            ),
-            // const SizedBox(height: 8.0,),
-            Text("Well, that was unexpected. Give it another shot. \n ${message ?? ""}",
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16.0,),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Theme.of(context).colorScheme.primary),
-                minimumSize: const Size(200, 45)
-              ),
-                onPressed: (){
-                  context.read<PokemonsBloc>().add(PokemonsFetched());
-                },
-                child: Text("Retry", style: Theme.of(context).textTheme.bodyLarge))
-          ],
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Center(
+          child: MyLottie(
+            lottie: 'assets/lottie/error.json',
+            size: Size(size ?? 250, size ?? 250),
+          ),
         ),
-      ),
+        // const SizedBox(height: 8.0,),
+        Text(description ?? "Well, that was unexpected. Give it another shot.",
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: fontSize),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16.0,),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(color: Theme.of(context).colorScheme.primary),
+            minimumSize: minimumBtnSize ?? const Size(200, 45)
+          ),
+            onPressed: onRetry ?? (){
+              context.read<PokemonsBloc>().add(PokemonsFetched());
+            },
+            child: Text("Retry", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: fontSize)))
+      ],
     );
   }
 }
+
+

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -38,26 +40,97 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
               const SizedBox(width: 8.0),
               BlocBuilder<GalleryViewCubit, ViewType>(
                   builder: (context, state) {
-                return state == ViewType.grid
-                    ? GestureDetector(
-                        onTap: () {
-                          context
-                              .read<GalleryViewCubit>()
-                              .toggleView(ViewType.list);
-                        },
-                        child: Icon(
-                          Icons.list,
-                          color: theme.colorScheme.primary,
-                          size: 32,
-                        ))
-                    : GestureDetector(
-                        onTap: () {
-                          context
-                              .read<GalleryViewCubit>()
-                              .toggleView(ViewType.grid);
-                        },
-                        child: Icon(Icons.grid_view_outlined,
-                            color: theme.colorScheme.primary));
+                return Container(
+                  height: 38.0,
+                  width: 80.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      color:Color(pokemonColorValues.secondaryColor).withOpacity(0.2),
+
+                    )
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<GalleryViewCubit>()
+                                  .toggleView(ViewType.grid);
+                            },
+                            child: Container(
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: state == ViewType.grid ?
+                                Color(pokemonColorValues.secondaryColor).withOpacity(0.1) : Colors.transparent,
+                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(7.2), bottomLeft: Radius.circular(7.2)),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Icon(Icons.grid_view_outlined, size: 24.0,
+                                        color: state == ViewType.grid ? Color(pokemonColorValues.secondaryColor) : Color(pokemonColorValues.secondaryColor).withOpacity(0.4)),
+                                  ),
+                                  Positioned(
+                                      top: -20.0,
+                                      bottom: 0,
+                                      // left: 0,
+                                      right: 2.0,
+                                      child: state == ViewType.grid ? Icon(CupertinoIcons.checkmark_alt_circle_fill, color: Color(pokemonColorValues.secondaryColor), size: 14,) : const SizedBox.shrink())
+                                ],
+                              ),
+                            )),
+                      ),
+                      Container(
+                        width: 1.0,
+                        height: double.infinity,
+                        color: Color(pokemonColorValues.secondaryColor).withOpacity(0.2),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<GalleryViewCubit>()
+                                  .toggleView(ViewType.list);
+                            },
+                            child: Container(
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: state == ViewType.list ?
+                                Color(pokemonColorValues.secondaryColor).withOpacity(0.1) : Colors.transparent,
+                                borderRadius: const BorderRadius.only(topRight: Radius.circular(7.2), bottomRight: Radius.circular(7.2)),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Icon(
+                                      Icons.list,
+                                      color: state == ViewType.list ? Color(pokemonColorValues.secondaryColor) : Color(pokemonColorValues.secondaryColor).withOpacity(0.4),
+                                      size: 28.0,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: -20.0,
+                                      bottom: 0,
+                                      // left: 0,
+                                      right: 2.0,
+                                      child: state == ViewType.list ? Icon(CupertinoIcons.checkmark_alt_circle_fill, color: Color(pokemonColorValues.secondaryColor), size: 14,) : const SizedBox.shrink())
+                                ],
+                              ),
+                            )),
+                      )
+                    ],
+                  ),
+                );
               }),
             ],
           ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:palette_generator/palette_generator.dart';
 import '../../../../../core/core_barrel.dart';
@@ -136,6 +137,19 @@ Widget pokemonImageCard({required String image,required String type, required Bu
           child: Text(type, style: TextStyle(fontFamily: 'Lemonada', fontSize: 20, fontWeight: FontWeight.bold, color: theme.primaryColorDark),),
         )
       ],
+    ),
+  );
+}
+
+Widget pokemonImageCardLoading({required BuildContext context, double? height, Color? color}){
+  final theme = Theme.of(context);
+
+  return ShimmerWidget(
+    baseColor: color?.withOpacity(0.4),
+    highlightColor: color?.withOpacity(0.15),
+    child: SizedBox(
+      height: height ?? 150,
+      child: SvgPicture.asset('assets/images/svg-logo.svg'),
     ),
   );
 }
@@ -588,13 +602,39 @@ Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required Buil
         );
       }
       else if (state is PokemonEvolutionError){
-        return Center(
-          child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium,),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: CreatureCodexErrorWidget(
+            message: state.message,
+            fontSize: 12.0,
+            minimumBtnSize: const Size(80, 38.0),
+            onRetry: (){
+              context.read<PokemonEvolutionBloc>().add(FetchEvolutionChainEvent(
+                  evolvesFrom: pokemon.evolvesFrom,
+                  evolutionChain: pokemon.evolutionChain
+              ));
+            },
+            size: 150.0,
+          ),
         );
       }
 
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Padding(
+        padding: const EdgeInsets.only(top: 10, right: 8.0, left: 8.0, bottom: 16.0),
+        child: ListView.separated(
+            separatorBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: ShimmerWidget(
+                  baseColor: pokemon.color?.withOpacity(0.4),
+                  highlightColor: pokemon.color?.withOpacity(0.15),
+                  child: Icon(Icons.arrow_circle_down, size: 40.0, color: pokemon.color?.withOpacity(0.25),))),
+            ),
+            padding: EdgeInsets.zero,
+            itemCount: 6,
+            shrinkWrap: true,
+            itemBuilder: (context, index){
+              return pokemonImageCardLoading(context: context, color: pokemon.color, height: 150.0);
+            }),
       );
     },
     ),
@@ -624,13 +664,33 @@ Widget pokemonMovesWidget({required PokemonInfoEntity pokemon, required BuildCon
       );
     }
     else if (state is PokemonMoveError){
-      return Center(
-        child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium,),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        child: CreatureCodexErrorWidget(
+          message: state.message,
+          fontSize: 12.0,
+          minimumBtnSize: const Size(80, 38.0),
+          onRetry: (){
+            context.read<PokemonMoveBloc>().add(FetchMovesDetailsEvent(moves: pokemon.moves ?? []));
+          },
+          size: 150.0,
+        ),
       );
     }
 
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, right: 8.0, left: 8.0, bottom: 16.0),
+      child: ListView.separated(
+          separatorBuilder: (context, index) => const SizedBox(height: 2.0),
+          padding: EdgeInsets.zero,
+          itemCount: 6,
+          shrinkWrap: true,
+          itemBuilder: (context, index){
+            return Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 0.0, right: 0.0, bottom: 0.0),
+              child: pokemonMoveWidgetLoading(context: context, color: pokemon.color),
+            );
+          }),
     );
   },
 );
@@ -762,6 +822,126 @@ Widget pokemonMoveWidget({required BuildContext context, required MovesEntity mo
       ),
     ),
   );
+}
+
+Widget pokemonMoveWidgetLoading({required BuildContext context, required Color? color}){
+  final theme = Theme.of(context);
+
+  return ShimmerWidget(
+    baseColor: color?.withOpacity(0.4),
+    highlightColor: color?.withOpacity(0.15),
+    child: Card(
+      color: color?.withOpacity(0.25),
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ShimmerContainer(
+                    baseColor: color?.withOpacity(0.8),
+                    highlightColor: color?.withOpacity(0.15),
+                    width: 120.0, height: 16.0, borderRadius: 4.0,),
+                const SizedBox(width: 8.0,),
+                ShimmerContainer(
+                    baseColor: color?.withOpacity(0.8),
+                    highlightColor: color?.withOpacity(0.15),
+                    width: 100.0, height: 28.0, borderRadius: 8.0,),
+              ],
+            ),
+            const SizedBox(height: 8.0,),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 80.0, height: 16.0, borderRadius: 4.0,),
+                      const SizedBox(height: 4.0,),
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 40.0, height: 16.0, borderRadius: 4.0,),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 80.0, height: 16.0, borderRadius: 4.0,),
+                      const SizedBox(height: 4.0,),
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 40.0, height: 16.0, borderRadius: 4.0,),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 80.0, height: 16.0, borderRadius: 4.0,),
+                      const SizedBox(height: 4.0,),
+                      ShimmerContainer(
+                        baseColor: color?.withOpacity(0.8),
+                        highlightColor: color?.withOpacity(0.15),
+                        width: 40.0, height: 16.0, borderRadius: 4.0,),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],),
+      ),
+    ),
+  );
+
+  // return Card(
+  //   color: Colors.white,
+  //   margin: EdgeInsets.zero,
+  //   elevation: 0,
+  //   child: Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 5),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(moves.move!.name!.capitalize(), style: theme.textTheme.bodySmall,),
+  //             Text("Level 1", style: theme.textTheme.bodyMedium,)
+  //           ],),
+  //         CircularProgressIndicator(
+  //           value: 0.6,
+  //           backgroundColor: Colors.grey[200],
+  //           color: Colors.green,
+  //         )
+  //       ],
+  //     ),
+  //   ),
+  // );
 }
 
 String statsEmonji({required String statName}){
