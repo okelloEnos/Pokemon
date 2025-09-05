@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
@@ -37,53 +38,75 @@ class SinglePokemonScreen extends StatelessWidget {
               ),
               child: PageStorage(
                 bucket: _bucket,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              color: Colors.white,
-                              onPressed: () => context.pop(), icon: Container(
-                            padding: const EdgeInsets.only(left: 2.0, top: 4.0, bottom: 4.0, right: 4.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white54)
-                              ),
-                              child: const Center(child: Icon(CupertinoIcons.back)))),
-                        ],),
-                      disableSlider ?
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
-                      ) :
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: CarouselSlider(
-                            items: [
-                              for(PokemonInfoEntity variant in pokemon.variantsComplete ?? []) variant.sprites?.artWork == null ? const SizedBox.shrink() : pokemonImageCard(image: variant.sprites!.artWork!,type: "Art Work", context: context)
-                            ],
-                            options: CarouselOptions(
-                              // height: 200,
-                              aspectRatio: 4.6/2,
-                              viewportFraction: 0.8,
-                              initialPage: 0,
-                              enableInfiniteScroll: false,
-                              reverse: false,
-                              autoPlay: true,
-                              autoPlayInterval: const Duration(seconds: 3),
-                              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enlargeCenterPage: true,
-                              // onPageChanged: callbackFunction,
-                              scrollDirection: Axis.horizontal,
-                            )
-                        ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 20,
+                      right: 20,
+                      child: SvgPicture.asset("assets/images/pokeball.svg",
+                        height: 80.0, width: 80.0,
+                        color: Colors.white10,
                       ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      bottom: -40,
+                      left: -40,
+                      child: Transform.rotate(
+                          angle: 2.2,
+                          child: SvgPicture.asset("assets/images/pokeball.svg",
+                            height: 150.0, width: 150.0,
+                            color: Colors.white10,
+                          )),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  color: Colors.white,
+                                  onPressed: () => context.pop(), icon: Container(
+                                padding: const EdgeInsets.only(left: 2.0, top: 4.0, bottom: 4.0, right: 4.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.white54)
+                                  ),
+                                  child: const Center(child: Icon(CupertinoIcons.back)))),
+                            ],),
+                          disableSlider ?
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: pokemon.sprites?.artWork != null ? pokemonImageCard(image: pokemon.sprites!.artWork!,type: "Art Work", context: context) : const SizedBox.shrink(),
+                          ) :
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: CarouselSlider(
+                                items: [
+                                  for(PokemonInfoEntity variant in pokemon.variantsComplete ?? []) variant.sprites?.artWork == null ? const SizedBox.shrink() : pokemonImageCard(image: variant.sprites!.artWork!,type: "Art Work", context: context)
+                                ],
+                                options: CarouselOptions(
+                                  // height: 200,
+                                  aspectRatio: 4.6/2,
+                                  viewportFraction: 0.8,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: false,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: const Duration(seconds: 3),
+                                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enlargeCenterPage: true,
+                                  // onPageChanged: callbackFunction,
+                                  scrollDirection: Axis.horizontal,
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

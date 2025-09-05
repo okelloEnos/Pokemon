@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -48,7 +49,7 @@ Widget allPokemonsLoading(){
     return state == ViewType.grid ? GridView.builder(
       physics: const ClampingScrollPhysics(),
       key: const Key("pokemon_grid"),
-      itemCount: 8,
+      itemCount: 20,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 10.0,
@@ -92,15 +93,19 @@ Widget allPokemonsView({required var bloc, required var state, required var cont
   return CustomScrollView(
     controller: bloc.scrollController,
     slivers: [
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 16.0,),
+      ),
       BlocBuilder<GalleryViewCubit, ViewType>(
   builder: (context, viewState) {
     return
       viewState == ViewType.grid ?
       SliverGrid(
         delegate: SliverChildBuilderDelegate((context, index) {
+          // return pokemonCard(context, state.pokemons[index]);
           return AnimationConfiguration.staggeredGrid(
             position: index,
-            duration: const Duration(milliseconds: 800),
+            duration: const Duration(milliseconds: 100),
             columnCount: 2,
             child: ScaleAnimation(
               child: FadeInAnimation(
@@ -120,9 +125,11 @@ Widget allPokemonsView({required var bloc, required var state, required var cont
       SliverList(delegate: SliverChildBuilderDelegate((context, index) {
       return SizedBox(
         height: 155,
-        child: AnimationConfiguration.staggeredList(
+        child:
+        // pokemonListCard(context, state.pokemons[index]),
+        AnimationConfiguration.staggeredList(
           position: index,
-          duration: const Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 100),
           // columnCount: 2,
           child: ScaleAnimation(
             child: FadeInAnimation(
@@ -134,7 +141,6 @@ Widget allPokemonsView({required var bloc, required var state, required var cont
     }, childCount: state.pokemons.length));
   },
 ),
-      ///
       const SliverToBoxAdapter(child: SizedBox(height: 16.0,),)
     ],
   );
@@ -268,19 +274,28 @@ final theme = Theme.of(context);
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        pokemon.pokemonName?.capitalize() ?? "",
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
-                        key: const Key("grid_text_name"),
-                      ),
-                      Text("# ${pokemon.id}"),
-                    ],
+                  Text(
+                    pokemon.pokemonName?.capitalize() ?? "",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
+                    key: const Key("grid_text_name"),
                   ),
+                  // Row(
+                  //
+                  //   children: [
+                  //     Text(
+                  //       pokemon.pokemonName?.capitalize() ?? "",
+                  //       maxLines: 2,
+                  //       textAlign: TextAlign.center,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
+                  //       key: const Key("grid_text_name"),
+                  //     ),
+                  //     Text("# ${pokemon.id}"),
+                  //   ],
+                  // ),
 
                   const Spacer(),
                   Row(
@@ -421,19 +436,27 @@ Widget pokemonListCard(BuildContext context, PokemonInfoEntity pokemon){
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        pokemon.pokemonName?.capitalize() ?? "",
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
-                        key: const Key("grid_text_name"),
-                      ),
-                      Text("# ${pokemon.id}"),
-                    ],
+                  Text(
+                    pokemon.pokemonName?.capitalize() ?? "",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
+                    key: const Key("grid_text_name"),
                   ),
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       pokemon.pokemonName?.capitalize() ?? "",
+                  //       maxLines: 2,
+                  //       textAlign: TextAlign.center,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
+                  //       key: const Key("grid_text_name"),
+                  //     ),
+                  //     Text("# ${pokemon.id}"),
+                  //   ],
+                  // ),
 
                   const Spacer(),
                   Row(

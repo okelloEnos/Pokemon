@@ -12,6 +12,8 @@ part 'pokemon_events.dart';
 
 part 'pokemon_states.dart';
 
+int _fetchLimit = 10;
+int _fetchOffset = 0;
 class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
   // final GalleryRepository pokemonRepository;
   final FetchAllPokemonUseCase _useCase;
@@ -19,44 +21,39 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
   final RefreshController refreshController = RefreshController(initialRefresh: false);
 
   List<PokemonInfoEntity> allLoadedPokemons = [];
-  int limit = 10;
-  int offset = 0;
+  int limit = _fetchLimit;
+  int offset = _fetchOffset;
 
   PokemonsBloc({required FetchAllPokemonUseCase useCase})
       : _useCase = useCase,
         super(PokemonsInitial()) {
-    scrollController.addListener(() {
-      if (scrollController.offset >=
-              scrollController.position.maxScrollExtent &&
-          !scrollController.position.outOfRange) {
-        if (state is PokemonsLoaded) {
-          add(PokemonsFetched());
-        }
-      }
-
-      if (scrollController.offset <=
-              scrollController.position.minScrollExtent &&
-          !scrollController.position.outOfRange) {
-        debugPrint("at the top");
-      }
-    });
+    // scrollController.addListener(() {
+    //   if (scrollController.offset >=
+    //           scrollController.position.maxScrollExtent &&
+    //       !scrollController.position.outOfRange) {
+    //     if (state is PokemonsLoaded) {
+    //       // add(FetchMorePokemons());
+    //     }
+    //   }
+    //
+    //   if (scrollController.offset <=
+    //           scrollController.position.minScrollExtent &&
+    //       !scrollController.position.outOfRange) {
+    //     // add(PokemonsRefreshed());
+    //   }
+    // });
     on<PokemonsFetched>(_onPokemonsFetched);
+    on<PokemonsRefreshed>(_onPokemonsRefreshed);
+    on<FetchMorePokemons>(_onFetchMorePokemons);
   }
 
   Future<void> _onPokemonsFetched(
       PokemonsFetched event, Emitter<PokemonStates> emit) async {
     emit(PokemonsLoading());
     try {
-      int currentOffset = offset;
-      int currentLimit = limit;
+      int currentOffset = _fetchOffset;
+      int currentLimit = _fetchLimit;
       bool hasReachedMax = false;
-
-      // if(event.offset != null || event.limit != null){
-      //   allLoadedPokemons.clear();
-      //   currentLimit = 10;
-      //   currentOffset = 0;
-      //   hasReachedMax = false;
-      // }
 
       List<DataEntity> pokemons =
           await _useCase.call(offset: currentOffset, limit: currentLimit);
@@ -65,8 +62,16 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
       for (DataEntity data in pokemons) {
         PokemonInfoEntity pokemonWithData =
             await _useCase.coreDataRequest(name: data.name);
-
-        final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(pokemonWithData.sprites!.artWork!));
+        Color? prominentColor;
+        if(pokemonWithData.sprites?.artWork != null) {
+          PaletteGenerator paletteGenerator = await PaletteGenerator
+              .fromImageProvider(
+              NetworkImage(pokemonWithData.sprites!.artWork!));
+          prominentColor = paletteGenerator.dominantColor?.color ;
+        }
+        else{
+          prominentColor = Colors.grey;
+        }
 
         List<PokemonInfoEntity> variants = [];
         for (DataEntity variant in pokemonWithData.variants ?? []) {
@@ -79,9 +84,143 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
           }
         }
 
-        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: paletteGenerator.dominantColor?.color ?? Colors.grey));
+        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: prominentColor));
+      }
+      List<PokemonInfoEntity> allPokemons = [
+        ...allLoadedPokemons,
+        ...pokemonsWithData
+      ];
+      allLoadedPokemons = allPokemons;
+
+      if (pokemons.length < limit) {
+        offset = pokemons.length;
+        hasReachedMax = true;
+      } else {
+        offset = currentLimit;
+        // offset = _fetchOffset + currentLimit;
+      }
+
+      emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
+    } on DioError catch (e, s) {
+
+      emit(PokemonsFailure(
+          errorText:
+              DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
+    } catch (e, s) {
+
+      emit(PokemonsFailure(errorText: e.toString()));
+    }
+  }
+
+  Future<void> _onPokemonsRefreshed(
+      PokemonsRefreshed event, Emitter<PokemonStates> emit) async {
+    emit(PokemonsLoading());
+    try {
+      int currentOffset = _fetchOffset;
+      int currentLimit = _fetchLimit;
+      bool hasReachedMax = false;
+      allLoadedPokemons.clear();
+
+      List<DataEntity> pokemons = await _useCase.call(offset: currentOffset, limit: currentLimit);
+
+      List<PokemonInfoEntity> pokemonsWithData = [];
+      for (DataEntity data in pokemons) {
+        PokemonInfoEntity pokemonWithData =
+        await _useCase.coreDataRequest(name: data.name);
+
+        Color? prominentColor;
+        if(pokemonWithData.sprites?.artWork != null) {
+          PaletteGenerator paletteGenerator = await PaletteGenerator
+              .fromImageProvider(
+              NetworkImage(pokemonWithData.sprites!.artWork!));
+          prominentColor = paletteGenerator.dominantColor?.color ;
+        }
+        else{
+          prominentColor = Colors.grey;
+        }
+
+        List<PokemonInfoEntity> variants = [];
+        for (DataEntity variant in pokemonWithData.variants ?? []) {
+          try {
+            PokemonInfoEntity pokemonVariant =
+            await _useCase.coreDataRequest(name: variant.name);
+            variants.add(pokemonVariant);
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+        }
+
+        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: prominentColor));
         // pokemonsWithData
         //     .add(pokemonWithData.copyWith(variantsComplete: variants));
+      }
+      List<PokemonInfoEntity> allPokemons = [
+        ...allLoadedPokemons,
+        ...pokemonsWithData
+      ];
+      allLoadedPokemons = allPokemons;
+
+      if (pokemons.length < limit) {
+        offset = pokemons.length;
+        hasReachedMax = true;
+      } else {
+        offset = currentLimit;
+      }
+
+      refreshController.refreshCompleted();
+
+      emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
+    } on DioError catch (e, s) {
+      refreshController.refreshFailed();
+
+      emit(PokemonsFailure(
+          errorText:
+          DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
+    } catch (e, s) {
+      refreshController.refreshFailed();
+
+      emit(PokemonsFailure(errorText: e.toString()));
+    }
+  }
+
+  Future<void> _onFetchMorePokemons(
+      FetchMorePokemons event, Emitter<PokemonStates> emit) async {
+    // emit(PokemonsLoading());
+    try {
+      int currentOffset = offset;
+      int currentLimit = limit;
+      bool hasReachedMax = false;
+
+      List<DataEntity> pokemons =
+      await _useCase.call(offset: currentOffset, limit: currentLimit);
+
+      List<PokemonInfoEntity> pokemonsWithData = [];
+      for (DataEntity data in pokemons) {
+        PokemonInfoEntity pokemonWithData =
+        await _useCase.coreDataRequest(name: data.name);
+
+        Color? prominentColor;
+        if(pokemonWithData.sprites?.artWork != null) {
+          PaletteGenerator paletteGenerator = await PaletteGenerator
+              .fromImageProvider(
+              NetworkImage(pokemonWithData.sprites!.artWork!));
+          prominentColor = paletteGenerator.dominantColor?.color ;
+        }
+        else{
+          prominentColor = Colors.grey;
+        }
+        List<PokemonInfoEntity> variants = [];
+        for (DataEntity variant in pokemonWithData.variants ?? []) {
+          try {
+            PokemonInfoEntity pokemonVariant =
+            await _useCase.coreDataRequest(name: variant.name);
+            variants.add(pokemonVariant);
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+        }
+
+        pokemonsWithData.add(pokemonWithData.copyWith(variantsComplete: variants, color: prominentColor));
       }
       List<PokemonInfoEntity> allPokemons = [
         ...allLoadedPokemons,
@@ -96,21 +235,21 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
         offset += limit;
       }
 
-      refreshController.loadComplete();
-      // refreshController.refreshCompleted();
-      // if(hasReachedMax){
-      //   refreshController.loadNoData();
-      // }
+      // refreshController.loadComplete();
+      if(hasReachedMax){
+        refreshController.loadNoData();
+      }
+      else{
+        refreshController.loadComplete();
+      }
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
-    } on DioError catch (e) {
-      refreshController.refreshFailed();
+    } on DioError catch (e, s) {
       refreshController.loadFailed();
 
       emit(PokemonsFailure(
           errorText:
-              DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
+          DioExceptions.fromDioError(e).message ?? 'Something went wrong'));
     } catch (e, s) {
-      refreshController.refreshFailed();
       refreshController.loadFailed();
 
       emit(PokemonsFailure(errorText: e.toString()));

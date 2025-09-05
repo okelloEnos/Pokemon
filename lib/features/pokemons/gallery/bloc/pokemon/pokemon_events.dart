@@ -15,3 +15,23 @@ class PokemonsFetched extends PokemonEvents {
   List<Object?> get props => [offset, limit];
 
 }
+
+class PokemonsRefreshed extends PokemonEvents {
+  final int? offset;
+  final int? limit;
+
+  PokemonsRefreshed({this.offset, this.limit});
+
+  @override
+  List<Object?> get props => [offset, limit];
+}
+
+class FetchMorePokemons extends PokemonEvents {
+  final int? offset;
+  final int? limit;
+
+  FetchMorePokemons({this.offset, this.limit});
+
+  @override
+  List<Object?> get props => [offset, limit];
+}

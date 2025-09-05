@@ -52,8 +52,6 @@ class PokemonEvolutionBloc extends Bloc<PokemonEvolutionEvent, PokemonEvolutionS
   }
 }
 
-// todo: customizing the pull to refresh indicator ui and the logic to make new call
-// todo: pull more pokemon when reach the end of the list
-
+// todo: customizing the pull to refresh indicator, fetch more, end of list ui
+// todo: clean data if possible
 // todo: animations when navigating to single pokemon screen
-// todo: add pokemon ball at the background of single pokemon screen
