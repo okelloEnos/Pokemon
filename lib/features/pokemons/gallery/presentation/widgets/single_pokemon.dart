@@ -179,6 +179,11 @@ static const List<Tab> pokemonsTabs = <Tab>[
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    context.read<PokemonMoveBloc>().add(FetchMovesDetailsEvent(moves: widget.pokemonInfo.moves ?? []));
+    context.read<PokemonEvolutionBloc>().add(FetchEvolutionChainEvent(
+        evolvesFrom: widget.pokemonInfo.evolvesFrom,
+        evolutionChain: widget.pokemonInfo.evolutionChain
+    ));
   }
 
   @override
@@ -209,15 +214,15 @@ static const List<Tab> pokemonsTabs = <Tab>[
               children: pokemonsTabs.map((Tab tab){
                 switch(tab.text){
                   case "Moves":
-                    context.read<PokemonMoveBloc>().add(FetchMovesDetailsEvent(moves: widget.pokemonInfo.moves ?? []));
+                    // context.read<PokemonMoveBloc>().add(FetchMovesDetailsEvent(moves: widget.pokemonInfo.moves ?? []));
                     return pokemonMovesWidget(pokemon: widget.pokemonInfo, context: context);
                   case "Stats":
                     return pokemonStatsWidget(pokemon: widget.pokemonInfo, context: context);
                   case "Evolution" :
-                    context.read<PokemonEvolutionBloc>().add(FetchEvolutionChainEvent(
-                        evolvesFrom: widget.pokemonInfo.evolvesFrom,
-                        evolutionChain: widget.pokemonInfo.evolutionChain
-                    ));
+                    // context.read<PokemonEvolutionBloc>().add(FetchEvolutionChainEvent(
+                    //     evolvesFrom: widget.pokemonInfo.evolvesFrom,
+                    //     evolutionChain: widget.pokemonInfo.evolutionChain
+                    // ));
                     return pokemonEvolutionWidget(pokemon: widget.pokemonInfo, context: context);
                   case "About" :
                   default:
@@ -369,7 +374,7 @@ Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildCon
                     RichText(text: TextSpan(
                         children: [
                           WidgetSpan(
-                              child:  Text('${pokemon.captureRate} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
+                              child:  Text('${pokemon.captureRate ?? 0} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
                           ),
                           WidgetSpan(
                               child:  Text("(${catchDifficultyLabel(captureRate: pokemon.captureRate ?? 0)})", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 12.0),)
@@ -392,7 +397,7 @@ Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildCon
                     RichText(text: TextSpan(
                         children: [
                           WidgetSpan(
-                              child:  Text('${pokemon.baseHappiness} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
+                              child:  Text('${pokemon.baseHappiness ?? 0} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
                           ),
                           WidgetSpan(
                               child:  Text("(${friendshipLabel(baseHappiness: pokemon.baseHappiness ?? 0)})", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 12.0),)
@@ -418,7 +423,7 @@ Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildCon
                     RichText(text: TextSpan(
                         children: [
                           WidgetSpan(
-                              child:  Text('${pokemon.growthRate?.capitalizeFirstOfEach()} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
+                              child:  Text('${pokemon.growthRate?.capitalizeFirstOfEach() ?? " << Rate >>"} ', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.0),)
                           ),
                           // WidgetSpan(
                           //     child:  Text('Meters', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 10.0),)
@@ -532,8 +537,8 @@ Widget pokemonAboutWidget({required PokemonInfoEntity pokemon, required BuildCon
               )
             ],
           ),
-          const SizedBox(height: 12.0,),
-          const Text('Egg Groups', style: TextStyle(fontSize: 12.0),),
+          (pokemon.eggGroups ?? []).isEmpty ? const SizedBox.shrink() : const SizedBox(height: 12.0,),
+          (pokemon.eggGroups ?? []).isEmpty ? const SizedBox.shrink() : const Text('Egg Groups', style: TextStyle(fontSize: 12.0),),
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -578,7 +583,7 @@ Widget pokemonStatsWidget({required PokemonInfoEntity pokemon, required BuildCon
 }
 
 Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
-  // final theme = Theme.of(context);
+  final theme = Theme.of(context);
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: BlocBuilder<PokemonEvolutionBloc, PokemonEvolutionState>(
@@ -587,7 +592,16 @@ Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required Buil
         List<EvolutionPokemonEntity> evolutionChain = state.evolution;
         return Padding(
           padding: const EdgeInsets.only(top: 10, right: 8.0, left: 8.0, bottom: 16.0),
-          child: ListView.separated(
+          child:
+          evolutionChain.isEmpty ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset("assets/images/pokeball.svg", color: Colors.grey.shade100, height: 100.0, width: 100.0,),
+              const SizedBox(height: 32.0),
+              Text("${pokemon.pokemonName?.capitalizeFirstOfEach()} evolution is missing.", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey, fontSize: 16.0)),
+            ],
+          ) :
+          ListView.separated(
               separatorBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(child: Icon(Icons.arrow_circle_down, size: 40.0, color: pokemon.color?.withOpacity(0.25),)),
@@ -642,14 +656,23 @@ Widget pokemonEvolutionWidget({required PokemonInfoEntity pokemon, required Buil
 }
 
 Widget pokemonMovesWidget({required PokemonInfoEntity pokemon, required BuildContext context}){
-  // final theme = Theme.of(context);
+  final theme = Theme.of(context);
   return BlocBuilder<PokemonMoveBloc, PokemonMoveState>(
   builder: (context, state) {
     if(state is PokemonMoveLoaded){
       List<MovesEntity> moves = state.moves;
       return Padding(
         padding: const EdgeInsets.only(top: 10, right: 8.0, left: 8.0, bottom: 16.0),
-        child: ListView.separated(
+        child:
+        moves.isEmpty ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset("assets/images/pokeball.svg", color: Colors.grey.shade100, height: 100.0, width: 100.0,),
+            const SizedBox(height: 32.0),
+            Text("${pokemon.pokemonName?.capitalizeFirstOfEach()} moves is missing.", textAlign: TextAlign.center, style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey, fontSize: 16.0)),
+          ],
+        ) :
+        ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(height: 2.0),
           padding: EdgeInsets.zero,
             itemCount: moves.length,

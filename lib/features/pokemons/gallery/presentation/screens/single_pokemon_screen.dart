@@ -125,29 +125,33 @@ class SinglePokemonScreen extends StatelessWidget {
           //     ],
           //   ),
           // ),
-          Card(
-            // shadowColor: Colors.red,
-            elevation: 0,
-            margin: EdgeInsets.zero,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30), topRight: Radius.circular(30)
-                )
-            ),
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 16.0,),
-                  Text("${pokemon.pokemonName}".capitalize(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),),
-                  Text("(${pokemon.genus}, ${pokemon.habitat?.capitalize() ?? ""})", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
-                  const SizedBox(height: 8.0,),
-                  Text("${pokemon.description}", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
-                  const SizedBox(height: 16.0,),
-                ],
+          SizedBox(
+            width: double.infinity,
+            child: Card(
+              // shadowColor: Colors.red,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30), topRight: Radius.circular(30)
+                  )
+              ),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16.0,),
+                    Text(pokemon.pokemonName?.capitalizeFirstOfEach() ?? "", style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),),
+                    // ((pokemon.genus ?? "").isEmpty && (pokemon.habitat ?? "").isEmpty) Text("(${pokemon.genus ?? ""}, ${pokemon.habitat?.capitalize() ?? ""})", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
+                    Text("(${pokemon.genus ?? "<< Genera >>"}, ${pokemon.habitat?.capitalize() ?? " << Habitat >>"})", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
+                    const SizedBox(height: 8.0,),
+                    Text(pokemon.description ?? "<< Description of ${pokemon.pokemonName?.capitalizeFirstOfEach() ?? ""}", style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),),
+                    const SizedBox(height: 16.0,),
+                  ],
+                ),
               ),
             ),
           ),

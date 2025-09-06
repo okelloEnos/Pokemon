@@ -12,8 +12,9 @@ part 'pokemon_events.dart';
 
 part 'pokemon_states.dart';
 
-int _fetchLimit = 10;
+int _fetchLimit = 12;
 int _fetchOffset = 0;
+
 class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
   // final GalleryRepository pokemonRepository;
   final FetchAllPokemonUseCase _useCase;
@@ -100,6 +101,9 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
         // offset = _fetchOffset + currentLimit;
       }
 
+
+      // allPokemons = allPokemons.toSet().toList();
+      allPokemons = allPokemons.where((pokemon) => pokemon.sprites?.artWork != null).toList();
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
     } on DioError catch (e, s) {
 
@@ -169,6 +173,7 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
 
       refreshController.refreshCompleted();
 
+      allPokemons = allPokemons.where((pokemon) => pokemon.sprites?.artWork != null).toList();
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
     } on DioError catch (e, s) {
       refreshController.refreshFailed();
@@ -242,6 +247,8 @@ class PokemonsBloc extends Bloc<PokemonEvents, PokemonStates> {
       else{
         refreshController.loadComplete();
       }
+
+      allPokemons = allPokemons.where((pokemon) => pokemon.sprites?.artWork != null).toList();
       emit(PokemonsLoaded(pokemons: allPokemons, hasReachedMax: hasReachedMax));
     } on DioError catch (e, s) {
       refreshController.loadFailed();

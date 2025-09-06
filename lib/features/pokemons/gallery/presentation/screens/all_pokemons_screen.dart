@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -9,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../../core/core_barrel.dart';
 import '../../../../features_barrel.dart';
+import '../../../../../core/core_barrel.dart' as core;
+import 'package:pull_to_refresh/pull_to_refresh.dart' as ptr;
 
 class AllPokemonsScreen extends StatefulWidget {
   const AllPokemonsScreen({Key? key}) : super(key: key);
@@ -306,9 +307,31 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
               //     : allPokemonsLoading();
               return SmartRefresher(
                 controller: context.read<PokemonsBloc>().refreshController,
+                // scrollController: context.read<PokemonsBloc>().scrollController,
                 enablePullUp: true,
-                header: const WaterDropHeader(),
-                footer: const MoreFooter(),
+                enablePullDown: false,
+                header: WaterDropHeader(
+                  waterDropColor: Color(pokemonColorValues.secondaryColor),
+                ),
+                // footer: MoreFooter(
+                //   spacing: 16.0,
+                //   iconPos: core.IconPosition.bottom,
+                //   loadingText: "Fetching more creatures...",
+                //   loadingIcon: itemsLoadingWidget(color: Color(pokemonColorValues.secondaryColor), size: 30.0)
+                // ),
+                footer: ClassicFooter(
+                  textStyle: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                  loadingText: "Fetching more creatures...",
+                  loadingIcon: itemsLoadingWidget(color: Color(pokemonColorValues.secondaryColor), size: 24.0),
+                  canLoadingText: "Release to fetch more creatures",
+                  canLoadingIcon: const Icon(Icons.catching_pokemon, color: Colors.grey,),
+                  idleText: "Pull up to load more",
+                  noDataText: "No more creatures available",
+                  noMoreIcon: const Icon(Icons.catching_pokemon, color: Colors.grey,),
+                  failedText: "Failed to load more creatures",
+                  failedIcon: const Icon(Icons.call_missed_outgoing, color: Colors.red,),
+                  // iconPos: ptr.IconPosition.left,
+                ),
                 onRefresh: () async {
                   context.read<PokemonsBloc>().add(PokemonsRefreshed());
                 },
@@ -316,7 +339,14 @@ class _AllPokemonsScreenState extends State<AllPokemonsScreen> {
                   context.read<PokemonsBloc>().add(FetchMorePokemons());
                 },
                 child: state is PokemonsLoaded
-                    ? allPokemonsView(
+                    ? state.pokemons.isEmpty ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset("assets/images/pokeball.svg", color: Colors.grey.shade100, height: 150.0, width: 150.0,),
+                        const SizedBox(height: 50.0),
+                        Text("The Gallery has no creatures", style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey, fontSize: 16.0)),
+                      ],
+                    ): allPokemonsView(
                         bloc: context.read<PokemonsBloc>(),
                         state: state,
                         context: context)

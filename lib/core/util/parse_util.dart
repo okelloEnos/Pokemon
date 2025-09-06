@@ -68,7 +68,7 @@ String friendshipLabel({required int baseHappiness}) {
 }
 
 String catchDifficultyLabel({required int captureRate}) {
-  if (captureRate <= 3)   return 'Legendary-tier (very hard)';
+  if (captureRate <= 3)   return 'Very hard';
   if (captureRate <= 45)  return 'Hard';
   if (captureRate <= 90)  return 'Moderate';
   if (captureRate <= 190) return 'Easy';

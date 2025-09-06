@@ -213,7 +213,8 @@ class GalleryRemoteDataSourceImpl implements GalleryRemoteDataSource {
 
   @override
   Future<dynamic> retrieveEvolutionData({required String? url}) async {
-    if (url == null) throw (Exception("Evolution url is null"));
+    if (url == null) return <String, dynamic>{};
+    // if (url == null) throw (Exception("Evolution url is null"));
 
     final results = await _dio.get(url);
 

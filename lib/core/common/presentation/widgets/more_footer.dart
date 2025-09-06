@@ -307,23 +307,32 @@ class _ClassicFooterState extends LoadIndicatorState<MoreFooter> {
     List<Widget> children = <Widget>[iconWidget, textWidget];
     final Widget container = Wrap(
       spacing: widget.spacing,
-      textDirection: widget.iconPos == IconPosition.left
-          ? TextDirection.ltr
-          : TextDirection.rtl,
-      direction: widget.iconPos == IconPosition.bottom ||
+      textDirection:
+      // widget.iconPos == IconPosition.left
+      //     ?
+      // TextDirection.ltr,
+      //     :
+      TextDirection.rtl,
+      direction:
+      widget.iconPos == IconPosition.bottom ||
           widget.iconPos == IconPosition.top
-          ? Axis.vertical
-          : Axis.horizontal,
+          ?
+      Axis.vertical
+          :
+      Axis.horizontal,
       crossAxisAlignment: WrapCrossAlignment.center,
       verticalDirection: widget.iconPos == IconPosition.bottom
-          ? VerticalDirection.up
-          : VerticalDirection.down,
+          ?
+      VerticalDirection.up
+          :
+      VerticalDirection.down,
       alignment: WrapAlignment.center,
       children: children,
     );
     return widget.outerBuilder != null
         ? widget.outerBuilder!(container)
         : Container(
+      color: Colors.red,
       height: widget.height,
       child: Center(
         child: container,

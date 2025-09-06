@@ -9,11 +9,11 @@ Widget imagePlaceHolder({required Color color, double? size}){
   ),);
 }
 
-Widget itemsLoadingWidget({required Color color}){
+Widget itemsLoadingWidget({required Color color, double? size}){
   return Center(child: SpinKitRipple(
     key: const Key("pokemon_loading"),
     color: color,
-    size: 50.0,
+    size: size ?? 50.0,
   ),);
 }
 

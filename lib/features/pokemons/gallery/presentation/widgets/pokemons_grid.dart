@@ -91,6 +91,9 @@ Widget allPokemonsLoading(){
 }
 Widget allPokemonsView({required var bloc, required var state, required var context}){
   return CustomScrollView(
+    // physics: NeverScrollableScrollPhysics(),
+    // physics: AlwaysScrollableScrollPhysics(),
+    physics: const BouncingScrollPhysics(),
     controller: bloc.scrollController,
     slivers: [
       const SliverToBoxAdapter(
@@ -275,8 +278,8 @@ final theme = Theme.of(context);
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    pokemon.pokemonName?.capitalize() ?? "",
-                    maxLines: 2,
+                    pokemon.pokemonName?.capitalizeFirstOfEach() ?? "",
+                    maxLines: 1,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14.0),
@@ -437,8 +440,8 @@ Widget pokemonListCard(BuildContext context, PokemonInfoEntity pokemon){
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    pokemon.pokemonName?.capitalize() ?? "",
-                    maxLines: 2,
+                    pokemon.pokemonName?.capitalizeFirstOfEach() ?? "",
+                    maxLines: 1,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16.0),
