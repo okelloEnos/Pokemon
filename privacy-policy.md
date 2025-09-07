@@ -2,11 +2,11 @@ Privacy Policy
 ----------------
 
 ### Introduction
-Our privacy policy will help you understand what information we collect at PokéDex, how PokéDex uses it, and what choices you have.
-OkelloSoftwarez built the PokéDex app as a free app. This SERVICE is provided by PokéDex at no cost and is intended for use as is.
-By using our Service, you agree to the terms outlined in this policy. We are committed to protecting your privacy—especially for children—and to being transparent about how information is handled.
+Our privacy policy will help you understand what information we collect at Creature Codex, how Creature Codex uses it, and what choices you have.
+OkelloSoftwarez built the Creature Codex app as a free app. This SERVICE is provided by Creature Codex at no cost and is intended for use as is.
+By using our Service, you agree to the terms outlined in this policy. We are committed to protecting your privacy especially for children and to being transparent about how information is handled.
 
-Note: The PokéDex app is designed to be safe and suitable for all ages, including children. We do not knowingly collect or store any personal information from users, including children under the age of 13.
+Note: The Creature Codex app is designed to be safe and suitable for all ages, including children. We do not knowingly collect or store any personal information from users, including children under the age of 13.
 
 ### Information Collection and Use
 We do not collect any personally identifiable information (PII) such as name, email address, gender, location, or pictures.
@@ -18,7 +18,7 @@ Cookies are files with small amount of data that is commonly used an anonymous u
 This Services does not uses these “cookies” explicitly. However, the app may use third party code and libraries that use “cookies” to collection information and to improve their services. You have the option  to either accept or refuse these cookies, and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.
 
 ### Location Information
-PokéDex does not collect or use any precise location data from users. If any feature appears to require location services, it will operate with anonymized or generalized data only, and never stored or shared.
+Creature Codex does not collect or use any precise location data from users. If any feature appears to require location services, it will operate with anonymized or generalized data only, and never stored or shared.
 
 ### Device Information
 We may collect non-personal information such as device type, operating system version, and crash logs to improve app performance and security. This data does not identify you personally.
@@ -36,7 +36,7 @@ We want to inform users of this Service that these third parties have access to 
 We take data security seriously and implement reasonable technical measures to protect information. However, no method of electronic transmission or storage is 100% secure.
 
 ### Children’s Privacy
-PokéDex is intended for all ages, including children.
+Creature Codex is intended for all ages, including children.
 We do not knowingly collect personal data from children under 13 or anyone else. If a parent or guardian believes that we have unknowingly collected a child's personal information, please contact us and we will delete the information immediately.
 
 ### Changes to This Privacy Policy
